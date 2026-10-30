@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Gold Shoes | Catálogo</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body { background: #0b0b0d; }
+  .gold-text {
+    background: linear-gradient(135deg, #f7e08c 0%, #d4af37 35%, #a9781f 60%, #f7e08c 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .gold-border { border-color: #d4af37; }
+  .card-shoe {
+    background: radial-gradient(circle at 30% 20%, #1a1a1d 0%, #0b0b0d 70%);
+    border: 1px solid #3a2f12;
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .card-shoe:hover { transform: translateY(-4px); border-color: #d4af37; }
+  .brand-btn.active, .linea-btn.active {
+    background: #d4af37;
+    color: #0b0b0d;
+  }
+  .suggested-badge {
+    background: linear-gradient(135deg,#4a3a00,#d4af37);
+  }
+</style>
+</head>
+<body class="text-gray-200">
+
+  <!-- HEADER / LOGO -->
+  <header class="relative border-b border-[#3a2f12] py-10 px-4 text-center overflow-hidden">
+    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+      <div class="w-[420px] h-[420px] rounded-full bg-[#d4af37]/10 blur-3xl"></div>
+    </div>
+    <img src="images/logo.png" alt="Gold Shoes" class="relative mx-auto max-w-[360px] w-full h-auto" />
+    <p class="relative inline-block mt-4 border gold-border text-[#d4af37] text-xs tracking-widest px-4 py-1 rounded-full">100% ORIGINALES</p>
+  </header>
+
+  <!-- COMO COMPRAR -->
+  <section class="max-w-5xl mx-auto px-4 pt-12 pb-10">
+    <h2 class="text-center text-2xl md:text-3xl font-serif gold-text font-bold mb-2">¿Cómo comprar?</h2>
+    <p class="text-center text-gray-500 text-sm mb-8">3 formas de pedir tu tenis -- elegí la que más te acomode</p>
+    <div id="formasCotizar" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14"></div>
+
+    <h3 class="text-center text-xl font-serif gold-text font-bold mb-2">Del pedido a tu casa, en 4 pasos</h3>
+    <p class="text-center text-gray-500 text-sm mb-8">Así de simple funciona el proceso una vez que ya sabés qué querés</p>
+    <div id="pasosCompra" class="flex flex-col md:flex-row items-stretch gap-3 md:gap-0"></div>
+  </section>
+
+  <!-- SELECTOR DE LINEA -->
+  <nav id="lineas" class="max-w-4xl mx-auto px-4 flex flex-wrap gap-3 justify-center mb-6"></nav>
+  <p id="lineaDesc" class="text-center text-gray-500 text-xs max-w-xl mx-auto mb-6"></p>
+
+  <!-- FILTROS -->
+  <nav id="filtros" class="max-w-6xl mx-auto px-4 flex flex-wrap gap-2 justify-center mb-8"></nav>
+
+  <!-- CATALOGO -->
+  <main id="catalogo" class="max-w-6xl mx-auto px-4 pb-20 space-y-14"></main>
+
+  <!-- COMPRAS REALIZADAS (prueba de productos reales) -->
+  <section id="comprasWrap" class="max-w-6xl mx-auto px-4 pb-20"></section>
+
+  <!-- BOTON FLOTANTE DE WHATSAPP -->
+  <a id="whatsappFlotante" href="#" target="_blank"
+     class="fixed bottom-5 right-5 bg-[#25D366] text-black font-bold px-4 py-3 rounded-full shadow-lg shadow-black/50 text-sm hover:scale-105 transition z-50">
+    WhatsApp
+  </a>
+
+  <!-- MODAL DE COLORWAYS -->
+  <div id="modalColores" class="hidden fixed inset-0 bg-black/90 backdrop-blur-sm z-[100] items-center justify-center p-4" onclick="cerrarColoresSiFondo(event)">
+    <div class="bg-[#0b0b0d] border gold-border rounded-xl max-w-3xl w-full max-h-[85vh] overflow-y-auto p-6 relative">
+      <button onclick="cerrarColores()" class="absolute top-3 right-3 text-gray-400 hover:text-[#d4af37] text-2xl leading-none">&times;</button>
+      <h3 id="modalColoresTitulo" class="text-2xl font-serif gold-text font-bold mb-1"></h3>
+      <p id="modalColoresSubtitulo" class="text-gray-500 text-sm mb-5"></p>
+      <div id="modalColoresGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"></div>
+    </div>
+  </div>
+
+  <!-- Nota para quien edite este archivo: la data del catalogo, precios,
+       WhatsApp y textos de "como comprar" se editan en data.js, no aca. -->
+  <footer class="text-center text-gray-600 text-xs pb-10">
+    <p>Gold Shoes &mdash; Pasión en cada paso</p>
+  </footer>
+
+<script src="data.js"></script>
+<script>
+  const catalogoEl = document.getElementById('catalogo');
+  const filtrosEl = document.getElementById('filtros');
+  const lineasEl = document.getElementById('lineas');
+  const lineaDescEl = document.getElementById('lineaDesc');
+  let marcaActiva = 'Todas';
+  let lineaActiva = 'todas';
+  let MODELOS_PLANOS = []; // registro plano para abrir el modal de colorways por indice
+
+  // Iconos SVG inline (sin emojis). currentColor hereda el color del
+  // contenedor que lo envuelve, asi que basta con ponerles la clase
+  // de color de texto al div padre.
+  const ICONOS = {
+    catalogo: '<svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h10"/></svg>',
+    whatsapp: '<svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>',
+    descripcion: '<svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M16.86 3.86a2.1 2.1 0 013 3L7.5 19.21l-4 1 1-4L16.86 3.86z"/></svg>',
+    elegir: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.3-4.3"/></svg>',
+    cotizar: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M7 3h10a1 1 0 011 1v16l-3-2-2 2-2-2-2 2-3-2V4a1 1 0 011-1z"/><path stroke-linecap="round" d="M9 8h6M9 12h6"/></svg>',
+    pagar: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path stroke-linecap="round" d="M2.5 10h19"/></svg>',
+    entrega: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 11l9-7 9 7"/><path stroke-linecap="round" stroke-linejoin="round" d="M5 10v9a1 1 0 001 1h3v-6h6v6h3a1 1 0 001-1v-9"/></svg>',
+  };
+
+  function marcasDeLinea() {
+    return lineaActiva === 'todas'
+      ? CATALOGO
+      : CATALOGO.filter(m => m.linea === lineaActiva);
+  }
+
+  function renderLineas() {
+    const opciones = [
+      { key: 'todas', nombre: 'Todas las lineas' },
+      { key: 'premium', nombre: LINEAS.premium.nombre },
+      { key: 'clasica', nombre: LINEAS.clasica.nombre },
+    ];
+    lineasEl.innerHTML = opciones.map(op => `
+      <button
+        class="linea-btn ${op.key === lineaActiva ? 'active' : ''} px-5 py-2 rounded-lg border gold-border text-sm font-semibold text-[#d4af37] hover:bg-[#d4af37] hover:text-black transition"
+        data-linea="${op.key}">
+        ${op.nombre}
+      </button>
+    `).join('');
+
+    lineaDescEl.textContent = lineaActiva === 'todas'
+      ? 'Viendo ambas lineas de negocio.'
+      : LINEAS[lineaActiva].descripcion;
+
+    lineasEl.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        lineaActiva = btn.dataset.linea;
+        marcaActiva = 'Todas';
+        renderLineas();
+        renderFiltros();
+        renderCatalogo();
+      });
+    });
+  }
+
+  function renderFormasCotizar() {
+    const el = document.getElementById('formasCotizar');
+    el.innerHTML = FORMAS_DE_COTIZAR.map(f => `
+      <div class="card-shoe rounded-xl p-6 text-center flex flex-col items-center">
+        <div class="w-14 h-14 rounded-full border-2 gold-border flex items-center justify-center text-[#d4af37] mb-4">${ICONOS[f.icono] || ''}</div>
+        <h4 class="text-lg font-serif gold-text font-bold mb-2">${f.titulo}</h4>
+        <p class="text-gray-400 text-sm">${f.descripcion}</p>
+      </div>
+    `).join('');
+  }
+
+  function renderPasosCompra() {
+    const el = document.getElementById('pasosCompra');
+    el.innerHTML = PASOS_DE_COMPRA.map((paso, i) => `
+      <div class="flex items-center ${i < PASOS_DE_COMPRA.length - 1 ? 'flex-1' : ''}">
+        <div class="card-shoe rounded-xl p-5 text-center flex-1 flex flex-col items-center">
+          <div class="w-12 h-12 rounded-full border-2 gold-border flex items-center justify-center text-[#d4af37] mb-3">${ICONOS[paso.icono] || ''}</div>
+          <h4 class="text-gray-100 font-semibold text-sm mb-1">${paso.titulo}</h4>
+          <p class="text-gray-500 text-xs">${paso.descripcion}</p>
+        </div>
+        ${i < PASOS_DE_COMPRA.length - 1 ? '<div class="hidden md:flex items-center text-[#d4af37] text-2xl px-2">&rarr;</div>' : ''}
+      </div>
+    `).join('');
+  }
+
+  function renderFiltros() {
+    const marcas = ['Todas', ...marcasDeLinea().map(m => m.marca)];
+    filtrosEl.innerHTML = marcas.map(marca => `
+      <button
+        class="brand-btn ${marca === marcaActiva ? 'active' : ''} px-4 py-1.5 rounded-full border gold-border text-sm text-[#d4af37] hover:bg-[#d4af37] hover:text-black transition"
+        data-marca="${marca}">
+        ${marca}
+      </button>
+    `).join('');
+
+    filtrosEl.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        marcaActiva = btn.dataset.marca;
+        renderFiltros();
+        renderCatalogo();
+      });
+    });
+  }
+
+  function shoeCard(modelo, marca) {
+    const tieneColorways = Array.isArray(modelo.colorways) && modelo.colorways.length > 0;
+    const idx = MODELOS_PLANOS.push({ modelo, marca }) - 1;
+
+    const clickAbrir = tieneColorways ? `onclick="abrirColores(${idx})"` : '';
+    const cursor = tieneColorways ? 'cursor-pointer' : '';
+
+    const imgHtml = modelo.img
+      ? `<img src="${modelo.img}" alt="${modelo.nombre}" class="w-full h-40 object-contain ${cursor}" ${clickAbrir} />`
+      : `<div class="w-full h-40 flex items-center justify-center border border-dashed border-[#3a2f12] rounded-lg text-[10px] uppercase tracking-wide text-gray-600 ${cursor}" ${clickAbrir}>Sin foto</div>`;
+
+    const colorwaysBadge = tieneColorways
+      ? `<button onclick="abrirColores(${idx})" class="absolute bottom-2 right-2 bg-black/70 border gold-border text-[#d4af37] text-[10px] font-bold px-2 py-0.5 rounded-full hover:bg-[#d4af37] hover:text-black transition">+${modelo.colorways.length} colores</button>`
+      : '';
+
+    const sugeridoBadge = modelo.sugerido
+      ? `<span class="suggested-badge text-[10px] uppercase tracking-wide text-black font-bold px-2 py-0.5 rounded-full absolute top-2 right-2">Sugerido</span>`
+      : '';
+
+    const precioFinal = calcularPrecioFinal(modelo);
+    const prefijo = (modelo.precioVaria && !modelo.precio) ? 'Desde ' : '';
+    const precio = precioFinal
+      ? `<p class="text-[#d4af37] font-semibold mt-1">${prefijo}₡${precioFinal.toLocaleString('es-CR')}</p>`
+      : `<p class="text-gray-600 text-xs mt-1">precio pendiente</p>`;
+    const tallas = modelo.tallas ? `<p class="text-gray-400 text-xs">Tallas: ${modelo.tallas}</p>` : '';
+
+    return `
+      <div class="card-shoe relative rounded-xl p-4 flex flex-col">
+        ${sugeridoBadge}
+        <div class="relative">
+          ${imgHtml}
+          ${colorwaysBadge}
+        </div>
+        <h3 class="mt-3 font-semibold text-gray-100">${modelo.nombre}</h3>
+        <p class="text-xs text-gray-500">${marca}</p>
+        ${precio}
+        ${tallas}
+      </div>
+    `;
+  }
+
+  function abrirColores(idx) {
+    const registro = MODELOS_PLANOS[idx];
+    if (!registro) return;
+    const { modelo, marca } = registro;
+    if (!modelo.colorways || !modelo.colorways.length) return;
+
+    document.getElementById('modalColoresTitulo').textContent = `${marca} ${modelo.nombre}`;
+    document.getElementById('modalColoresSubtitulo').textContent = `${modelo.colorways.length} colores disponibles`;
+
+    document.getElementById('modalColoresGrid').innerHTML = modelo.colorways.map(c => {
+      const precioC = calcularPrecioFinal(c);
+      const precioHtml = precioC
+        ? `<p class="text-[#d4af37] text-xs font-semibold mt-1">Desde ₡${precioC.toLocaleString('es-CR')}</p>`
+        : '';
+      return `
+        <div class="card-shoe rounded-lg p-3 flex flex-col">
+          <img src="${c.img}" alt="${c.nombre}" class="w-full h-32 object-contain" />
+          <p class="text-xs text-gray-200 mt-2">${c.nombre}</p>
+          ${precioHtml}
+        </div>
+      `;
+    }).join('');
+
+    const modal = document.getElementById('modalColores');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+  }
+
+  function cerrarColores() {
+    const modal = document.getElementById('modalColores');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+  }
+
+  function cerrarColoresSiFondo(event) {
+    if (event.target.id === 'modalColores') cerrarColores();
+  }
+
+  function renderCatalogo() {
+    MODELOS_PLANOS = []; // se reconstruye en cada render para que los indices del modal cuadren
+    const base = marcasDeLinea();
+    const marcas = marcaActiva === 'Todas'
+      ? base
+      : base.filter(m => m.marca === marcaActiva);
+
+    catalogoEl.innerHTML = marcas.map(marca => `
+      <section>
+        <div class="flex items-center gap-3 mb-5">
+          <h2 class="text-2xl font-serif gold-text font-bold">${marca.marca}</h2>
+          ${marca.sugerido ? `<span class="suggested-badge text-[10px] uppercase tracking-wide text-black font-bold px-2 py-0.5 rounded-full">Marca sugerida</span>` : ''}
+          <div class="flex-1 h-px bg-[#3a2f12]"></div>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          ${marca.modelos.map(mod => shoeCard(mod, marca.marca)).join('')}
+        </div>
+      </section>
+    `).join('');
+  }
+
+  function renderCompras() {
+    const wrap = document.getElementById('comprasWrap');
+    if (!COMPRAS_REALIZADAS.length) {
+      wrap.innerHTML = '';
+      return;
+    }
+    wrap.innerHTML = `
+      <div class="flex items-center gap-3 mb-5">
+        <h2 class="text-2xl font-serif gold-text font-bold">Compras realizadas</h2>
+        <span class="text-xs text-gray-500">productos reales que ya trajimos</span>
+        <div class="flex-1 h-px bg-[#3a2f12]"></div>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        ${COMPRAS_REALIZADAS.map(v => `
+          <div class="card-shoe rounded-xl p-3 flex flex-col">
+            <img src="${v.img}" alt="${v.modelo}" class="w-full h-40 object-cover rounded-lg" />
+            <h3 class="mt-2 text-sm font-semibold text-gray-100">${v.marca} ${v.modelo}</h3>
+            <p class="text-xs text-gray-500">${v.comentario || ''}</p>
+            <p class="text-[10px] text-gray-600">${v.fecha || ''}</p>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  document.getElementById('whatsappFlotante').href = `https://wa.me/${CONFIG.whatsappNumero}?text=${encodeURIComponent(CONFIG.mensajeBase)}`;
+
+  renderFormasCotizar();
+  renderPasosCompra();
+  renderLineas();
+  renderFiltros();
+  renderCatalogo();
+  renderCompras();
+</script>
+</body>
+</html>
