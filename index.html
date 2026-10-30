@@ -213,6 +213,7 @@
       ? `<p class="text-[#d4af37] font-semibold mt-1">${prefijo}₡${precioFinal.toLocaleString('es-CR')}</p>`
       : `<p class="text-gray-600 text-xs mt-1">precio pendiente</p>`;
     const tallas = modelo.tallas ? `<p class="text-gray-400 text-xs">Tallas: ${modelo.tallas}</p>` : '';
+    const waHref = linkWhatsapp(modelo.nombre, marca);
 
     return `
       <div class="card-shoe relative rounded-xl p-4 flex flex-col">
@@ -225,6 +226,11 @@
         <p class="text-xs text-gray-500">${marca}</p>
         ${precio}
         ${tallas}
+        <a href="${waHref}" target="_blank" rel="noopener"
+           class="mt-3 inline-flex items-center justify-center gap-1.5 bg-[#25D366] text-black text-xs font-bold px-3 py-2 rounded-full hover:scale-105 transition">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+          Preguntar por este
+        </a>
       </div>
     `;
   }
@@ -307,6 +313,11 @@
             <h3 class="mt-2 text-sm font-semibold text-gray-100">${v.marca} ${v.modelo}</h3>
             <p class="text-xs text-gray-500">${v.comentario || ''}</p>
             <p class="text-[10px] text-gray-600">${v.fecha || ''}</p>
+            <a href="${linkWhatsapp(v.modelo, v.marca)}" target="_blank" rel="noopener"
+               class="mt-2 inline-flex items-center justify-center gap-1.5 bg-[#25D366] text-black text-[11px] font-bold px-3 py-1.5 rounded-full hover:scale-105 transition">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+              Preguntar por este
+            </a>
           </div>
         `).join('')}
       </div>

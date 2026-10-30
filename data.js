@@ -197,7 +197,11 @@ const COMPRAS_REALIZADAS = [
   // { modelo: "Stan Smith", marca: "Adidas", img: "images/compra-01.jpg", comentario: "Traido directo de fabrica, 100% original", fecha: "2026-10-28" },
   { modelo: "Samba OG", marca: "Adidas", img: "images/compras/1.jpg", comentario: "Entregado con caja y etiqueta FIFA original" },
   { modelo: "Slide (confirmar modelo exacto)", marca: "Adidas", img: "images/compras/2.jpg", comentario: "Entregado con caja original" },
+  { modelo: "Clog (confirmar modelo exacto)", marca: "Adidas", img: "images/compras/3.jpg", comentario: "Colorway verde neon -- confirmar nombre exacto del modelo" },
+  { modelo: "Samba OG", marca: "Adidas", img: "images/compras/4.jpg", comentario: "Colorway Blanco/Rojo/Azul marino, entregado con etiqueta original" },
   { modelo: "Gazelle Bold", marca: "Adidas", img: "images/compras/5.jpg", comentario: "Colorway Cream/Tan -- entregado con caja" },
+  { modelo: "Gazelle (confirmar modelo exacto)", marca: "Adidas", img: "images/compras/6.jpg", comentario: "Colorway Blanco/Negro -- confirmar si es Gazelle o otro modelo" },
+  { modelo: "Campus 00s", marca: "Adidas", img: "images/compras/7.jpg", comentario: "Colorway Beige/Azul marino, suela gum" },
   { modelo: "Gazelle Bold", marca: "Adidas", img: "images/compras/8.jpg", comentario: "Colorway Blanco/Negro -- entregado 100% original" },
 ];
 
