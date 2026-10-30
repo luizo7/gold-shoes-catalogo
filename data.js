@@ -191,22 +191,21 @@ const LINEAS = {
 //
 // Si la lista queda vacia [], esa seccion simplemente no aparece
 // en la pagina (no rompe nada).
+//
+// IMPORTANTE: cada objeto de aqui abajo es UNA VENTA/COMPRA REAL, con su
+// propio array "fotos" (normalmente 2: una en la caja/etiqueta y otra
+// puesta). No repitas la misma venta en 2 objetos separados -- eso hace
+// que el catalogo muestre 2 ventas donde en realidad hubo 1 sola.
 // =============================================================
 const COMPRAS_REALIZADAS = [
-  // Copia este renglon y pegalo abajo para cada foto nueva:
-  // { modelo: "Stan Smith", marca: "Adidas", img: "images/compra-01.jpg", comentario: "Traido directo de fabrica, 100% original", fecha: "2026-10-28" },
-  { modelo: "Samba OG", marca: "Adidas", img: "images/compras/1.jpg", comentario: "Entregado con caja y etiqueta FIFA original" },
-  { modelo: "Pure Chill", marca: "Adidas", img: "images/compras/2.jpg", comentario: "Entregado con caja original" },
-  { modelo: "Pure Chill", marca: "Adidas", img: "images/compras/3.jpg", comentario: "Colorway verde neon" },
-  { modelo: "Samba OG", marca: "Adidas", img: "images/compras/4.jpg", comentario: "Colorway Blanco/Rojo/Azul marino, entregado con etiqueta original" },
-  { modelo: "Gazelle Bold", marca: "Adidas", img: "images/compras/5.jpg", comentario: "Colorway Cream/Tan -- entregado con caja" },
-  { modelo: "Gazelle (confirmar modelo exacto)", marca: "Adidas", img: "images/compras/6.jpg", comentario: "Colorway Blanco/Negro -- confirmar si es Gazelle o otro modelo" },
-  { modelo: "Campus 00s", marca: "Adidas", img: "images/compras/7.jpg", comentario: "Colorway Beige/Azul marino, suela gum" },
-  { modelo: "Gazelle Bold", marca: "Adidas", img: "images/compras/8.jpg", comentario: "Colorway Blanco/Negro -- entregado 100% original" },
-  { modelo: "Adizero Prime SP", marca: "Adidas", img: "images/compras/9.jpg", comentario: "Colorway Blanco/Rojo/Amarillo, suela Lightstrike" },
-  { modelo: "Adizero Prime SP", marca: "Adidas", img: "images/compras/10.jpg", comentario: "Otro angulo del mismo par" },
-  { modelo: "Predator Elite FG", marca: "Adidas", img: "images/compras/11.jpg", comentario: "Entregado con etiqueta original" },
-  { modelo: "Predator Elite FG", marca: "Adidas", img: "images/compras/12.jpg", comentario: "Detalle de suela Hybridtouch 2.0" },
+  // Copia este renglon y pegalo abajo para cada venta nueva (fotos: 1 o mas):
+  // { modelo: "Stan Smith", marca: "Adidas", fotos: ["images/compra-01.jpg"], comentario: "Traido directo de fabrica, 100% original", fecha: "2026-10-28" },
+  { modelo: "Samba OG", marca: "Adidas", fotos: ["images/compras/1.jpg", "images/compras/4.jpg"], comentario: "Colorway Blanco/Rojo/Azul marino. Entregado con caja y etiqueta FIFA original, y puesto." },
+  { modelo: "Pure Chill", marca: "Adidas", fotos: ["images/compras/2.jpg", "images/compras/3.jpg"], comentario: "Sandalias colorway verde neon. Entregadas con caja original, y puestas." },
+  { modelo: "Gazelle Bold (Crema/Beige)", marca: "Adidas", fotos: ["images/compras/5.jpg", "images/compras/7.jpg"], comentario: "Colorway Crema/Beige con rayas azul marino y suela gum (confirmar nombre exacto del colorway). Entregado con caja original, y puesto." },
+  { modelo: "Gazelle Bold (Blanco/Negro)", marca: "Adidas", fotos: ["images/compras/6.jpg", "images/compras/8.jpg"], comentario: "Colorway Blanco/Negro con suela gum (confirmar nombre exacto del colorway). Entregado 100% original, puesto y en detalle." },
+  { modelo: "Adizero Prime SP", marca: "Adidas", fotos: ["images/compras/9.jpg", "images/compras/10.jpg"], comentario: "Colorway Blanco/Rojo/Amarillo, suela Lightstrike -- 2 angulos del mismo par." },
+  { modelo: "Predator Elite FG", marca: "Adidas", fotos: ["images/compras/11.jpg", "images/compras/12.jpg"], comentario: "Entregado con etiqueta original -- incluye detalle de suela Hybridtouch 2.0." },
 ];
 
 const CATALOGO = [
