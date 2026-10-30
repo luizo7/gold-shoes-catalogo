@@ -31,6 +31,8 @@
   #comprasWrap summary:focus-visible, #catalogo summary:focus-visible { outline: 2px solid #d4af37; outline-offset: 4px; }
   .accordion-chevron { transition: transform .2s ease; }
   details[open] > summary .accordion-chevron { transform: rotate(180deg); }
+  details:not([open]) > summary .accordion-chevron { animation: chevronPulse 1.8s ease-in-out infinite; }
+  @keyframes chevronPulse { 0%, 100% { opacity: .6; transform: translateY(0); } 50% { opacity: 1; transform: translateY(3px); } }
 </style>
 </head>
 <body class="text-gray-200">
@@ -66,7 +68,11 @@
   <p id="lineaDesc" class="text-center text-gray-500 text-xs max-w-xl mx-auto mb-6"></p>
 
   <!-- FILTROS -->
-  <nav id="filtros" class="max-w-6xl mx-auto px-4 flex flex-wrap gap-2 justify-center mb-8"></nav>
+  <nav id="filtros" class="max-w-6xl mx-auto px-4 flex flex-wrap gap-2 justify-center mb-4"></nav>
+  <p class="text-center text-[#d4af37] text-xs mb-8 flex items-center justify-center gap-1.5">
+    <svg class="w-4 h-4 animate-bounce" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6" /></svg>
+    Toca el nombre de una marca para ver sus modelos
+  </p>
 
   <!-- CATALOGO -->
   <main id="catalogo" class="max-w-6xl mx-auto px-4 pb-20 space-y-14"></main>
