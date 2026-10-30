@@ -195,6 +195,10 @@ const LINEAS = {
 const COMPRAS_REALIZADAS = [
   // Copia este renglon y pegalo abajo para cada foto nueva:
   // { modelo: "Stan Smith", marca: "Adidas", img: "images/compra-01.jpg", comentario: "Traido directo de fabrica, 100% original", fecha: "2026-10-28" },
+  { modelo: "Samba OG", marca: "Adidas", img: "images/compras/1.jpg", comentario: "Entregado con caja y etiqueta FIFA original" },
+  { modelo: "Slide (confirmar modelo exacto)", marca: "Adidas", img: "images/compras/2.jpg", comentario: "Entregado con caja original" },
+  { modelo: "Gazelle Bold", marca: "Adidas", img: "images/compras/5.jpg", comentario: "Colorway Cream/Tan -- entregado con caja" },
+  { modelo: "Gazelle Bold", marca: "Adidas", img: "images/compras/8.jpg", comentario: "Colorway Blanco/Negro -- entregado 100% original" },
 ];
 
 const CATALOGO = [
