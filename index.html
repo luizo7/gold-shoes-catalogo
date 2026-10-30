@@ -27,6 +27,8 @@
   .suggested-badge {
     background: linear-gradient(135deg,#4a3a00,#d4af37);
   }
+  #comprasWrap summary::marker { color: #d4af37; }
+  #comprasWrap summary:focus-visible { outline: 2px solid #d4af37; outline-offset: 4px; }
 </style>
 </head>
 <body class="text-gray-200">
@@ -108,6 +110,20 @@
     pagar: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path stroke-linecap="round" d="M2.5 10h19"/></svg>',
     entrega: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 11l9-7 9 7"/><path stroke-linecap="round" stroke-linejoin="round" d="M5 10v9a1 1 0 001 1h3v-6h6v6h3a1 1 0 001-1v-9"/></svg>',
   };
+
+  // Boton reutilizable de "Preguntar por WhatsApp" (DRY: lo usan la
+  // tarjeta del catalogo, las de Compras realizadas y cualquier otra
+  // que se agregue despues). compact=true da una version mas chica
+  // para grillas de fotos.
+  function botonWhatsapp(modelo, marca, compact) {
+    const icono = compact
+      ? ICONOS.whatsapp.replace('w-7 h-7', 'w-3.5 h-3.5')
+      : ICONOS.whatsapp.replace('w-7 h-7', 'w-4 h-4');
+    const clases = compact
+      ? 'inline-flex items-center gap-1.5 bg-[#25D366] text-black text-[11px] font-bold px-3 py-1.5 rounded-full hover:scale-105 transition'
+      : 'mt-3 inline-flex items-center justify-center gap-1.5 bg-[#25D366] text-black text-xs font-bold px-3 py-2 rounded-full hover:scale-105 transition';
+    return `<a href="${linkWhatsapp(modelo, marca)}" target="_blank" rel="noopener" class="${clases}">${icono}Preguntar por este</a>`;
+  }
 
   function marcasDeLinea() {
     return lineaActiva === 'todas'
@@ -213,7 +229,6 @@
       ? `<p class="text-[#d4af37] font-semibold mt-1">${prefijo}₡${precioFinal.toLocaleString('es-CR')}</p>`
       : `<p class="text-gray-600 text-xs mt-1">precio pendiente</p>`;
     const tallas = modelo.tallas ? `<p class="text-gray-400 text-xs">Tallas: ${modelo.tallas}</p>` : '';
-    const waHref = linkWhatsapp(modelo.nombre, marca);
 
     return `
       <div class="card-shoe relative rounded-xl p-4 flex flex-col">
@@ -226,11 +241,7 @@
         <p class="text-xs text-gray-500">${marca}</p>
         ${precio}
         ${tallas}
-        <a href="${waHref}" target="_blank" rel="noopener"
-           class="mt-3 inline-flex items-center justify-center gap-1.5 bg-[#25D366] text-black text-xs font-bold px-3 py-2 rounded-full hover:scale-105 transition">
-          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
-          Preguntar por este
-        </a>
+        ${botonWhatsapp(modelo.nombre, marca, false)}
       </div>
     `;
   }
@@ -300,26 +311,59 @@
       wrap.innerHTML = '';
       return;
     }
+
+    // Agrupamos marca -> modelo -> fotos, asi el visitante entra por
+    // marca y va desplegando cada modelo (menos scroll de entrada,
+    // mas ganas de explorar en vez de ver 12 fotos sueltas de una).
+    const porMarca = {};
+    COMPRAS_REALIZADAS.forEach(v => {
+      porMarca[v.marca] = porMarca[v.marca] || {};
+      porMarca[v.marca][v.modelo] = porMarca[v.marca][v.modelo] || [];
+      porMarca[v.marca][v.modelo].push(v);
+    });
+    const marcas = Object.keys(porMarca);
+
     wrap.innerHTML = `
       <div class="flex items-center gap-3 mb-5">
         <h2 class="text-2xl font-serif gold-text font-bold">Compras realizadas</h2>
-        <span class="text-xs text-gray-500">productos reales que ya trajimos</span>
+        <span class="text-xs text-gray-500">productos reales que ya trajimos -- desplega cada marca para ver los modelos</span>
         <div class="flex-1 h-px bg-[#3a2f12]"></div>
       </div>
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        ${COMPRAS_REALIZADAS.map(v => `
-          <div class="card-shoe rounded-xl p-3 flex flex-col">
-            <img src="${v.img}" alt="${v.modelo}" class="w-full h-40 object-cover rounded-lg" />
-            <h3 class="mt-2 text-sm font-semibold text-gray-100">${v.marca} ${v.modelo}</h3>
-            <p class="text-xs text-gray-500">${v.comentario || ''}</p>
-            <p class="text-[10px] text-gray-600">${v.fecha || ''}</p>
-            <a href="${linkWhatsapp(v.modelo, v.marca)}" target="_blank" rel="noopener"
-               class="mt-2 inline-flex items-center justify-center gap-1.5 bg-[#25D366] text-black text-[11px] font-bold px-3 py-1.5 rounded-full hover:scale-105 transition">
-              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
-              Preguntar por este
-            </a>
-          </div>
-        `).join('')}
+      <div class="space-y-3">
+        ${marcas.map((marca, i) => {
+          const modelos = porMarca[marca];
+          const nombresModelos = Object.keys(modelos);
+          return `
+          <details class="card-shoe rounded-xl px-4 py-3" ${i === 0 ? 'open' : ''}>
+            <summary class="cursor-pointer select-none font-serif gold-text font-bold text-lg flex items-center justify-between">
+              <span>${marca}</span>
+              <span class="text-xs text-gray-500 font-sans font-normal">${nombresModelos.length} modelo${nombresModelos.length === 1 ? '' : 's'}</span>
+            </summary>
+            <div class="mt-4 space-y-6">
+              ${nombresModelos.map(modelo => {
+                const fotos = modelos[modelo];
+                return `
+                <div>
+                  <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                    <h4 class="text-sm font-semibold text-gray-200">${modelo}</h4>
+                    ${botonWhatsapp(modelo, marca, true)}
+                  </div>
+                  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                    ${fotos.map(f => `
+                      <div class="flex flex-col">
+                        <img src="${f.img}" alt="${modelo}" class="w-full h-32 object-cover rounded-lg" />
+                        <p class="text-[11px] text-gray-500 mt-1">${f.comentario || ''}</p>
+                        <p class="text-[10px] text-gray-600">${f.fecha || ''}</p>
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+              `;
+              }).join('')}
+            </div>
+          </details>
+        `;
+        }).join('')}
       </div>
     `;
   }
