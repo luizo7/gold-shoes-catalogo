@@ -5,29 +5,43 @@
 // que un cliente puede pedir algo. "PASOS_DE_COMPRA" es el proceso paso
 // a paso una vez que ya eligio que quiere.
 // =============================================================
+// Cada forma ahora es CLICKEABLE de verdad (antes eran solo 3 tarjetas
+// informativas con iconos que parecian botones pero no hacian nada --
+// feedback real de usuarios: "dan ganas de tocarlos"). "accion" indica
+// que pasa al tocar la tarjeta:
+//   - "scroll"   -> baja suave hasta el catalogo (id del elemento en "destino")
+//   - "whatsapp" -> abre WhatsApp con un mensaje PRE-ARMADO pero en blanco
+//                   para que el cliente complete/adjunte la foto, no un
+//                   mensaje generico que hay que borrar primero.
 const FORMAS_DE_COTIZAR = [
   {
     icono: "catalogo",
     titulo: "Por el catalogo",
     descripcion: "Navega este catalogo online, eleg\u00ed la marca, el modelo y el color que mas te guste.",
+    accion: "scroll",
+    destino: "catalogo",
   },
   {
-    icono: "whatsapp",
+    icono: "foto",
     titulo: "Foto por WhatsApp",
     descripcion: "Mandanos una foto del tenis que quer\u00e9s (de internet, de un amigo, de donde sea) y te decimos si lo conseguimos y a cu\u00e1nto sale.",
+    accion: "whatsapp",
+    mensaje: "Hola! Te quiero mandar una foto de un tenis que busco \ud83d\udc5f",
   },
   {
     icono: "descripcion",
     titulo: "Describilo vos",
     descripcion: "Contanos la marca, el estilo y el color que busc\u00e1s por WhatsApp, y te armamos opciones a tu medida.",
+    accion: "whatsapp",
+    mensaje: "Hola! Quiero cotizar un tenis:\nMarca: \nEstilo/Modelo: \nColor: \nTalla: \n",
   },
 ];
 
 const PASOS_DE_COMPRA = [
   {
     icono: "elegir",
-    titulo: "Eleg\u00eds el modelo",
-    descripcion: "Por cat\u00e1logo, foto o descripci\u00f3n -- la forma que prefieras.",
+    titulo: "C\u00f3mo ped\u00eds tus tenis",
+    descripcion: "Por cat\u00e1logo, foto o descripci\u00f3n -- eleg\u00ed la forma que prefieras arriba.",
   },
   {
     icono: "cotizar",
@@ -75,6 +89,13 @@ const PASOS_DE_COMPRA = [
 const CONFIG = {
   whatsappNumero: "50683133132",
   mensajeBase: "Hola! Vi el catalogo de Gold Shoes y quiero consultar por:",
+
+  // --- FILTRO DE TALLAS ---
+  // Sistema US (confirmado por Luis: las fotos/datos de precio por talla
+  // vienen de StockX en US). Rango 4-13 en medias tallas, que es el rango
+  // adulto tipico. A cada modelo, en el campo "tallas", ponele el rango
+  // que ofreces en US, ej: "tallas: \"7-11\"".
+  tallasDisponibles: [4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11, 11.5, 12, 12.5, 13],
 
   // --- CALCULADORA DE PRECIOS ---
   // tipoCambio: cuantos colones vale 1 dolar. Cambialo cuando quieras.
@@ -156,6 +177,22 @@ function linkWhatsapp(modelo, marca) {
   return `https://wa.me/${CONFIG.whatsappNumero}?text=${texto}`;
 }
 
+// Regla de conversion dada por Luis: una talla de Dama (W) equivale a
+// 1 numero MENOS en Caballero (M). Ej: 8.5 Dama = 7.5 Caballero.
+// OJO: esta regla puede variar segun la marca real (algunos usan -1.5),
+// pero se deja asi porque es la que Luis confirmo que usa.
+function equivalenteOtroGenero(talla, genero) {
+  return genero === 'W' ? talla - 1 : talla + 1;
+}
+
+// Para los botones que no tienen un modelo/marca especifico (ej. las 3
+// formas de cotizar) -- deja el mensaje tal cual se le pase, en blanco
+// para que el cliente lo complete o adjunte una foto, sin tener que
+// borrar un mensaje generico primero.
+function linkWhatsappTexto(mensaje) {
+  return `https://wa.me/${CONFIG.whatsappNumero}?text=${encodeURIComponent(mensaje)}`;
+}
+
 // =============================================================
 //  LINEAS DE NEGOCIO
 // =============================================================
@@ -214,94 +251,406 @@ const CATALOGO = [
     linea: "premium",
     modelos: [
       {
-        nombre: "Stan Smith", img: "images/adidas-stan-smith.png", precio: null, tallas: "",
+        nombre: "Stan Smith", img: null, precio: null, tallas: "4-13",
         costoUSD: 50, precioVaria: true,
         colorways: [
-          { nombre: "Dime White Green", img: "images/colorways/stan-smith-dime-white-green.png", costoUSD: 50 },
-          { nombre: "Ash Silver", img: "images/colorways/stan-smith-ash-silver.png", costoUSD: 50 },
-          { nombre: "CLOT x Edison Chen Night Navy", img: "images/colorways/stan-smith-clot-edison-chen.png", costoUSD: 50 },
-          { nombre: "White Blue Bird (W)", img: "images/colorways/stan-smith-white-blue-bird.png", costoUSD: 50 },
-          { nombre: "White Red (W)", img: "images/colorways/stan-smith-white-red.png", costoUSD: 65 },
-          { nombre: "Cloud White Almost Yellow", img: "images/colorways/stan-smith-cloud-white-yellow.png", costoUSD: 66 },
-          { nombre: "White Green (OG)", img: "images/colorways/stan-smith-white-green-og.png", costoUSD: 65 },
+          // --- De aqui para abajo: precio REAL por talla exacta, sacado de
+          // capturas de StockX (carpeta "fotos Talla"). "g" = genero del
+          // listado en StockX (M=Caballero, W=Dama), "t" = talla US,
+          // "usd" = precio de referencia en dolares para ESA talla exacta.
+          // costoUSD queda como el mas barato de la tabla, solo de respaldo
+          // por si algun lugar del sitio todavia pide un precio plano.
+          {
+            nombre: "Core White New Navy", fotos: ["images/colorways/stan-smith-core-white-new-navy.png", "images/colorways/stan-smith-core-white-new-navy-2.png"], costoUSD: 43,
+            tablaTallas: [
+              { g: "M", t: 4, usd: 79 }, { g: "M", t: 4.5, usd: 85 }, { g: "M", t: 5, usd: 95 },
+              { g: "M", t: 5.5, usd: 91 }, { g: "M", t: 6, usd: 104 }, { g: "M", t: 6.5, usd: 80 },
+              { g: "M", t: 7, usd: 93 }, { g: "M", t: 7.5, usd: 50 }, { g: "M", t: 8, usd: 43 },
+              { g: "M", t: 8.5, usd: 57 }, { g: "M", t: 9, usd: 68 }, { g: "M", t: 9.5, usd: 60 },
+              { g: "M", t: 10, usd: 85 }, { g: "M", t: 10.5, usd: 93 }, { g: "M", t: 11, usd: 64 },
+            ],
+          },
+          {
+            nombre: "White Green (OG)", fotos: ["images/colorways/stan-smith-white-green-og.png", "images/colorways/stan-smith-white-green-og-2.png"], costoUSD: 62,
+            tablaTallas: [
+              { g: "W", t: 4.5, usd: 150 }, { g: "W", t: 5, usd: 70 }, { g: "W", t: 5.5, usd: 70 },
+              { g: "W", t: 6, usd: 80 }, { g: "W", t: 6.5, usd: 91 }, { g: "W", t: 7, usd: 88 },
+              { g: "W", t: 7.5, usd: 65 }, { g: "W", t: 8, usd: 62 }, { g: "W", t: 8.5, usd: 73 },
+              { g: "W", t: 9, usd: 78 }, { g: "W", t: 9.5, usd: 62 }, { g: "W", t: 10, usd: 74 },
+              { g: "W", t: 10.5, usd: 89 }, { g: "W", t: 11, usd: 90 }, { g: "W", t: 11.5, usd: 84 },
+            ],
+          },
+          {
+            nombre: "Triple White", fotos: ["images/colorways/stan-smith-triple-white.png", "images/colorways/stan-smith-triple-white-2.png"], costoUSD: 40,
+            tablaTallas: [
+              { g: "W", t: 5, usd: 103 }, { g: "W", t: 5.5, usd: 105 }, { g: "W", t: 6, usd: 153 },
+              { g: "W", t: 6.5, usd: 105 }, { g: "W", t: 7, usd: 57 }, { g: "W", t: 7.5, usd: 95 },
+              { g: "W", t: 8, usd: 40 }, { g: "W", t: 8.5, usd: 105 }, { g: "W", t: 9, usd: 93 },
+              { g: "W", t: 9.5, usd: 84 }, { g: "W", t: 10, usd: 95 }, { g: "W", t: 10.5, usd: 75 },
+              { g: "W", t: 11, usd: 76 }, { g: "W", t: 11.5, usd: 105 }, { g: "W", t: 12, usd: 75 },
+            ],
+          },
+          {
+            nombre: "Primegreen White Collegiate Navy", fotos: ["images/colorways/stan-smith-primegreen-white-collegiate-navy.png", "images/colorways/stan-smith-primegreen-white-collegiate-navy-2.png"], costoUSD: 57,
+            tablaTallas: [
+              { g: "M", t: 5, usd: 221 }, { g: "M", t: 5.5, usd: 84 }, { g: "M", t: 6, usd: 140 },
+              { g: "M", t: 6.5, usd: 146 }, { g: "M", t: 7, usd: 180 }, { g: "M", t: 7.5, usd: 93 },
+              { g: "M", t: 8, usd: 57 }, { g: "M", t: 8.5, usd: 93 }, { g: "M", t: 9, usd: 149 },
+              { g: "M", t: 9.5, usd: 168 }, { g: "M", t: 10, usd: 121 }, { g: "M", t: 10.5, usd: 113 },
+              { g: "M", t: 11, usd: 184 }, { g: "M", t: 11.5, usd: 209 }, { g: "M", t: 12, usd: 100 },
+            ],
+          },
+          {
+            nombre: "Cloud White Gold Metallic Brown (W)", fotos: ["images/colorways/stan-smith-cloud-white-gold-metallic-brown-w.png", "images/colorways/stan-smith-cloud-white-gold-metallic-brown-w-2.png"], costoUSD: 39,
+            tablaTallas: [
+              // W5 y W10.5 no tenian precio fijo en StockX ("BID"), se omiten.
+              { g: "W", t: 5.5, usd: 173 }, { g: "W", t: 6, usd: 172 }, { g: "W", t: 6.5, usd: 82 },
+              { g: "W", t: 7, usd: 59 }, { g: "W", t: 7.5, usd: 55 }, { g: "W", t: 8, usd: 82 },
+              { g: "W", t: 8.5, usd: 80 }, { g: "W", t: 9, usd: 68 }, { g: "W", t: 9.5, usd: 39 },
+              { g: "W", t: 10, usd: 56 },
+            ],
+          },
+          {
+            nombre: "Cloud White Off White Wonder White (W)", fotos: ["images/colorways/stan-smith-cloud-white-off-white-wonder-white-w.png"], costoUSD: 85,
+            tablaTallas: [
+              // Tabla incompleta: la captura solo alcanzo a mostrar hasta W8.5
+              // (W9 en adelante quedo sin capturar). Completar si Luis manda
+              // una captura con el resto de tallas.
+              { g: "W", t: 5, usd: 85 }, { g: "W", t: 5.5, usd: 90 }, { g: "W", t: 6, usd: 90 },
+              { g: "W", t: 6.5, usd: 104 }, { g: "W", t: 7, usd: 90 }, { g: "W", t: 7.5, usd: 85 },
+              { g: "W", t: 8, usd: 85 }, { g: "W", t: 8.5, usd: 85 },
+            ],
+          },
         ],
       },
       {
-        nombre: "Superstar", img: "images/adidas-superstar.png", precio: null, tallas: "",
+        nombre: "Superstar", img: null, precio: null, tallas: "4-13",
         costoUSD: 50, precioVaria: true,
         colorways: [
-          { nombre: "Off White Core Black (W)", img: "images/colorways/superstar-off-white-core-black.png", costoUSD: 50 },
-          { nombre: "Bold Wonder White (W)", img: "images/colorways/superstar-bold-wonder-white.png", costoUSD: 50 },
-          { nombre: "Superstar II Valentine's Day 2026", img: "images/colorways/superstar-valentines-2026.png", costoUSD: 50 },
-          { nombre: "Vintage Croc Fox Brown", img: "images/colorways/superstar-vintage-croc-brown.png", costoUSD: 52 },
-          { nombre: "Snakeskin Stripes White", img: "images/colorways/superstar-snakeskin-stripes-white.png", costoUSD: 54 },
-          { nombre: "White Core Black", img: "images/colorways/superstar-white-core-black.png", costoUSD: 54 },
+          // --- Precio REAL por talla exacta (capturas StockX, carpeta "fotos Talla").
+          {
+            nombre: "Superstar II White Black", fotos: ["images/colorways/superstar2-white-black.png", "images/colorways/superstar2-white-black-2.png"], costoUSD: 60,
+            tablaTallas: [
+              { g: "M", t: 4, usd: 147 }, { g: "M", t: 4.5, usd: 147 }, { g: "M", t: 5, usd: 176 },
+              { g: "M", t: 5.5, usd: 193 }, { g: "M", t: 6, usd: 68 }, { g: "M", t: 6.5, usd: 68 },
+              { g: "M", t: 7, usd: 178 }, { g: "M", t: 7.5, usd: 109 }, { g: "M", t: 8, usd: 60 },
+              { g: "M", t: 8.5, usd: 68 }, { g: "M", t: 9, usd: 154 }, { g: "M", t: 9.5, usd: 67 },
+              { g: "M", t: 10, usd: 68 }, { g: "M", t: 10.5, usd: 68 }, { g: "M", t: 11, usd: 98 },
+            ],
+          },
+          {
+            nombre: "Superstar II Triple Black", fotos: ["images/colorways/superstar2-triple-black.png", "images/colorways/superstar2-triple-black-2.png"], costoUSD: 75,
+            tablaTallas: [
+              { g: "M", t: 4, usd: 96 }, { g: "M", t: 4.5, usd: 105 }, { g: "M", t: 5, usd: 106 },
+              { g: "M", t: 5.5, usd: 95 }, { g: "M", t: 6, usd: 93 }, { g: "M", t: 6.5, usd: 119 },
+              { g: "M", t: 7, usd: 105 }, { g: "M", t: 7.5, usd: 80 }, { g: "M", t: 8, usd: 111 },
+              { g: "M", t: 8.5, usd: 104 }, { g: "M", t: 9, usd: 79 }, { g: "M", t: 9.5, usd: 96 },
+              { g: "M", t: 10, usd: 94 }, { g: "M", t: 10.5, usd: 97 }, { g: "M", t: 11, usd: 80 },
+              { g: "M", t: 11.5, usd: 75 }, { g: "M", t: 12, usd: 97 }, { g: "M", t: 12.5, usd: 112 },
+            ],
+          },
+          {
+            nombre: "Superstar ADV White Black (W)", fotos: ["images/colorways/superstar-adv-white-black-w.png"], costoUSD: 43,
+            tablaTallas: [
+              { g: "W", t: 6.5, usd: 114 }, { g: "W", t: 7, usd: 89 }, { g: "W", t: 7.5, usd: 83 },
+              { g: "W", t: 8, usd: 82 }, { g: "W", t: 8.5, usd: 94 }, { g: "W", t: 9, usd: 43 },
+              { g: "W", t: 9.5, usd: 43 }, { g: "W", t: 10, usd: 70 }, { g: "W", t: 10.5, usd: 43 },
+            ],
+          },
+          {
+            nombre: "Superstar 82 White Core Black", fotos: ["images/colorways/superstar82-white-core-black.png", "images/colorways/superstar82-white-core-black-2.png"], costoUSD: 45,
+            tablaTallas: [
+              { g: "M", t: 4, usd: 89 }, { g: "M", t: 4.5, usd: 86 }, { g: "M", t: 5, usd: 45 },
+              { g: "M", t: 5.5, usd: 102 }, { g: "M", t: 6, usd: 85 }, { g: "M", t: 6.5, usd: 86 },
+              { g: "M", t: 7, usd: 97 }, { g: "M", t: 7.5, usd: 84 }, { g: "M", t: 8, usd: 100 },
+              { g: "M", t: 8.5, usd: 78 }, { g: "M", t: 9, usd: 84 }, { g: "M", t: 9.5, usd: 120 },
+              { g: "M", t: 10, usd: 100 }, { g: "M", t: 10.5, usd: 109 }, { g: "M", t: 11, usd: 95 },
+              { g: "M", t: 11.5, usd: 132 }, { g: "M", t: 12, usd: 84 }, { g: "M", t: 12.5, usd: 230 },
+            ],
+          },
+          {
+            // OJO: M9=$296 es un salto raro vs el resto de la tabla (posible error
+            // de StockX o talla muy escasa) -- revisar antes de confiar en ese precio.
+            nombre: "Superstar Cloud White Vivid Red", fotos: ["images/colorways/superstar-cloud-white-vivid-red.png", "images/colorways/superstar-cloud-white-vivid-red-2.png"], costoUSD: 76,
+            tablaTallas: [
+              // M5 a M7 estaban en BID (sin precio fijo), se omiten.
+              { g: "M", t: 7.5, usd: 105 }, { g: "M", t: 8, usd: 135 }, { g: "M", t: 8.5, usd: 80 },
+              { g: "M", t: 9, usd: 79 }, { g: "M", t: 9.5, usd: 76 }, { g: "M", t: 10, usd: 79 },
+              { g: "M", t: 10.5, usd: 108 }, { g: "M", t: 11, usd: 79 }, { g: "M", t: 11.5, usd: 155 },
+              { g: "M", t: 12, usd: 99 },
+            ],
+          },
         ],
       },
       {
-        nombre: "Campus", img: "images/adidas-campus.png", precio: null, tallas: "",
-        costoUSD: 29, precioVaria: true,
-        colorways: [
-          { nombre: "Crystal White Core Black (W)", img: "images/colorways/campus-crystal-white-core-black.png", costoUSD: 29 },
-          { nombre: "80s Norse Projects Layers", img: "images/colorways/campus-norse-projects-layers.png", costoUSD: 29 },
-          { nombre: "Trefoil Pulse Yellow (W)", img: "images/colorways/campus-trefoil-pulse-yellow.png", costoUSD: 30 },
-          { nombre: "Warm Clay (W)", img: "images/colorways/campus-warm-clay.png", costoUSD: 30 },
-          { nombre: "Wonder Cargo Clay (W)", img: "images/colorways/campus-wonder-cargo-clay.png", costoUSD: 49 },
-          { nombre: "Pink Spark Core Black (W)", img: "images/colorways/campus-pink-spark-core-black.png", costoUSD: 50 },
-          { nombre: "Camp Grey One Green Off White", img: "images/colorways/campus-camp-grey-green-off-white.png", costoUSD: 50 },
-          { nombre: "Alumina Off White Collegiate Green", img: "images/colorways/campus-alumina-collegiate-green.png", costoUSD: 50 },
-        ],
-      },
-      {
-        nombre: "Gazelle", img: "images/adidas-gazelle.png", precio: null, tallas: "",
+        nombre: "Gazelle", img: null, precio: null, tallas: "4-13",
         costoUSD: 110, precioVaria: true,
         colorways: [
-          { nombre: "Terrace Arsenal F.C.", img: "images/colorways/gazelle-terrace-arsenal.png", costoUSD: 110 },
-          { nombre: "85 Supplier Colour", img: "images/colorways/gazelle-85-supplier-colour.png", costoUSD: 110 },
-          { nombre: "size? Exclusive Navy Blue", img: "images/colorways/gazelle-exclusive-navy-blue.png", costoUSD: 110 },
-          { nombre: "Peru", img: "images/colorways/gazelle-peru.png", costoUSD: 110 },
+          {
+            nombre: "Core Black Cloud White Gold", fotos: ["images/colorways/gazelle-core-black-cloud-white-gold.png", "images/colorways/gazelle-core-black-cloud-white-gold-2.png"], costoUSD: 37,
+            tablaTallas: [
+              { g: "M", t: 5.5, usd: 87 }, { g: "M", t: 6, usd: 83 }, { g: "M", t: 6.5, usd: 90 },
+              { g: "M", t: 7, usd: 76 }, { g: "M", t: 7.5, usd: 75 }, { g: "M", t: 8, usd: 60 },
+              { g: "M", t: 8.5, usd: 69 }, { g: "M", t: 9, usd: 60 }, { g: "M", t: 9.5, usd: 37 },
+              { g: "M", t: 10, usd: 73 }, { g: "M", t: 10.5, usd: 59 }, { g: "M", t: 11, usd: 74 },
+            ],
+          },
         ],
       },
       {
-        nombre: "Gazelle Bold", img: "images/adidas-gazelle-bold.png", precio: null, tallas: "",
+        nombre: "Gazelle Bold", img: null, precio: null, tallas: "4-13",
         costoUSD: 37, precioVaria: true,
         colorways: [
-          { nombre: "Bold Ash Green (W)", img: "images/colorways/gazelle-bold-ash-green.png", costoUSD: 38 },
-          { nombre: "Bold Magic Beige Collegiate Green", img: "images/colorways/gazelle-bold-magic-beige-green.png", costoUSD: 37 },
-          { nombre: "Indoor Bright Yellow Collegiate Burgundy", img: "images/colorways/gazelle-bold-indoor-yellow-burgundy.png", costoUSD: 37 },
-          { nombre: "Bold Grey White (W)", img: "images/colorways/gazelle-bold-grey-white.png", costoUSD: 37 },
+          {
+            nombre: "Bold Magic Beige Collegiate Green (2)", fotos: ["images/colorways/gazelle-bold-magic-beige-collegiate-green-w.png", "images/colorways/gazelle-bold-magic-beige-collegiate-green-w-2.png"], costoUSD: 30,
+            tablaTallas: [
+              { g: "M", t: 4, usd: 79 }, { g: "M", t: 4.5, usd: 62 }, { g: "M", t: 5, usd: 63 },
+              { g: "M", t: 5.5, usd: 76 }, { g: "M", t: 6, usd: 68 }, { g: "M", t: 6.5, usd: 47 },
+              { g: "M", t: 7, usd: 62 }, { g: "M", t: 7.5, usd: 58 }, { g: "M", t: 8, usd: 60 },
+              { g: "M", t: 8.5, usd: 30 }, { g: "M", t: 9, usd: 40 }, { g: "M", t: 9.5, usd: 57 },
+            ],
+          },
+          {
+            nombre: "Bold Black White Gum (W)", fotos: ["images/colorways/gazelle-bold-black-white-gum-w.png", "images/colorways/gazelle-bold-black-white-gum-w-2.png"], costoUSD: 31,
+            tablaTallas: [
+              { g: "W", t: 5, usd: 94 }, { g: "W", t: 5.5, usd: 79 }, { g: "W", t: 6, usd: 65 },
+              { g: "W", t: 6.5, usd: 68 }, { g: "W", t: 7, usd: 50 }, { g: "W", t: 7.5, usd: 47 },
+              { g: "W", t: 8, usd: 49 }, { g: "W", t: 8.5, usd: 31 }, { g: "W", t: 9, usd: 41 },
+              { g: "W", t: 9.5, usd: 49 }, { g: "W", t: 10, usd: 53 }, { g: "W", t: 10.5, usd: 95 },
+            ],
+          },
+          {
+            nombre: "Earth Strata Powder Yellow (W)", fotos: ["images/colorways/gazelle-bold-earth-strata-powder-yellow-w.png", "images/colorways/gazelle-bold-earth-strata-powder-yellow-w-2.png"], costoUSD: 65,
+            tablaTallas: [
+              { g: "W", t: 5, usd: 159 }, { g: "W", t: 5.5, usd: 125 }, { g: "W", t: 6, usd: 77 },
+              { g: "W", t: 6.5, usd: 78 }, { g: "W", t: 7, usd: 65 }, { g: "W", t: 7.5, usd: 77 },
+              { g: "W", t: 8, usd: 81 }, { g: "W", t: 8.5, usd: 79 }, { g: "W", t: 9, usd: 81 },
+              { g: "W", t: 9.5, usd: 223 }, { g: "W", t: 10, usd: 125 }, { g: "W", t: 10.5, usd: 78 },
+            ],
+          },
         ],
       },
       {
-        nombre: "Spezial", img: "images/adidas-spezial.png", precio: null, tallas: "",
+        // Modelo nuevo -- las capturas de StockX traian un sub-linea "Gazelle
+        // Indoor" que no tenia modelo propio todavia (es distinto de Gazelle
+        // y Gazelle Bold: plantilla mas baja y forro de pana en el talon).
+        nombre: "Gazelle Indoor", img: null, precio: null, tallas: "4-13",
+        costoUSD: 39, precioVaria: true,
+        colorways: [
+          {
+            nombre: "Sandy Pink (W)", fotos: ["images/colorways/gazelle-indoor-sandy-pink-w.png", "images/colorways/gazelle-indoor-sandy-pink-w-2.png"], costoUSD: 52,
+            tablaTallas: [
+              // W4 estaba en BID, se omite.
+              { g: "W", t: 4.5, usd: 133 }, { g: "W", t: 5, usd: 166 }, { g: "W", t: 5.5, usd: 87 },
+              { g: "W", t: 6, usd: 138 }, { g: "W", t: 6.5, usd: 56 }, { g: "W", t: 7, usd: 64 },
+              { g: "W", t: 7.5, usd: 71 }, { g: "W", t: 8, usd: 92 }, { g: "W", t: 8.5, usd: 67 },
+              { g: "W", t: 9, usd: 104 }, { g: "W", t: 9.5, usd: 86 }, { g: "W", t: 10, usd: 52 },
+              { g: "W", t: 10.5, usd: 150 }, { g: "W", t: 11, usd: 128 },
+            ],
+          },
+          {
+            // OJO: M5.5=$329 es un salto raro vs el resto de la tabla -- revisar
+            // antes de confiar en ese precio puntual.
+            nombre: "Earth Strata Magic Beige", fotos: ["images/colorways/gazelle-indoor-earth-strata-magic-beige.png", "images/colorways/gazelle-indoor-earth-strata-magic-beige-2.png"], costoUSD: 39,
+            tablaTallas: [
+              { g: "M", t: 5.5, usd: 329 }, { g: "M", t: 6, usd: 205 }, { g: "M", t: 6.5, usd: 132 },
+              { g: "M", t: 7, usd: 60 }, { g: "M", t: 7.5, usd: 60 }, { g: "M", t: 8, usd: 60 },
+              { g: "M", t: 8.5, usd: 60 }, { g: "M", t: 9, usd: 39 }, { g: "M", t: 9.5, usd: 60 },
+              { g: "M", t: 10, usd: 60 }, { g: "M", t: 10.5, usd: 60 }, { g: "M", t: 11, usd: 60 },
+              { g: "M", t: 11.5, usd: 60 }, { g: "M", t: 12, usd: 60 }, { g: "M", t: 12.5, usd: 104 },
+            ],
+          },
+        ],
+      },
+      {
+        nombre: "Spezial", img: null, precio: null, tallas: "4-13",
         costoUSD: 35, precioVaria: true,
         colorways: [
-          { nombre: "Olive Strata Cream White", img: "images/colorways/spezial-olive-strata-cream-white.png", costoUSD: 121 },
-          { nombre: "Scarlet Gum", img: "images/colorways/spezial-scarlet-gum.png", costoUSD: 68 },
-          { nombre: "Light Blue", img: "images/colorways/spezial-light-blue.png", costoUSD: 38 },
-          { nombre: "Wonder White Black", img: "images/colorways/spezial-wonder-white-black.png", costoUSD: 75 },
-          { nombre: "Preloved Green", img: "images/colorways/spezial-preloved-green.png", costoUSD: 41 },
-          { nombre: "FIFA World Cup 2026 Mexico", img: "images/colorways/spezial-fifa-world-cup-mexico.png", costoUSD: 35 },
-          { nombre: "FIFA World Cup 2026 Germany", img: "images/colorways/spezial-fifa-world-cup-germany.png", costoUSD: 36 },
-          { nombre: "Maroon Cream White", img: "images/colorways/spezial-maroon-cream-white.png", costoUSD: 69 },
+          {
+            nombre: "Handball Spezial FIFA World Cup 2026 Mexico", fotos: ["images/colorways/handball-spezial-fifa-world-cup-2026-mexico.png", "images/colorways/handball-spezial-fifa-world-cup-2026-mexico-2.png"], costoUSD: 26,
+            tablaTallas: [
+              { g: "M", t: 4, usd: 230 }, { g: "M", t: 4.5, usd: 140 }, { g: "M", t: 5, usd: 150 },
+              { g: "M", t: 5.5, usd: 140 }, { g: "M", t: 6, usd: 113 }, { g: "M", t: 6.5, usd: 45 },
+              { g: "M", t: 7, usd: 46 }, { g: "M", t: 7.5, usd: 43 }, { g: "M", t: 8, usd: 44 },
+              { g: "M", t: 8.5, usd: 35 }, { g: "M", t: 9, usd: 46 }, { g: "M", t: 9.5, usd: 42 },
+              { g: "M", t: 10, usd: 42 }, { g: "M", t: 10.5, usd: 26 }, { g: "M", t: 11, usd: 48 },
+              { g: "M", t: 11.5, usd: 81 }, { g: "M", t: 12, usd: 71 }, { g: "M", t: 12.5, usd: 147 },
+            ],
+          },
+          {
+            nombre: "Handball Spezial Sporty & Rich Pink (W)", fotos: ["images/colorways/handball-spezial-sporty-rich-pink-w.png", "images/colorways/handball-spezial-sporty-rich-pink-w-2.png"], costoUSD: 30,
+            tablaTallas: [
+              { g: "W", t: 4.5, usd: 152 }, { g: "W", t: 5, usd: 30 }, { g: "W", t: 5.5, usd: 65 },
+              { g: "W", t: 6, usd: 140 }, { g: "W", t: 6.5, usd: 96 }, { g: "W", t: 7, usd: 90 },
+              { g: "W", t: 7.5, usd: 77 }, { g: "W", t: 8, usd: 84 }, { g: "W", t: 8.5, usd: 81 },
+              { g: "W", t: 9, usd: 84 }, { g: "W", t: 9.5, usd: 89 }, { g: "W", t: 10, usd: 104 },
+              { g: "W", t: 10.5, usd: 179 }, { g: "W", t: 11, usd: 185 }, { g: "W", t: 11.5, usd: 146 },
+            ],
+          },
+          {
+            nombre: "Handball Spezial Navy Gum", fotos: ["images/colorways/handball-spezial-navy-gum.png", "images/colorways/handball-spezial-navy-gum-2.png"], costoUSD: 26,
+            tablaTallas: [
+              { g: "M", t: 3.5, usd: 89 }, { g: "M", t: 4, usd: 86 }, { g: "M", t: 4.5, usd: 31 },
+              { g: "M", t: 5, usd: 36 }, { g: "M", t: 5.5, usd: 46 }, { g: "M", t: 6, usd: 63 },
+              { g: "M", t: 6.5, usd: 62 }, { g: "M", t: 7, usd: 40 }, { g: "M", t: 7.5, usd: 43 },
+              { g: "M", t: 8, usd: 50 }, { g: "M", t: 8.5, usd: 53 }, { g: "M", t: 9, usd: 51 },
+              { g: "M", t: 9.5, usd: 63 }, { g: "M", t: 10, usd: 52 }, { g: "M", t: 10.5, usd: 51 },
+              { g: "M", t: 11, usd: 49 }, { g: "M", t: 11.5, usd: 66 }, { g: "M", t: 12, usd: 56 },
+            ],
+          },
+          {
+            nombre: "Handball Spezial Black Gum (2)", fotos: ["images/colorways/handball-spezial-black-gum.png", "images/colorways/handball-spezial-black-gum-2.png"], costoUSD: 55,
+            tablaTallas: [
+              { g: "M", t: 5, usd: 58 }, { g: "M", t: 5.5, usd: 55 }, { g: "M", t: 6, usd: 74 },
+              { g: "M", t: 6.5, usd: 84 }, { g: "M", t: 7, usd: 74 }, { g: "M", t: 7.5, usd: 62 },
+              { g: "M", t: 8, usd: 57 }, { g: "M", t: 8.5, usd: 61 }, { g: "M", t: 9, usd: 61 },
+              { g: "M", t: 9.5, usd: 66 }, { g: "M", t: 10, usd: 72 }, { g: "M", t: 10.5, usd: 65 },
+            ],
+          },
+          {
+            nombre: "Handball Spezial Scarlet Gum (2)", fotos: ["images/colorways/handball-spezial-scarlet-gum.png", "images/colorways/handball-spezial-scarlet-gum-2.png"], costoUSD: 68,
+            tablaTallas: [
+              { g: "M", t: 5, usd: 75 }, { g: "M", t: 5.5, usd: 102 }, { g: "M", t: 6, usd: 75 },
+              { g: "M", t: 6.5, usd: 70 }, { g: "M", t: 7, usd: 76 }, { g: "M", t: 7.5, usd: 71 },
+              { g: "M", t: 8, usd: 71 }, { g: "M", t: 8.5, usd: 77 }, { g: "M", t: 9, usd: 68 },
+              { g: "M", t: 9.5, usd: 75 }, { g: "M", t: 10, usd: 74 }, { g: "M", t: 10.5, usd: 71 },
+              { g: "M", t: 11, usd: 74 }, { g: "M", t: 11.5, usd: 88 }, { g: "M", t: 12, usd: 75 },
+            ],
+          },
+          {
+            nombre: "Handball Spezial FIFA World Cup 2026 Germany (2)", fotos: ["images/colorways/handball-spezial-fifa-world-cup-2026-germany.png", "images/colorways/handball-spezial-fifa-world-cup-2026-germany-2.png"], costoUSD: 35,
+            tablaTallas: [
+              { g: "M", t: 4, usd: 107 }, { g: "M", t: 4.5, usd: 136 }, { g: "M", t: 5, usd: 93 },
+              { g: "M", t: 5.5, usd: 88 }, { g: "M", t: 6, usd: 92 }, { g: "M", t: 6.5, usd: 64 },
+              { g: "M", t: 7, usd: 95 }, { g: "M", t: 7.5, usd: 35 }, { g: "M", t: 8, usd: 35 },
+              { g: "M", t: 8.5, usd: 35 }, { g: "M", t: 9, usd: 79 }, { g: "M", t: 9.5, usd: 124 },
+              { g: "M", t: 10, usd: 107 }, { g: "M", t: 10.5, usd: 79 }, { g: "M", t: 11, usd: 66 },
+            ],
+          },
+          {
+            nombre: "Handball Spezial Clear Pink Arctic Night (W)", fotos: ["images/colorways/handball-spezial-clear-pink-arctic-night-w.png", "images/colorways/handball-spezial-clear-pink-arctic-night-w-2.png"], costoUSD: 40,
+            tablaTallas: [
+              { g: "W", t: 5, usd: 90 }, { g: "W", t: 5.5, usd: 86 }, { g: "W", t: 6, usd: 44 },
+              { g: "W", t: 6.5, usd: 54 }, { g: "W", t: 7, usd: 42 }, { g: "W", t: 7.5, usd: 43 },
+              { g: "W", t: 8, usd: 40 }, { g: "W", t: 8.5, usd: 45 }, { g: "W", t: 9, usd: 48 },
+              { g: "W", t: 9.5, usd: 47 }, { g: "W", t: 10, usd: 50 }, { g: "W", t: 10.5, usd: 71 },
+              { g: "W", t: 11, usd: 87 }, { g: "W", t: 11.5, usd: 124 }, { g: "W", t: 12, usd: 119 },
+            ],
+          },
+          {
+            nombre: "Handball Spezial Aluminum Core Black", fotos: ["images/colorways/handball-spezial-aluminum-core-black.png", "images/colorways/handball-spezial-aluminum-core-black-2.png"], costoUSD: 83,
+            tablaTallas: [
+              { g: "M", t: 4, usd: 111 }, { g: "M", t: 4.5, usd: 83 }, { g: "M", t: 5, usd: 102 },
+              { g: "M", t: 5.5, usd: 104 }, { g: "M", t: 6, usd: 142 }, { g: "M", t: 6.5, usd: 100 },
+              { g: "M", t: 7, usd: 97 }, { g: "M", t: 7.5, usd: 104 }, { g: "M", t: 8, usd: 92 },
+              { g: "M", t: 8.5, usd: 90 }, { g: "M", t: 9, usd: 92 }, { g: "M", t: 9.5, usd: 97 },
+              { g: "M", t: 10, usd: 99 }, { g: "M", t: 10.5, usd: 116 }, { g: "M", t: 11, usd: 196 },
+            ],
+          },
+          {
+            nombre: "Handball Spezial Off White Dusky Bronze (W)", fotos: ["images/colorways/handball-spezial-off-white-dusky-bronze-w.png", "images/colorways/handball-spezial-off-white-dusky-bronze-w-2.png"], costoUSD: 54,
+            tablaTallas: [
+              { g: "W", t: 5, usd: 75 }, { g: "W", t: 5.5, usd: 75 }, { g: "W", t: 6, usd: 69 },
+              { g: "W", t: 6.5, usd: 69 }, { g: "W", t: 7, usd: 61 }, { g: "W", t: 7.5, usd: 65 },
+              { g: "W", t: 8, usd: 65 }, { g: "W", t: 8.5, usd: 66 }, { g: "W", t: 9, usd: 64 },
+              { g: "W", t: 9.5, usd: 66 }, { g: "W", t: 10, usd: 54 }, { g: "W", t: 10.5, usd: 71 },
+              { g: "W", t: 11, usd: 78 }, { g: "W", t: 11.5, usd: 155 }, { g: "W", t: 12, usd: 147 },
+            ],
+          },
+          {
+            nombre: "Handball Spezial Alumina Grey (W)", fotos: ["images/colorways/handball-spezial-alumina-grey-w.png", "images/colorways/handball-spezial-alumina-grey-w-2.png"], costoUSD: 70,
+            tablaTallas: [
+              // W11.5 estaba en BID, se omite.
+              { g: "W", t: 5, usd: 101 }, { g: "W", t: 5.5, usd: 119 }, { g: "W", t: 6, usd: 119 },
+              { g: "W", t: 6.5, usd: 119 }, { g: "W", t: 7, usd: 119 }, { g: "W", t: 7.5, usd: 98 },
+              { g: "W", t: 8, usd: 119 }, { g: "W", t: 8.5, usd: 109 }, { g: "W", t: 9, usd: 75 },
+              { g: "W", t: 9.5, usd: 119 }, { g: "W", t: 10, usd: 70 }, { g: "W", t: 10.5, usd: 119 },
+              { g: "W", t: 11, usd: 139 }, { g: "W", t: 12, usd: 192 },
+            ],
+          },
         ],
       },
       {
-        nombre: "Samba", img: "images/adidas-samba.png", precio: null, tallas: "",
+        nombre: "Samba", img: null, precio: null, tallas: "4-13",
         costoUSD: 37, precioVaria: true,
         colorways: [
-          { nombre: "OG Cloud White Core Black", img: "images/colorways/samba-og-cloud-white-core-black.png", costoUSD: 45 },
-          { nombre: "OG Black White Gum", img: "images/colorways/samba-og-black-white-gum.png", costoUSD: 37 },
-          { nombre: "OG Molly-Mae Matcha (W)", img: "images/colorways/samba-og-molly-mae-matcha.png", costoUSD: 133 },
-          { nombre: "OG Rhinestone Black Silver", img: "images/colorways/samba-og-rhinestone-black-silver.png", costoUSD: 68 },
-          { nombre: "Samba Jane Black Off White (W)", img: "images/colorways/samba-jane-black-off-white.png", costoUSD: 110 },
-          { nombre: "OG Aurora Coffee Cream White", img: "images/colorways/samba-og-aurora-coffee-cream.png", costoUSD: 110 },
-          { nombre: "OG Cloud White Collegiate Green Gum", img: "images/colorways/samba-og-cloud-white-green-gum.png", costoUSD: 110 },
-          { nombre: "OG White Sky Blue", img: "images/colorways/samba-og-white-sky-blue.png", costoUSD: 110 },
+          {
+            nombre: "Samba LT Semi Blue Burst (W)", fotos: ["images/colorways/samba-lt-semi-blue-burst-w.png", "images/colorways/samba-lt-semi-blue-burst-w-2.png"], costoUSD: 57,
+            tablaTallas: [
+              // W10.5, W11 y W12 estaban en BID, se omiten.
+              { g: "W", t: 5, usd: 235 }, { g: "W", t: 5.5, usd: 157 }, { g: "W", t: 6, usd: 105 },
+              { g: "W", t: 6.5, usd: 72 }, { g: "W", t: 7, usd: 57 }, { g: "W", t: 7.5, usd: 156 },
+              { g: "W", t: 8, usd: 139 }, { g: "W", t: 8.5, usd: 157 }, { g: "W", t: 9, usd: 151 },
+              { g: "W", t: 9.5, usd: 90 }, { g: "W", t: 10, usd: 289 }, { g: "W", t: 11.5, usd: 170 },
+            ],
+          },
+          {
+            nombre: "Samba OG Off White Core Black (W)", fotos: ["images/colorways/samba-og-off-white-core-black-w.png", "images/colorways/samba-og-off-white-core-black-w-2.png"], costoUSD: 58,
+            tablaTallas: [
+              // W7 estaba en BID, se omite.
+              { g: "W", t: 5, usd: 116 }, { g: "W", t: 5.5, usd: 58 }, { g: "W", t: 6, usd: 119 },
+              { g: "W", t: 6.5, usd: 150 }, { g: "W", t: 7.5, usd: 129 }, { g: "W", t: 8, usd: 227 },
+              { g: "W", t: 8.5, usd: 60 }, { g: "W", t: 9, usd: 103 }, { g: "W", t: 9.5, usd: 58 },
+              { g: "W", t: 10, usd: 60 }, { g: "W", t: 10.5, usd: 96 }, { g: "W", t: 11, usd: 60 },
+              { g: "W", t: 11.5, usd: 60 }, { g: "W", t: 12, usd: 148 }, { g: "W", t: 12.5, usd: 60 },
+              { g: "W", t: 13, usd: 60 }, { g: "W", t: 13.5, usd: 60 },
+            ],
+          },
+          {
+            nombre: "Samba ADV Cloud White Core Black (W)", fotos: ["images/colorways/samba-adv-cloud-white-core-black-w.png", "images/colorways/samba-adv-cloud-white-core-black-w-2.png"], costoUSD: 50,
+            tablaTallas: [
+              { g: "W", t: 5, usd: 89 }, { g: "W", t: 5.5, usd: 84 }, { g: "W", t: 6, usd: 80 },
+              { g: "W", t: 6.5, usd: 70 }, { g: "W", t: 7, usd: 50 }, { g: "W", t: 7.5, usd: 83 },
+              { g: "W", t: 8, usd: 135 }, { g: "W", t: 8.5, usd: 59 }, { g: "W", t: 9, usd: 50 },
+              { g: "W", t: 9.5, usd: 59 }, { g: "W", t: 10, usd: 89 }, { g: "W", t: 10.5, usd: 59 },
+              { g: "W", t: 11, usd: 73 }, { g: "W", t: 11.5, usd: 57 }, { g: "W", t: 12, usd: 89 },
+              { g: "W", t: 12.5, usd: 71 }, { g: "W", t: 13, usd: 104 }, { g: "W", t: 13.5, usd: 69 },
+            ],
+          },
+          {
+            nombre: "Samba Messi Black Gold Metallic (W)", fotos: ["images/colorways/samba-messi-black-gold-metallic-w.png", "images/colorways/samba-messi-black-gold-metallic-w-2.png"], costoUSD: 32,
+            tablaTallas: [
+              { g: "W", t: 5, usd: 58 }, { g: "W", t: 5.5, usd: 80 }, { g: "W", t: 6, usd: 54 },
+              { g: "W", t: 6.5, usd: 52 }, { g: "W", t: 7, usd: 44 }, { g: "W", t: 7.5, usd: 55 },
+              { g: "W", t: 8, usd: 48 }, { g: "W", t: 8.5, usd: 52 }, { g: "W", t: 9, usd: 43 },
+              { g: "W", t: 9.5, usd: 44 }, { g: "W", t: 10, usd: 49 }, { g: "W", t: 10.5, usd: 43 },
+              { g: "W", t: 11, usd: 49 }, { g: "W", t: 11.5, usd: 32 }, { g: "W", t: 12, usd: 47 },
+            ],
+          },
+          {
+            nombre: "Samba OG White Better Scarlet (W)", fotos: ["images/colorways/samba-og-white-better-scarlet-w.png", "images/colorways/samba-og-white-better-scarlet-w-2.png"], costoUSD: 59,
+            tablaTallas: [
+              { g: "W", t: 5, usd: 126 }, { g: "W", t: 5.5, usd: 111 }, { g: "W", t: 6, usd: 115 },
+              { g: "W", t: 6.5, usd: 140 }, { g: "W", t: 7, usd: 131 }, { g: "W", t: 7.5, usd: 107 },
+              { g: "W", t: 8, usd: 106 }, { g: "W", t: 8.5, usd: 98 }, { g: "W", t: 9, usd: 99 },
+              { g: "W", t: 9.5, usd: 109 }, { g: "W", t: 10, usd: 105 }, { g: "W", t: 10.5, usd: 105 },
+              { g: "W", t: 11, usd: 109 }, { g: "W", t: 11.5, usd: 72 }, { g: "W", t: 12, usd: 110 },
+              { g: "W", t: 12.5, usd: 90 }, { g: "W", t: 13, usd: 109 }, { g: "W", t: 13.5, usd: 60 },
+            ],
+          },
+          {
+            nombre: "Samba OG Cream White Cardboard (W)", fotos: ["images/colorways/samba-og-cream-white-cardboard-w.png", "images/colorways/samba-og-cream-white-cardboard-w-2.png"], costoUSD: 70,
+            tablaTallas: [
+              { g: "W", t: 5, usd: 70 }, { g: "W", t: 5.5, usd: 73 }, { g: "W", t: 6, usd: 71 },
+              { g: "W", t: 6.5, usd: 82 }, { g: "W", t: 7, usd: 83 }, { g: "W", t: 7.5, usd: 109 },
+              { g: "W", t: 8, usd: 93 }, { g: "W", t: 8.5, usd: 76 }, { g: "W", t: 9, usd: 84 },
+              { g: "W", t: 9.5, usd: 93 }, { g: "W", t: 10, usd: 96 }, { g: "W", t: 10.5, usd: 95 },
+              { g: "W", t: 11, usd: 115 }, { g: "W", t: 11.5, usd: 115 }, { g: "W", t: 12, usd: 131 },
+              { g: "W", t: 12.5, usd: 94 }, { g: "W", t: 13, usd: 111 }, { g: "W", t: 13.5, usd: 191 },
+            ],
+          },
+          {
+            nombre: "Samba OG Basketweave Tongue Off White Green (W)", fotos: ["images/colorways/samba-og-basketweave-tongue-off-white-green-w.png", "images/colorways/samba-og-basketweave-tongue-off-white-green-w-2.png"], costoUSD: 60,
+            tablaTallas: [
+              { g: "W", t: 5, usd: 100 }, { g: "W", t: 5.5, usd: 84 }, { g: "W", t: 6, usd: 62 },
+              { g: "W", t: 6.5, usd: 84 }, { g: "W", t: 7, usd: 60 }, { g: "W", t: 7.5, usd: 118 },
+              { g: "W", t: 8, usd: 100 }, { g: "W", t: 8.5, usd: 89 }, { g: "W", t: 9, usd: 62 },
+              { g: "W", t: 9.5, usd: 84 }, { g: "W", t: 10, usd: 100 }, { g: "W", t: 10.5, usd: 109 },
+              { g: "W", t: 11, usd: 153 }, { g: "W", t: 11.5, usd: 153 },
+            ],
+          },
         ],
       },
-      { nombre: "PureChill", img: null, precio: null, tallas: "" },
-      { nombre: "Adizero", img: null, precio: null, tallas: "" },
     ],
   },
   {
@@ -309,68 +658,123 @@ const CATALOGO = [
     linea: "premium",
     modelos: [
       {
-        nombre: "Jordan 1", img: "images/jordan-1.png", precio: null, tallas: "",
+        nombre: "Jordan 1", img: null, precio: null, tallas: "4-13",
         costoUSD: 30, precioVaria: true,
         colorways: [
-          { nombre: "Access Black Gym Red White", img: "images/colorways/jordan1-access-black-gym-red-white.png", costoUSD: 30 },
-          { nombre: "Mid White University Gold (W)", img: "images/colorways/jordan1-mid-white-university-gold.png", costoUSD: 30 },
-          { nombre: "Mid Reverse Bred (2021) (GS - talla nino)", img: "images/colorways/jordan1-mid-reverse-bred.png", costoUSD: 30, esNino: true },
-          { nombre: "Mid SE Orange Suede (GS - talla nino)", img: "images/colorways/jordan1-mid-se-orange-suede.png", costoUSD: 32, esNino: true },
-          { nombre: "Low White Cannon (W)", img: "images/colorways/jordan1-low-white-cannon.png", costoUSD: 100 },
-          { nombre: "Low Concord", img: "images/colorways/jordan1-low-concord.png", costoUSD: 120 },
-          { nombre: "Retro Low OG Medium Olive (PS - talla nino)", img: "images/colorways/jordan1-retro-low-og-medium-olive.png", costoUSD: 58, esNino: true },
+          {
+            nombre: "Retro High OG Black Toe Reimagined", fotos: ["images/colorways/jordan1-black-toe-reimagined.png", "images/colorways/jordan1-black-toe-reimagined-2.png"], costoUSD: 48,
+            tablaTallas: [
+              // Faltan M6.5, M7 y M7.5 -- hubo un salto entre capturas (zona no
+              // fotografiada). M13.5 estaba en BID, se omite.
+              { g: "M", t: 3.5, usd: 70 }, { g: "M", t: 4, usd: 64 }, { g: "M", t: 4.5, usd: 190 },
+              { g: "M", t: 5, usd: 74 }, { g: "M", t: 5.5, usd: 79 }, { g: "M", t: 6, usd: 151 },
+              { g: "M", t: 8, usd: 92 }, { g: "M", t: 8.5, usd: 98 }, { g: "M", t: 9, usd: 111 },
+              { g: "M", t: 9.5, usd: 116 }, { g: "M", t: 10, usd: 92 }, { g: "M", t: 10.5, usd: 123 },
+              { g: "M", t: 11, usd: 119 }, { g: "M", t: 11.5, usd: 105 }, { g: "M", t: 12, usd: 109 },
+              { g: "M", t: 12.5, usd: 110 }, { g: "M", t: 13, usd: 105 },
+            ],
+          },
+          {
+            // OJO: M9=$296 es un salto raro vs el resto de la tabla -- revisar
+            // antes de confiar en ese precio puntual.
+            nombre: "Retro High OG Midnight Navy", fotos: ["images/colorways/jordan1-midnight-navy.png", "images/colorways/jordan1-midnight-navy-2.png"], costoUSD: 47,
+            tablaTallas: [
+              { g: "M", t: 5, usd: 59 }, { g: "M", t: 5.5, usd: 48 }, { g: "M", t: 6, usd: 47 },
+              { g: "M", t: 6.5, usd: 96 }, { g: "M", t: 7, usd: 154 }, { g: "M", t: 7.5, usd: 65 },
+              { g: "M", t: 8, usd: 84 }, { g: "M", t: 8.5, usd: 85 }, { g: "M", t: 9, usd: 296 },
+              { g: "M", t: 9.5, usd: 97 }, { g: "M", t: 10, usd: 113 }, { g: "M", t: 10.5, usd: 97 },
+              { g: "M", t: 11, usd: 118 }, { g: "M", t: 11.5, usd: 120 }, { g: "M", t: 12, usd: 100 },
+            ],
+          },
         ],
       },
-      { nombre: "Jordan 2", img: "images/jordan-2.png", precio: null, tallas: "", precioVaria: true, colorways: [
-        { nombre: "Retro OG Chicago (2022)", img: "images/colorways/jordan2-og-chicago.png", costoUSD: 75 },
-        { nombre: "Retro J Balvin", img: "images/colorways/jordan2-j-balvin.png", costoUSD: 60 },
-        { nombre: "Retro Black Cement", img: "images/colorways/jordan2-black-cement.png", costoUSD: 113 },
-        { nombre: "Retro A Ma Maniere Airness", img: "images/colorways/jordan2-a-ma-maniere.png", costoUSD: 67 },
+      { nombre: "Jordan 2", img: null, precio: null, tallas: "4-13", precioVaria: true, colorways: [
+        {
+          nombre: "Retro A Ma Maniere Airness", fotos: ["images/colorways/jordan2-a-ma-maniere-airness.png", "images/colorways/jordan2-a-ma-maniere-airness-2.png"], costoUSD: 67,
+          tablaTallas: [
+            { g: "M", t: 5, usd: 67 }, { g: "M", t: 5.5, usd: 70 }, { g: "M", t: 6, usd: 109 },
+            { g: "M", t: 6.5, usd: 68 }, { g: "M", t: 7, usd: 106 }, { g: "M", t: 7.5, usd: 120 },
+            { g: "M", t: 8, usd: 127 }, { g: "M", t: 8.5, usd: 100 }, { g: "M", t: 9, usd: 88 },
+            { g: "M", t: 9.5, usd: 117 }, { g: "M", t: 10, usd: 131 }, { g: "M", t: 10.5, usd: 99 },
+            { g: "M", t: 11, usd: 154 }, { g: "M", t: 11.5, usd: 195 }, { g: "M", t: 12, usd: 112 },
+          ],
+        },
       ] },
-      { nombre: "Jordan 3", img: "images/jordan-3.png", precio: null, tallas: "", precioVaria: true, colorways: [
-        { nombre: "Retro True Blue (2026)", img: "images/colorways/jordan3-true-blue.png", costoUSD: 149 },
-        { nombre: "Retro OG Black Cement (2024)", img: "images/colorways/jordan3-og-black-cement.png", costoUSD: 184 },
-        { nombre: "Retro White Cement Reimagined", img: "images/colorways/jordan3-white-cement-reimagined.png", costoUSD: 116 },
-        { nombre: "Retro World's Best Dad", img: "images/colorways/jordan3-worlds-best-dad.png", costoUSD: 108 },
+      { nombre: "Jordan 4", img: null, precio: null, tallas: "4-13", precioVaria: true, colorways: [
+        {
+          nombre: "Retro SB Navy", fotos: ["images/colorways/jordan4-navy.png", "images/colorways/jordan4-navy-2.png"], costoUSD: 140,
+          tablaTallas: [
+            { g: "M", t: 5, usd: 140 }, { g: "M", t: 5.5, usd: 139 }, { g: "M", t: 6, usd: 191 },
+            { g: "M", t: 6.5, usd: 236 }, { g: "M", t: 7, usd: 199 }, { g: "M", t: 7.5, usd: 207 },
+            { g: "M", t: 8, usd: 180 }, { g: "M", t: 8.5, usd: 176 }, { g: "M", t: 9, usd: 185 },
+            { g: "M", t: 9.5, usd: 202 }, { g: "M", t: 10, usd: 219 }, { g: "M", t: 10.5, usd: 239 },
+            { g: "M", t: 11, usd: 252 }, { g: "M", t: 11.5, usd: 248 }, { g: "M", t: 12, usd: 210 },
+          ],
+        },
       ] },
-      { nombre: "Jordan 4", img: "images/jordan-4.png", precio: null, tallas: "", precioVaria: true, colorways: [
-        { nombre: "Retro Toro Bravo (2026)", img: "images/colorways/jordan4-toro-bravo.png", costoUSD: 161 },
-        { nombre: "Retro Black Cat (2025)", img: "images/colorways/jordan4-black-cat.png", costoUSD: 309 },
-        { nombre: "Retro Rare Air Tour Yellow (2026)", img: "images/colorways/jordan4-rare-air-tour-yellow.png", costoUSD: 144 },
-        { nombre: "Retro White Cement (2025)", img: "images/colorways/jordan4-white-cement.png", costoUSD: 200 },
+      { nombre: "Jordan 7", img: null, precio: null, tallas: "4-13", precioVaria: true, colorways: [
+        {
+          nombre: "Retro Miro (2026)", fotos: ["images/colorways/jordan7-miro-2026.png", "images/colorways/jordan7-miro-2026-2.png"], costoUSD: 147,
+          tablaTallas: [
+            { g: "M", t: 7.5, usd: 188 }, { g: "M", t: 8, usd: 158 }, { g: "M", t: 8.5, usd: 150 },
+            { g: "M", t: 9, usd: 167 }, { g: "M", t: 9.5, usd: 147 }, { g: "M", t: 10, usd: 160 },
+            { g: "M", t: 10.5, usd: 171 }, { g: "M", t: 11, usd: 187 }, { g: "M", t: 11.5, usd: 211 },
+            { g: "M", t: 12, usd: 214 }, { g: "M", t: 12.5, usd: 224 }, { g: "M", t: 13, usd: 227 },
+          ],
+        },
       ] },
-      { nombre: "Jordan 5", img: "images/jordan-5.png", precio: null, tallas: "", precioVaria: true, colorways: [
-        { nombre: "Retro Halloween", img: "images/colorways/jordan5-halloween.png", costoUSD: 173 },
-        { nombre: "Retro Black University Blue (2026)", img: "images/colorways/jordan5-black-university-blue.png", costoUSD: 203 },
-        { nombre: "Retro Wolf Grey (2026)", img: "images/colorways/jordan5-wolf-grey.png", costoUSD: 245 },
-        { nombre: "Retro OG Black Metallic Reimagined", img: "images/colorways/jordan5-og-black-metallic.png", costoUSD: 327 },
+      { nombre: "Jordan 9", img: null, precio: null, tallas: "4-13", precioVaria: true, colorways: [
+        {
+          nombre: "Retro Flint Grey French Blue (2026)", fotos: ["images/colorways/jordan9-flint-grey-french-blue-2026.png", "images/colorways/jordan9-flint-grey-french-blue-2026-2.png"], costoUSD: 102,
+          tablaTallas: [
+            // M3.5 a M6.5 estaban en BID, se omiten.
+            { g: "M", t: 7, usd: 115 }, { g: "M", t: 7.5, usd: 129 }, { g: "M", t: 8, usd: 108 },
+            { g: "M", t: 8.5, usd: 102 }, { g: "M", t: 9, usd: 104 }, { g: "M", t: 9.5, usd: 114 },
+            { g: "M", t: 10, usd: 115 }, { g: "M", t: 10.5, usd: 110 }, { g: "M", t: 11, usd: 116 },
+            { g: "M", t: 11.5, usd: 135 }, { g: "M", t: 12, usd: 150 }, { g: "M", t: 12.5, usd: 187 },
+            { g: "M", t: 13, usd: 147 }, { g: "M", t: 14, usd: 172 },
+          ],
+        },
       ] },
-      { nombre: "Jordan 6", img: "images/jordan-6.png", precio: null, tallas: "", precioVaria: true, colorways: [
-        { nombre: "Retro Infrared White (2026)", img: "images/colorways/jordan6-infrared-white.png", costoUSD: 178 },
-        { nombre: "Retro Infrared Salesman", img: "images/colorways/jordan6-infrared-salesman.png", costoUSD: 145 },
-        { nombre: "Retro Awake NY Midnight Navy", img: "images/colorways/jordan6-awake-ny-midnight-navy.png", costoUSD: 200 },
-        { nombre: "Retro Oreo (2026)", img: "images/colorways/jordan6-oreo.png", costoUSD: 120 },
-      ] },
-      { nombre: "Jordan 7", img: "images/jordan-7.png", precio: null, tallas: "", precioVaria: true, colorways: [
-        { nombre: "Retro Miro (2026)", img: "images/colorways/jordan7-miro.png", costoUSD: 147 },
-        { nombre: "Retro Cardinal (2022)", img: "images/colorways/jordan7-cardinal.png", costoUSD: 110 },
-        { nombre: "Retro Tennis Day", img: "images/colorways/jordan7-tennis-day.png", costoUSD: 89 },
-        { nombre: "Retro Citrus (2022)", img: "images/colorways/jordan7-citrus.png", costoUSD: 115 },
-      ] },
-      { nombre: "Jordan 8", img: "images/jordan-8.png", precio: null, tallas: "", precioVaria: true, colorways: [
-        { nombre: "Retro Chrome (2026)", img: "images/colorways/jordan8-chrome.png", costoUSD: 177 },
-        { nombre: "Retro White True Red (2025)", img: "images/colorways/jordan8-white-true-red.png", costoUSD: 149 },
-        { nombre: "Retro Aqua (2025)", img: "images/colorways/jordan8-aqua.png", costoUSD: 228 },
-        { nombre: "Retro Chrome (2026) (GS - talla nino)", img: "images/colorways/jordan8-chrome-gs.png", costoUSD: 116, esNino: true },
-      ] },
-      { nombre: "Jordan 9", img: "images/jordan-9.png", precio: null, tallas: "", precioVaria: true, colorways: [
-        { nombre: "Retro OG Space Jam (2026)", img: "images/colorways/jordan9-og-space-jam.png", costoUSD: 191 },
-        { nombre: "Retro Flint Grey French Blue (2026)", img: "images/colorways/jordan9-flint-grey-french-blue.png", costoUSD: 102 },
-        { nombre: "Retro OG Space Jam (2026) (GS - talla nino)", img: "images/colorways/jordan9-og-space-jam-gs.png", costoUSD: 129, esNino: true },
-        { nombre: "Retro Low What The Kilroy", img: "images/colorways/jordan9-low-what-the-kilroy.png", costoUSD: 107 },
-      ] },
-      { nombre: "Jordan 12", img: "images/jordan-12.png", precio: null, tallas: "", costoUSD: 152 },
-      { nombre: "Jordan 13", img: "images/jordan-13.png", precio: null, tallas: "", costoUSD: 133 },
+      {
+        nombre: "Jordan 12", img: null, precio: null, tallas: "4-13", costoUSD: 152, precioVaria: true,
+        colorways: [
+          {
+            nombre: "Retro SP A Ma Maniere White (W)", fotos: ["images/colorways/jordan12-a-ma-maniere-white-w.png", "images/colorways/jordan12-a-ma-maniere-white-w-2.png"], costoUSD: 116,
+            tablaTallas: [
+              // Se quito M12=$425 a pedido de Luis (salto de precio anomalo
+              // vs el resto de la tabla, no se confia en ese dato puntual).
+              { g: "M", t: 6.5, usd: 176 }, { g: "M", t: 7, usd: 136 }, { g: "M", t: 7.5, usd: 138 },
+              { g: "M", t: 8, usd: 117 }, { g: "M", t: 8.5, usd: 119 }, { g: "M", t: 9, usd: 118 },
+              { g: "M", t: 9.5, usd: 116 }, { g: "M", t: 10, usd: 180 }, { g: "M", t: 10.5, usd: 137 },
+              { g: "M", t: 11, usd: 161 }, { g: "M", t: 11.5, usd: 130 },
+            ],
+          },
+        ],
+      },
+      {
+        nombre: "Jordan 13", img: null, precio: null, tallas: "4-13", costoUSD: 133, precioVaria: true,
+        colorways: [
+          {
+            nombre: "Retro OG Chicago (2026)", fotos: ["images/colorways/jordan13-og-chicago-2026.png"], costoUSD: 133,
+            tablaTallas: [
+              // M5.5, M6 y M6.5 estaban en BID, se omiten.
+              { g: "M", t: 7, usd: 179 }, { g: "M", t: 7.5, usd: 152 }, { g: "M", t: 8, usd: 147 },
+              { g: "M", t: 8.5, usd: 138 }, { g: "M", t: 9, usd: 133 }, { g: "M", t: 9.5, usd: 142 },
+              { g: "M", t: 10, usd: 138 }, { g: "M", t: 10.5, usd: 144 }, { g: "M", t: 11, usd: 145 },
+            ],
+          },
+          {
+            nombre: "Retro Gym Red Flint Grey", fotos: ["images/colorways/jordan13-gym-red-flint-grey.png", "images/colorways/jordan13-gym-red-flint-grey-2.png"], costoUSD: 130,
+            tablaTallas: [
+              { g: "M", t: 7, usd: 200 }, { g: "M", t: 7.5, usd: 187 }, { g: "M", t: 8, usd: 130 },
+              { g: "M", t: 8.5, usd: 150 }, { g: "M", t: 9, usd: 190 }, { g: "M", t: 9.5, usd: 163 },
+              { g: "M", t: 10, usd: 162 }, { g: "M", t: 10.5, usd: 175 }, { g: "M", t: 11, usd: 169 },
+              { g: "M", t: 11.5, usd: 175 }, { g: "M", t: 12, usd: 198 }, { g: "M", t: 12.5, usd: 250 },
+            ],
+          },
+        ],
+      },
     ],
   },
   {
@@ -378,97 +782,64 @@ const CATALOGO = [
     linea: "premium",
     modelos: [
       {
-        nombre: "9060", img: "images/nb-9060.png", precio: null, tallas: "",
+        nombre: "9060", img: null, precio: null, tallas: "",
         costoUSD: 92, precioVaria: true,
         colorways: [
-          { nombre: "Bisque Sea Salt", img: "images/colorways/nb9060-bisque-sea-salt.png", costoUSD: 122 },
-          { nombre: "Mushroom Timberwolf", img: "images/colorways/nb9060-mushroom-timberwolf.png", costoUSD: 120 },
-          { nombre: "Black Cement", img: "images/colorways/nb9060-black-cement.png", costoUSD: 105 },
-          { nombre: "Sea Salt White", img: "images/colorways/nb9060-sea-salt-white.png", costoUSD: 92 },
         ],
       },
       {
-        nombre: "1000", img: "images/nb-1000.png", precio: null, tallas: "",
+        nombre: "1000", img: null, precio: null, tallas: "",
         costoUSD: 53, precioVaria: true,
         colorways: [
-          { nombre: "Arid Stone", img: "images/colorways/nb1000-arid-stone.png", costoUSD: 53 },
-          { nombre: "Black Cement", img: "images/colorways/nb1000-black-cement.png", costoUSD: 92 },
         ],
       },
       {
-        nombre: "2002R", img: "images/nb-2002r.png", precio: null, tallas: "",
+        nombre: "2002R", img: null, precio: null, tallas: "",
         costoUSD: 92, precioVaria: true,
         colorways: [
-          { nombre: "Protection Pack Phantom", img: "images/colorways/nb2002r-protection-pack-phantom.png", costoUSD: 106 },
-          { nombre: "Protection Pack Sea Salt", img: "images/colorways/nb2002r-protection-pack-sea-salt.png", costoUSD: 92 },
         ],
       },
       { nombre: "574", img: null, precio: null, tallas: "" },
       {
-        nombre: "990", img: "images/nb-990.png", precio: null, tallas: "",
+        nombre: "990", img: null, precio: null, tallas: "",
         costoUSD: 105, precioVaria: true,
         colorways: [
-          { nombre: "990v6 MiUSA Teddy Santis Reflection", img: "images/colorways/nb990-teddy-santis-reflection.png", costoUSD: 107 },
-          { nombre: "990v6 MiUSA Community Navy", img: "images/colorways/nb990-community-navy.png", costoUSD: 105 },
         ],
       },
       { nombre: "327", img: null, precio: null, tallas: "" },
       { nombre: "530", img: null, precio: null, tallas: "", sugerido: true },
       {
-        nombre: "550", img: "images/nb-550.png", precio: null, tallas: "",
+        nombre: "550", img: null, precio: null, tallas: "",
         costoUSD: 52, precioVaria: true, sugerido: true,
         colorways: [
-          { nombre: "White Grey", img: "images/colorways/nb550-white-grey.png", costoUSD: 52 },
-          { nombre: "Sea Salt Quartz Pink Astro Dust", img: "images/colorways/nb550-sea-salt-quartz-pink.png", costoUSD: 59 },
         ],
       },
       {
-        nombre: "204L", img: "images/nb-204l.png", precio: null, tallas: "",
+        nombre: "204L", img: null, precio: null, tallas: "",
         costoUSD: 53, precioVaria: true, sugerido: true,
         colorways: [
-          { nombre: "Pastel Pink", img: "images/colorways/nb204l-pastel-pink.png", costoUSD: 53 },
-          { nombre: "Year of the Horse White", img: "images/colorways/nb204l-year-of-horse-white.png", costoUSD: 59 },
         ],
       },
-      { nombre: "237", img: "images/nb-237.png", precio: null, tallas: "", costoUSD: 54, sugerido: true },
-      { nombre: "57/40", img: "images/nb-5740.png", precio: null, tallas: "", costoUSD: 59, sugerido: true },
-      { nombre: "1906A", img: "images/nb-1906a.png", precio: null, tallas: "", costoUSD: 119, sugerido: true },
-      { nombre: "1906R", img: "images/nb-1906r.png", precio: null, tallas: "", costoUSD: 92, sugerido: true },
-      { nombre: "993", img: "images/nb-993.png", precio: null, tallas: "", costoUSD: 117, sugerido: true },
+      { nombre: "237", img: null, precio: null, tallas: "", costoUSD: 54, sugerido: true },
+      { nombre: "57/40", img: null, precio: null, tallas: "", costoUSD: 59, sugerido: true },
+      { nombre: "1906A", img: null, precio: null, tallas: "", costoUSD: 119, sugerido: true },
+      { nombre: "1906R", img: null, precio: null, tallas: "", costoUSD: 92, sugerido: true },
+      { nombre: "993", img: null, precio: null, tallas: "", costoUSD: 117, sugerido: true },
     ],
   },
   {
     marca: "Nike",
     linea: "premium",
     modelos: [
-      { nombre: "Air Force", img: "images/nike-air-force.png", precio: null, tallas: "", precioVaria: true, colorways: [
-        { nombre: "Low '07 White", img: "images/colorways/nikeaf-low07-white.png", costoUSD: 72 },
-        { nombre: "Low Supreme White", img: "images/colorways/nikeaf-low-supreme-white.png", costoUSD: 105 },
-        { nombre: "Low '01 NIGO x J-Hope", img: "images/colorways/nikeaf-low01-nigo-jhope.png", costoUSD: 138 },
-        { nombre: "Low '07 Black", img: "images/colorways/nikeaf-low07-black.png", costoUSD: 71 },
+      { nombre: "Air Force", img: null, precio: null, tallas: "", precioVaria: true, colorways: [
       ] },
-      { nombre: "Air Max", img: "images/nike-air-max.png", precio: null, tallas: "", precioVaria: true, colorways: [
-        { nombre: "Air Max 95 Premium Houseflies", img: "images/colorways/nikeam-95-premium-houseflies.png", costoUSD: 134 },
-        { nombre: "Air Max Plus Drift All Day", img: "images/colorways/nikeam-plus-drift-all-day.png", costoUSD: 120 },
-        { nombre: "Air Max 1 SC Dark Stucco", img: "images/colorways/nikeam-1-sc-dark-stucco.png", costoUSD: 130 },
+      { nombre: "Air Max", img: null, precio: null, tallas: "", precioVaria: true, colorways: [
       ] },
-      { nombre: "Blazer", img: "images/nike-blazer.png", precio: null, tallas: "", precioVaria: true, colorways: [
-        { nombre: "Low 77 Jumbo White Black Sail", img: "images/colorways/nikeblazer-low77-jumbo-white-black-sail.png", costoUSD: 80 },
-        { nombre: "Mid 77 Vintage Summit White Pink", img: "images/colorways/nikeblazer-mid77-vintage-summit-white-pink.png", costoUSD: 70 },
-        { nombre: "SB Blazer Mid QS Supreme Black", img: "images/colorways/nikeblazer-sb-mid-qs-supreme-black.png", costoUSD: 70 },
-        { nombre: "Low sacai KAWS Purple Dusk", img: "images/colorways/nikeblazer-low-sacai-kaws-purple-dusk.png", costoUSD: 54 },
+      { nombre: "Blazer", img: null, precio: null, tallas: "", precioVaria: true, colorways: [
       ] },
-      { nombre: "Dunk", img: "images/nike-dunk.png", precio: null, tallas: "", precioVaria: true, colorways: [
-        { nombre: "Low Retro QS Halloween Skull", img: "images/colorways/nikedunk-low-retro-qs-halloween-skull.png", costoUSD: 65 },
-        { nombre: "SB Dunk Low Arts-Rec", img: "images/colorways/nikedunk-sb-low-arts-rec.png", costoUSD: 85 },
-        { nombre: "Dunk High Wu-Tang (2024)", img: "images/colorways/nikedunk-high-wu-tang-2024.png", costoUSD: 93 },
-        { nombre: "SB Dunk Low Court Purple", img: "images/colorways/nikedunk-sb-low-court-purple.png", costoUSD: 100 },
+      { nombre: "Dunk", img: null, precio: null, tallas: "", precioVaria: true, colorways: [
       ] },
-      { nombre: "Cortez", img: "images/nike-cortez.png", precio: null, tallas: "", precioVaria: true, colorways: [
-        { nombre: "Forrest Gump (2024)", img: "images/colorways/nikecortez-forrest-gump.png", costoUSD: 56 },
-        { nombre: "Basic Black White (2023)", img: "images/colorways/nikecortez-basic-black-white.png", costoUSD: 53 },
-        { nombre: "White Black", img: "images/colorways/nikecortez-white-black.png", costoUSD: 52 },
-        { nombre: "Baroque Brown (W)", img: "images/colorways/nikecortez-baroque-brown.png", costoUSD: 73 },
+      { nombre: "Cortez", img: null, precio: null, tallas: "", precioVaria: true, colorways: [
       ] },
     ],
   },

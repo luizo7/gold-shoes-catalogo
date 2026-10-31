@@ -20,7 +20,7 @@
     transition: transform .15s ease, border-color .15s ease;
   }
   .card-shoe:hover { transform: translateY(-4px); border-color: #d4af37; }
-  .brand-btn.active, .linea-btn.active {
+  .brand-btn.active, .linea-btn.active, .genero-btn.active {
     background: #d4af37;
     color: #0b0b0d;
   }
@@ -33,6 +33,18 @@
   details[open] > summary .accordion-chevron { transform: rotate(180deg); }
   details:not([open]) > summary .accordion-chevron { animation: chevronPulse 1.8s ease-in-out infinite; }
   @keyframes chevronPulse { 0%, 100% { opacity: .6; transform: translateY(0); } 50% { opacity: 1; transform: translateY(3px); } }
+
+  /* Slider de precio: 2 inputs range superpuestos (truco clasico para
+     lograr un slider "de doble agarradera" sin librerias externas). */
+  .rango-wrap { position: relative; height: 1.75rem; }
+  .rango-track { position: absolute; top: 50%; left: 0; right: 0; height: 4px; background: #3a2f12; border-radius: 2px; transform: translateY(-50%); }
+  .rango-fill { position: absolute; top: 50%; height: 4px; background: #d4af37; border-radius: 2px; transform: translateY(-50%); }
+  .rango-input { position: absolute; top: 0; left: 0; width: 100%; margin: 0; background: transparent; -webkit-appearance: none; appearance: none; pointer-events: none; height: 1.75rem; }
+  .rango-input::-webkit-slider-thumb { pointer-events: all; -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #d4af37; cursor: pointer; border: 2px solid #0b0b0d; }
+  .rango-input::-moz-range-thumb { pointer-events: all; width: 18px; height: 18px; border-radius: 50%; background: #d4af37; cursor: pointer; border: 2px solid #0b0b0d; }
+  .rango-input::-webkit-slider-runnable-track { background: transparent; }
+  .rango-input::-moz-range-track { background: transparent; }
+  .talla-chip.active { background: #d4af37; color: #0b0b0d; }
 </style>
 </head>
 <body class="text-gray-200">
@@ -42,11 +54,29 @@
     <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
       <div class="w-[420px] h-[420px] rounded-full bg-[#d4af37]/10 blur-3xl"></div>
     </div>
-    <img src="images/logo.png" alt="Gold Shoes" class="relative mx-auto max-w-[360px] w-full h-auto" />
-    <p class="relative inline-flex items-center gap-2 mt-5 bg-[#0e2e1a] border-2 border-[#2fae5a] text-[#4fe08c] text-sm md:text-base font-extrabold tracking-wide px-6 py-2.5 rounded-full shadow-[0_0_18px_rgba(47,174,90,0.35)]">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M12 1.5c-.7 0-1.37.3-1.84.82L8.9 3.7c-.28.3-.67.47-1.08.47H6.5A2.5 2.5 0 0 0 4 6.67v1.32c0 .4-.17.8-.47 1.08l-1.38 1.26a2.5 2.5 0 0 0 0 3.68l1.38 1.26c.3.28.47.67.47 1.08v1.32A2.5 2.5 0 0 0 6.5 20.17h1.32c.41 0 .8.17 1.08.47l1.26 1.38a2.5 2.5 0 0 0 3.68 0l1.26-1.38c.28-.3.67-.47 1.08-.47h1.32A2.5 2.5 0 0 0 20 17.67v-1.32c0-.41.17-.8.47-1.08l1.38-1.26a2.5 2.5 0 0 0 0-3.68l-1.38-1.26A1.5 1.5 0 0 1 20 7.99V6.67A2.5 2.5 0 0 0 17.5 4.17h-1.32c-.41 0-.8-.17-1.08-.47l-1.26-1.38A2.49 2.49 0 0 0 12 1.5Zm3.78 7.4a.75.75 0 0 0-1.14-.97l-3.98 4.64-1.9-1.9a.75.75 0 1 0-1.06 1.06l2.5 2.5c.3.3.78.28 1.06-.04l4.52-5.29Z" clip-rule="evenodd" /></svg>
-      100% ORIGINALES -- GARANTIZADO
-    </p>
+    <div class="relative inline-block">
+      <img src="images/logo.png" alt="Gold Shoes" class="mx-auto max-w-[360px] w-full h-auto" />
+      <!-- "Online" discreto SOBRE el logo original (el archivo images/logo.png
+           no se toca) -- pequena etiqueta rotada cerca del tenis, mismo tono
+           dorado con fondo oscuro semitransparente para que se sienta parte
+           del diseno, no un sticker pegado encima. Ajusta top/right si no
+           cae bien sobre tu logo especifico. -->
+      <span class="absolute top-[14%] right-[8%] text-[11px] md:text-xs font-bold tracking-[0.25em] text-[#f7e08c] border border-[#d4af37]/70 bg-black/50 backdrop-blur-sm px-2.5 py-1 rounded-full -rotate-6">ONLINE</span>
+    </div>
+    <div class="relative flex flex-wrap items-center justify-center gap-2.5 mt-5">
+      <p class="inline-flex items-center gap-1.5 bg-[#0e2e1a] border-2 border-[#2fae5a] text-[#4fe08c] text-xs md:text-sm font-extrabold tracking-wide px-4 py-2 rounded-full shadow-[0_0_18px_rgba(47,174,90,0.35)]">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path fill-rule="evenodd" d="M12 1.5c-.7 0-1.37.3-1.84.82L8.9 3.7c-.28.3-.67.47-1.08.47H6.5A2.5 2.5 0 0 0 4 6.67v1.32c0 .4-.17.8-.47 1.08l-1.38 1.26a2.5 2.5 0 0 0 0 3.68l1.38 1.26c.3.28.47.67.47 1.08v1.32A2.5 2.5 0 0 0 6.5 20.17h1.32c.41 0 .8.17 1.08.47l1.26 1.38a2.5 2.5 0 0 0 3.68 0l1.26-1.38c.28-.3.67-.47 1.08-.47h1.32A2.5 2.5 0 0 0 20 17.67v-1.32c0-.41.17-.8.47-1.08l1.38-1.26a2.5 2.5 0 0 0 0-3.68l-1.38-1.26A1.5 1.5 0 0 1 20 7.99V6.67A2.5 2.5 0 0 0 17.5 4.17h-1.32c-.41 0-.8-.17-1.08-.47l-1.26-1.38A2.49 2.49 0 0 0 12 1.5Zm3.78 7.4a.75.75 0 0 0-1.14-.97l-3.98 4.64-1.9-1.9a.75.75 0 1 0-1.06 1.06l2.5 2.5c.3.3.78.28 1.06-.04l4.52-5.29Z" clip-rule="evenodd" /></svg>
+        100% Originales
+      </p>
+      <p class="inline-flex items-center gap-1.5 bg-[#2e1a0e] border-2 gold-border text-[#f7e08c] text-xs md:text-sm font-extrabold tracking-wide px-4 py-2 rounded-full shadow-[0_0_18px_rgba(212,175,55,0.3)]">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.12 3 10l6.53-6.12a2 2 0 0 1 2.18-.4l7.9 3.16a2 2 0 0 1 1.1 2.6l-2.9 7.26a2 2 0 0 1-2.16 1.23l-5.12-.82a2 2 0 0 1-1-.4Z"/><circle cx="8" cy="8.5" r="1" fill="currentColor" stroke="none"/></svg>
+        Disenos exclusivos
+      </p>
+      <p class="inline-flex items-center gap-1.5 bg-[#0e1a2e] border-2 border-[#3a6fae] text-[#8cc4f7] text-xs md:text-sm font-extrabold tracking-wide px-4 py-2 rounded-full shadow-[0_0_18px_rgba(55,135,212,0.3)]">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2 2 7l10 5 10-5-10-5Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        Precios accesibles
+      </p>
+    </div>
   </header>
 
   <!-- COMO COMPRAR -->
@@ -60,12 +90,21 @@
     <div id="pasosCompra" class="flex flex-col md:flex-row items-stretch gap-3 md:gap-0"></div>
   </section>
 
-  <!-- COMPRAS REALIZADAS (prueba de productos reales) -->
-  <section id="comprasWrap" class="max-w-6xl mx-auto px-4 pb-14"></section>
-
   <!-- SELECTOR DE LINEA -->
   <nav id="lineas" class="max-w-4xl mx-auto px-4 flex flex-wrap gap-3 justify-center mb-6"></nav>
   <p id="lineaDesc" class="text-center text-gray-500 text-xs max-w-xl mx-auto mb-6"></p>
+
+  <!-- FILTRO DE PRECIO Y TALLA -->
+  <div class="max-w-2xl mx-auto px-4 mb-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
+    <div>
+      <p class="text-center text-xs text-gray-400 mb-2">Precio: <span id="precioRangoLabel" class="text-[#d4af37] font-semibold"></span></p>
+      <div class="rango-wrap" id="precioSliderWrap"></div>
+    </div>
+    <div>
+      <p class="text-center text-xs text-gray-400 mb-2">Talla</p>
+      <div id="tallaChips" class="flex flex-wrap gap-1.5 justify-center"></div>
+    </div>
+  </div>
 
   <!-- FILTROS -->
   <nav id="filtros" class="max-w-6xl mx-auto px-4 flex flex-wrap gap-2 justify-center mb-4"></nav>
@@ -76,6 +115,9 @@
 
   <!-- CATALOGO -->
   <main id="catalogo" class="max-w-6xl mx-auto px-4 pb-20 space-y-14"></main>
+
+  <!-- COMPRAS REALIZADAS (prueba de productos reales) -->
+  <section id="comprasWrap" class="max-w-6xl mx-auto px-4 pb-14"></section>
 
   <!-- BOTON FLOTANTE DE WHATSAPP -->
   <a id="whatsappFlotante" href="#" target="_blank"
@@ -109,17 +151,140 @@
   let lineaActiva = 'todas';
   let MODELOS_PLANOS = []; // registro plano para abrir el modal de colorways por indice
 
+  // --- Filtro de precio y talla ---
+  // tallasDisponibles: ajustá este arreglo en CONFIG (data.js) segun el
+  // sistema de talla que uses (US o EU) -- mientras tanto se usa un rango
+  // generico 35-45 (EU) para no bloquear la funcionalidad.
+  const TALLAS_CHIP = (CONFIG.tallasDisponibles || [35,36,37,38,39,40,41,42,43,44,45]);
+  let precioRangoGlobal = { min: 0, max: 0 };
+  let precioMinActivo = 0;
+  let precioMaxActivo = 0;
+  let tallaActiva = null; // null = todas las tallas
+
+  // Recorre TODO el catalogo (incluye colorways, via calcularPrecioFinal)
+  // para saber el precio mas barato y mas caro que existe hoy -- asi el
+  // slider arranca cubriendo el 100% del catalogo, nunca recorta nada
+  // de entrada.
+  function calcularRangoPrecioGlobal() {
+    const precios = [];
+    CATALOGO.forEach(marca => marca.modelos.forEach(mod => {
+      const p = calcularPrecioFinal(mod);
+      if (p) precios.push(p);
+    }));
+    if (!precios.length) return { min: 0, max: 0 };
+    const min = Math.floor(Math.min(...precios) / 5000) * 5000;
+    const max = Math.ceil(Math.max(...precios) / 5000) * 5000;
+    return { min, max };
+  }
+
+  // "38-44" -> {min:38, max:44}. Tolera espacios y un solo numero suelto
+  // ("42" -> {min:42, max:42}). Si no se puede interpretar, null.
+  function parseRangoTallas(tallasStr) {
+    if (!tallasStr) return null;
+    const limpio = tallasStr.replace(/\s+/g, '');
+    const match = limpio.match(/^(\d+(?:\.\d+)?)-(\d+(?:\.\d+)?)$/) || limpio.match(/^(\d+(?:\.\d+)?)$/);
+    if (!match) return null;
+    const min = parseFloat(match[1]);
+    const max = match[2] ? parseFloat(match[2]) : min;
+    return { min, max };
+  }
+
+  function modeloTieneTalla(modelo, talla) {
+    const rango = parseRangoTallas(modelo.tallas);
+    if (!rango) return false;
+    return talla >= rango.min && talla <= rango.max;
+  }
+
+  function renderFiltroPrecio() {
+    precioRangoGlobal = calcularRangoPrecioGlobal();
+    precioMinActivo = precioRangoGlobal.min;
+    precioMaxActivo = precioRangoGlobal.max;
+    const { min, max } = precioRangoGlobal;
+    const paso = 5000;
+    document.getElementById('precioSliderWrap').innerHTML = `
+      <div class="rango-track"></div>
+      <div class="rango-fill" id="precioFill"></div>
+      <input type="range" id="precioMinInput" class="rango-input" min="${min}" max="${max}" step="${paso}" value="${min}">
+      <input type="range" id="precioMaxInput" class="rango-input" min="${min}" max="${max}" step="${paso}" value="${max}">
+    `;
+    const minInput = document.getElementById('precioMinInput');
+    const maxInput = document.getElementById('precioMaxInput');
+
+    function actualizar() {
+      let vMin = Number(minInput.value);
+      let vMax = Number(maxInput.value);
+      // No dejar que el minimo pase al maximo (dejamos un colchon de 1 paso
+      // para que las 2 agarraderas no queden pegadas e imposibles de mover).
+      if (vMin > vMax - paso) {
+        if (document.activeElement === minInput) { vMin = vMax - paso; minInput.value = vMin; }
+        else { vMax = vMin + paso; maxInput.value = vMax; }
+      }
+      precioMinActivo = vMin;
+      precioMaxActivo = vMax;
+      const pctMin = ((vMin - min) / (max - min || 1)) * 100;
+      const pctMax = ((vMax - min) / (max - min || 1)) * 100;
+      document.getElementById('precioFill').style.left = pctMin + '%';
+      document.getElementById('precioFill').style.width = (pctMax - pctMin) + '%';
+      document.getElementById('precioRangoLabel').textContent = `\u20a1${vMin.toLocaleString('es-CR')} - \u20a1${vMax.toLocaleString('es-CR')}`;
+      renderCatalogo();
+    }
+    minInput.addEventListener('input', actualizar);
+    maxInput.addEventListener('input', actualizar);
+    actualizar();
+  }
+
+  function renderFiltroTallas() {
+    const el = document.getElementById('tallaChips');
+    el.innerHTML = `
+      <button data-talla="" class="talla-chip ${tallaActiva === null ? 'active' : ''} px-3 py-1 rounded-full border gold-border text-xs font-semibold text-[#d4af37] hover:bg-[#d4af37] hover:text-black transition">Todas</button>
+      ${TALLAS_CHIP.map(t => `
+        <button data-talla="${t}" class="talla-chip ${tallaActiva === t ? 'active' : ''} px-3 py-1 rounded-full border gold-border text-xs font-semibold text-[#d4af37] hover:bg-[#d4af37] hover:text-black transition">${t}</button>
+      `).join('')}
+    `;
+    el.querySelectorAll('[data-talla]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        tallaActiva = btn.dataset.talla === '' ? null : Number(btn.dataset.talla);
+        renderFiltroTallas();
+        renderCatalogo();
+      });
+    });
+  }
+
   // Iconos SVG inline (sin emojis). currentColor hereda el color del
   // contenedor que lo envuelve, asi que basta con ponerles la clase
   // de color de texto al div padre.
   const ICONOS = {
-    catalogo: '<svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h10"/></svg>',
+    // Icono de "catalogo" mas entendible: una grilla de fotos (como hojear
+    // un catalogo real), en vez de 3 lineas que parecian un menu generico.
+    catalogo: '<svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>',
+    // Icono de camara para "mandanos una foto" -- el icono de WhatsApp
+    // (bombita de chat) se reserva solo para botones que SI abren WhatsApp
+    // de una vez (ver botonWhatsapp), para no confundir a la gente.
+    foto: '<svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 8a1 1 0 011-1h2.17a1 1 0 00.83-.45l.5-.75A1 1 0 0119.33 7H20a1 1 0 011 1v10a1 1 0 01-1 1H5a1 1 0 01-1-1V8z"/><circle cx="12" cy="13" r="3.5"/></svg>',
     whatsapp: '<svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>',
     descripcion: '<svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M16.86 3.86a2.1 2.1 0 013 3L7.5 19.21l-4 1 1-4L16.86 3.86z"/></svg>',
     elegir: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.3-4.3"/></svg>',
     cotizar: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M7 3h10a1 1 0 011 1v16l-3-2-2 2-2-2-2 2-3-2V4a1 1 0 011-1z"/><path stroke-linecap="round" d="M9 8h6M9 12h6"/></svg>',
     pagar: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path stroke-linecap="round" d="M2.5 10h19"/></svg>',
     entrega: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 11l9-7 9 7"/><path stroke-linecap="round" stroke-linejoin="round" d="M5 10v9a1 1 0 001 1h3v-6h6v6h3a1 1 0 001-1v-9"/></svg>',
+  };
+
+  // Iconos GENERICOS por marca (no son los logos oficiales con copyright --
+  // son referencias simplificadas en linea, estilo propio de la pagina).
+  // Si Luis consigue los logos reales y los quiere usar en vez de esto,
+  // solo hay que reemplazar el contenido de cada entrada por un <img>.
+  const ICONOS_MARCA = {
+    Adidas: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 20 8 6l2 4-4 10H2Zm7 0 6-14 2 4-4 10H9Zm7 0 3-7 2 4-1.5 3H16Z"/></svg>',
+    "Air Jordan": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="10" r="5"/><path stroke-linecap="round" d="M12 15v6M9 21h6M7 7c2-2 8-2 10 0"/></svg>',
+    "New Balance": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18V6l12 12V6"/></svg>',
+    Nike: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 15.5c4-5.5 11-9 18-10-5 4-9 8-13 13-2.5.5-4 .3-5-3Z"/></svg>',
+    Hoka: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 16l5-7 4 5 3-4 6 6"/></svg>',
+    On: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><path stroke-linecap="round" d="M9 12a3 3 0 0 1 6 0"/></svg>',
+    Puma: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17c2-6 5-9 9-9 4 0 7 3 7 6 0 2-2 3-4 2-2.5-1-3-4-1-6"/></svg>',
+    Asics: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 9c4 0 4 6 8 6s4-6 8-6"/></svg>',
+    Vans: '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="7" height="7"/><rect x="13" y="13" width="7" height="7"/><rect x="13" y="4" width="7" height="7" fill-opacity=".35"/><rect x="4" y="13" width="7" height="7" fill-opacity=".35"/></svg>',
+    Converse: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.2 6.8H21l-5.6 4.1 2.2 6.9L12 15.6l-5.6 4.2 2.2-6.9L3 8.8h6.8L12 2z"/></svg>',
+    Skechers: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17c3-1 4-9 7-11 1 3 0 6 2 7 2-1 3-4 5-3-1 3-3 6-7 7-3 1-5 1-7 0Z"/></svg>',
   };
 
   // Boton reutilizable de "Preguntar por WhatsApp" (DRY: lo usan la
@@ -171,15 +336,57 @@
     });
   }
 
+  // Tarjeta "Por el catalogo" sigue siendo de 1 solo click (scroll directo,
+  // sin nada que confirmar). Las tarjetas que abren WhatsApp ahora son de
+  // 2 pasos: 1er click en el icono revela el texto explicativo EN BLANCO +
+  // un boton real de WhatsApp; 2do click (en ese boton) recien abre el chat.
+  // Pedido explicito de Luis: evitar que WhatsApp se abra "de sorpresa"
+  // sin que el cliente sepa que mensaje se va a mandar.
+  let formaExpandidaIdx = null;
+
   function renderFormasCotizar() {
     const el = document.getElementById('formasCotizar');
-    el.innerHTML = FORMAS_DE_COTIZAR.map(f => `
-      <div class="card-shoe rounded-xl p-6 text-center flex flex-col items-center">
+    el.innerHTML = FORMAS_DE_COTIZAR.map((f, i) => {
+      const expandido = formaExpandidaIdx === i;
+      const panelWhatsapp = f.accion === 'whatsapp' ? `
+        <p class="text-gray-500 text-[11px] mt-1">${expandido ? '' : 'Toca el icono para ver como'}</p>
+        <div class="w-full overflow-hidden transition-all ${expandido ? 'max-h-40 mt-3' : 'max-h-0'}">
+          <p class="text-white text-sm mb-3">${f.descripcion}</p>
+          <button data-forma-enviar="${i}" class="inline-flex items-center justify-center gap-1.5 bg-[#25D366] text-black text-xs font-bold px-4 py-2 rounded-full hover:scale-105 transition">
+            ${ICONOS.whatsapp.replace('w-7 h-7', 'w-4 h-4')} Enviar mensaje
+          </button>
+        </div>` : `<p class="text-gray-400 text-sm">${f.descripcion}</p>`;
+      return `
+      <div class="card-shoe rounded-xl p-6 text-center flex flex-col items-center cursor-pointer" data-forma-idx="${i}">
         <div class="w-14 h-14 rounded-full border-2 gold-border flex items-center justify-center text-[#d4af37] mb-4">${ICONOS[f.icono] || ''}</div>
         <h4 class="text-lg font-serif gold-text font-bold mb-2">${f.titulo}</h4>
-        <p class="text-gray-400 text-sm">${f.descripcion}</p>
+        ${panelWhatsapp}
       </div>
-    `).join('');
+    `;
+    }).join('');
+
+    el.querySelectorAll('[data-forma-idx]').forEach(card => {
+      card.addEventListener('click', (ev) => {
+        // Si el click fue en el boton de "Enviar mensaje", eso lo maneja su
+        // propio listener de abajo -- no lo vuelve a procesar aca.
+        if (ev.target.closest('[data-forma-enviar]')) return;
+        const idx = Number(card.dataset.formaIdx);
+        const f = FORMAS_DE_COTIZAR[idx];
+        if (f.accion === 'scroll') {
+          document.getElementById(f.destino).scrollIntoView({ behavior: 'smooth' });
+        } else if (f.accion === 'whatsapp') {
+          formaExpandidaIdx = formaExpandidaIdx === idx ? null : idx;
+          renderFormasCotizar();
+        }
+      });
+    });
+    el.querySelectorAll('[data-forma-enviar]').forEach(btn => {
+      btn.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        const f = FORMAS_DE_COTIZAR[Number(btn.dataset.formaEnviar)];
+        window.open(linkWhatsappTexto(f.mensaje), '_blank');
+      });
+    });
   }
 
   function renderPasosCompra() {
@@ -215,6 +422,17 @@
     });
   }
 
+  // Cuando el modelo no tiene foto propia (ver limpieza de fotos sin talla),
+  // usamos una foto AL AZAR de sus propios colorways para que la tarjeta no
+  // se vea vacia/sola. Es aleatorio por cada render de pagina (no fijo),
+  // asi con el tiempo se van viendo distintos colores en la portada.
+  function fotoRepresentativaModelo(modelo) {
+    if (modelo.img) return modelo.img;
+    if (!Array.isArray(modelo.colorways) || !modelo.colorways.length) return null;
+    const elegido = modelo.colorways[Math.floor(Math.random() * modelo.colorways.length)];
+    return (elegido.fotos && elegido.fotos[0]) || elegido.img || null;
+  }
+
   function shoeCard(modelo, marca) {
     const tieneColorways = Array.isArray(modelo.colorways) && modelo.colorways.length > 0;
     const idx = MODELOS_PLANOS.push({ modelo, marca }) - 1;
@@ -222,8 +440,9 @@
     const clickAbrir = tieneColorways ? `onclick="abrirColores(${idx})"` : '';
     const cursor = tieneColorways ? 'cursor-pointer' : '';
 
-    const imgHtml = modelo.img
-      ? `<img src="${modelo.img}" alt="${modelo.nombre}" class="w-full h-40 object-contain ${cursor}" ${clickAbrir} />`
+    const fotoModelo = fotoRepresentativaModelo(modelo);
+    const imgHtml = fotoModelo
+      ? `<img src="${fotoModelo}" alt="${modelo.nombre}" class="w-full h-40 object-contain ${cursor}" ${clickAbrir} />`
       : `<div class="w-full h-40 flex items-center justify-center border border-dashed border-[#3a2f12] rounded-lg text-[10px] uppercase tracking-wide text-gray-600 ${cursor}" ${clickAbrir}>Sin foto</div>`;
 
     const colorwaysBadge = tieneColorways
@@ -252,6 +471,10 @@
     `;
   }
 
+  // Genero que se muestra en la matriz de tallas del detalle de colorway.
+  // Se resetea a 'M' cada vez que se abre un colorway nuevo.
+  let generoMatrizActivo = 'M';
+
   function abrirColores(idx) {
     const registro = MODELOS_PLANOS[idx];
     if (!registro) return;
@@ -261,23 +484,100 @@
     document.getElementById('modalColoresTitulo').textContent = `${marca} ${modelo.nombre}`;
     document.getElementById('modalColoresSubtitulo').textContent = `${modelo.colorways.length} colores disponibles`;
 
-    document.getElementById('modalColoresGrid').innerHTML = modelo.colorways.map(c => {
+    renderGridColores(modelo, marca);
+
+    const modal = document.getElementById('modalColores');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+  }
+
+  // Vista 1: grilla de todos los colorways. Los que tienen tablaTallas son
+  // clickeables y llevan al detalle (2 fotos grandes + matriz de precios).
+  // Los que no, se quedan como estaban (imagen + "Desde Xcolones").
+  function renderGridColores(modelo, marca) {
+    document.getElementById('modalColoresGrid').innerHTML = modelo.colorways.map((c, i) => {
+      const fotoPrincipal = (c.fotos && c.fotos[0]) || c.img;
+      if (Array.isArray(c.tablaTallas) && c.tablaTallas.length) {
+        return `
+          <div data-abrir-detalle="${i}" class="card-shoe rounded-lg p-3 flex flex-col cursor-pointer hover:border-[#d4af37]">
+            <img src="${fotoPrincipal}" alt="${c.nombre}" class="w-full h-32 object-contain" />
+            <p class="text-xs text-gray-200 mt-2">${c.nombre}</p>
+            <p class="text-[#d4af37] text-[11px] font-semibold mt-1">Ver tallas y precios &rarr;</p>
+          </div>`;
+      }
       const precioC = calcularPrecioFinal(c);
       const precioHtml = precioC
         ? `<p class="text-[#d4af37] text-xs font-semibold mt-1">Desde ₡${precioC.toLocaleString('es-CR')}</p>`
         : '';
       return `
         <div class="card-shoe rounded-lg p-3 flex flex-col">
-          <img src="${c.img}" alt="${c.nombre}" class="w-full h-32 object-contain" />
+          <img src="${fotoPrincipal}" alt="${c.nombre}" class="w-full h-32 object-contain" />
           <p class="text-xs text-gray-200 mt-2">${c.nombre}</p>
           ${precioHtml}
         </div>
       `;
     }).join('');
 
-    const modal = document.getElementById('modalColores');
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
+    document.querySelectorAll('[data-abrir-detalle]').forEach(card => {
+      card.addEventListener('click', () => {
+        generoMatrizActivo = 'M';
+        renderDetalleColorway(modelo, marca, Number(card.dataset.abrirDetalle));
+      });
+    });
+  }
+
+  // Vista 2 (el "3er click"): 2 fotos grandes + matriz de tallas con precio,
+  // con un toggle para ver la matriz en talla de Hombre o de Dama. Respeta
+  // la regla de conversion de Luis (ver equivalenteOtroGenero en data.js):
+  // una fila cargada como "W 8.5" se muestra como "7.5" cuando el toggle
+  // esta en Hombre, y viceversa -- es EL MISMO par, solo cambia la etiqueta.
+  function renderDetalleColorway(modelo, marca, i) {
+    const c = modelo.colorways[i];
+    const fotos = (c.fotos && c.fotos.length) ? c.fotos : [c.img];
+
+    const filas = c.tablaTallas
+      .map(f => ({
+        tallaMostrada: f.g === generoMatrizActivo ? f.t : equivalenteOtroGenero(f.t, f.g),
+        usd: f.usd,
+      }))
+      .sort((a, b) => a.tallaMostrada - b.tallaMostrada);
+
+    document.getElementById('modalColoresGrid').innerHTML = `
+      <div class="col-span-full">
+        <button data-volver-grid class="text-[#d4af37] text-sm font-semibold mb-4 hover:underline">&larr; Volver a colores</button>
+        <h4 class="font-serif gold-text font-bold text-lg mb-3">${c.nombre}</h4>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+          ${fotos.map(f => `<img src="${f}" alt="${c.nombre}" class="w-full rounded-lg bg-white/5 object-contain max-h-80" />`).join('')}
+        </div>
+        <div class="flex items-center justify-center gap-2 mb-4">
+          <button data-genero-matriz="M" class="genero-btn ${generoMatrizActivo === 'M' ? 'active' : ''} px-4 py-1.5 rounded-full border gold-border text-xs font-semibold text-[#d4af37] hover:bg-[#d4af37] hover:text-black transition">Talla Caballero</button>
+          <button data-genero-matriz="W" class="genero-btn ${generoMatrizActivo === 'W' ? 'active' : ''} px-4 py-1.5 rounded-full border gold-border text-xs font-semibold text-[#d4af37] hover:bg-[#d4af37] hover:text-black transition">Talla Dama</button>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead><tr class="text-left text-gray-500 border-b border-[#3a2f12]">
+              <th class="py-1.5 pr-3">Talla (${generoMatrizActivo === 'M' ? 'Caballero' : 'Dama'})</th>
+              <th class="py-1.5">Precio</th>
+            </tr></thead>
+            <tbody>
+              ${filas.map(fila => `
+                <tr class="border-b border-[#3a2f12]/50">
+                  <td class="py-1.5 pr-3 text-gray-200">${fila.tallaMostrada}</td>
+                  <td class="py-1.5 text-[#d4af37] font-semibold">${(() => { const p = calcularPrecioFinal({ costoUSD: fila.usd }); return p ? '₡' + p.toLocaleString('es-CR') : 'Consultar'; })()}</td>
+                </tr>`).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `;
+
+    document.querySelector('[data-volver-grid]').addEventListener('click', () => renderGridColores(modelo, marca));
+    document.querySelectorAll('[data-genero-matriz]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        generoMatrizActivo = btn.dataset.generoMatriz;
+        renderDetalleColorway(modelo, marca, i);
+      });
+    });
   }
 
   function cerrarColores() {
@@ -301,9 +601,41 @@
   function renderCatalogo() {
     MODELOS_PLANOS = []; // se reconstruye en cada render para que los indices del modal cuadren
     const base = marcasDeLinea();
-    const marcas = marcaActiva === 'Todas'
+    const porMarcaDeFiltro = marcaActiva === 'Todas'
       ? base
       : base.filter(m => m.marca === marcaActiva);
+
+    // Filtro de precio: si el slider esta movido del rango completo, solo
+    // se muestran modelos con precio CONOCIDO dentro de ese rango (un
+    // modelo "precio pendiente" no se puede garantizar que entre, asi que
+    // se oculta mientras el filtro este activo). Si el slider esta en su
+    // posicion completa (todo el catalogo), se muestra todo como siempre.
+    const filtroPrecioActivo = precioMinActivo > precioRangoGlobal.min || precioMaxActivo < precioRangoGlobal.max;
+    const filtroTallaActivo = tallaActiva !== null;
+
+    function modeloPasaFiltros(mod) {
+      if (filtroPrecioActivo) {
+        const p = calcularPrecioFinal(mod);
+        if (!p || p < precioMinActivo || p > precioMaxActivo) return false;
+      }
+      if (filtroTallaActivo && !modeloTieneTalla(mod, tallaActiva)) return false;
+      return true;
+    }
+
+    // Aplicamos el filtro por marca y nos quedamos solo con las marcas que
+    // todavia tengan al menos 1 modelo despues de filtrar -- si no, una
+    // marca aparece vacia y es mas confuso que simplemente no mostrarla.
+    const marcas = porMarcaDeFiltro
+      .map(marca => ({ ...marca, modelos: marca.modelos.filter(modeloPasaFiltros) }))
+      .filter(marca => marca.modelos.length > 0);
+
+    if (!marcas.length) {
+      catalogoEl.innerHTML = `
+        <p class="text-center text-gray-500 text-sm py-10">
+          No hay modelos que coincidan con ese precio y/o talla. Probá ampliando el rango.
+        </p>`;
+      return;
+    }
 
     // Vista "Todas las marcas": cada marca arranca colapsada (menos la
     // primera) y hay que desplegarla para ver sus modelos -- mismo patron
@@ -323,6 +655,7 @@
         return `
           <section>
             <div class="flex items-center gap-3 mb-5">
+              <div class="w-7 h-7 text-[#d4af37] flex-shrink-0">${ICONOS_MARCA[marca.marca] || ''}</div>
               <h2 class="text-2xl font-serif gold-text font-bold">${marca.marca}</h2>
               ${marca.sugerido ? `<span class="suggested-badge text-[10px] uppercase tracking-wide text-black font-bold px-2 py-0.5 rounded-full">Marca sugerida</span>` : ''}
               <div class="flex-1 h-px bg-[#3a2f12]"></div>
@@ -334,7 +667,10 @@
       return `
         <details class="card-shoe rounded-xl px-4 py-3">
           <summary class="cursor-pointer select-none font-serif gold-text font-bold text-lg flex items-center justify-between">
-            <span>${marca.marca} ${marca.sugerido ? `<span class="suggested-badge text-[10px] uppercase tracking-wide text-black font-bold px-2 py-0.5 rounded-full ml-2">Marca sugerida</span>` : ''}</span>
+            <span class="flex items-center gap-2.5">
+              <span class="w-6 h-6 text-[#d4af37] flex-shrink-0">${ICONOS_MARCA[marca.marca] || ''}</span>
+              ${marca.marca} ${marca.sugerido ? `<span class="suggested-badge text-[10px] uppercase tracking-wide text-black font-bold px-2 py-0.5 rounded-full ml-2">Marca sugerida</span>` : ''}
+            </span>
             ${pildoraDesplegar(marca.modelos.length, 'modelo')}
           </summary>
           <div class="mt-4">${grid}</div>
@@ -415,6 +751,8 @@
   renderPasosCompra();
   renderLineas();
   renderFiltros();
+  renderFiltroPrecio();
+  renderFiltroTallas();
   renderCatalogo();
   renderCompras();
 </script>
