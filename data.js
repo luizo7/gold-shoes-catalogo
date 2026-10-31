@@ -158,6 +158,16 @@ function calcularPrecioFinal(modelo) {
 // no son representativas de lo que paga un cliente adulto.
 function obtenerCostoBaseUSD(modelo) {
   if (Array.isArray(modelo.colorways) && modelo.colorways.length > 0) {
+    // Si el modelo tiene colorways con tabla de tallas REAL (StockX), el
+    // "Desde" se calcula con el precio MINIMO encontrado en esas tablas --
+    // no un promedio -- asi el numero que se muestra siempre corresponde a
+    // una talla que de verdad existe a ese precio, nunca es un estimado
+    // inalcanzable. Pedido de Luis: que el "Desde" refleje un precio real.
+    const costosReales = modelo.colorways
+      .filter((c) => !c.esNino && Array.isArray(c.tablaTallas))
+      .flatMap((c) => c.tablaTallas.map((f) => f.usd));
+    if (costosReales.length) return Math.min(...costosReales);
+
     const costos = modelo.colorways
       .filter((c) => !c.esNino)
       .map((c) => c.costoUSD)
