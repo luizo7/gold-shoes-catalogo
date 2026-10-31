@@ -105,7 +105,7 @@ const CONFIG = {
   // envioColones: costo fijo de envio en colones, SE SUMA POR CADA PAR.
   // Si tu envio es por pedido completo y no por par, avisale a Ziggy para
   // cambiar la formula.
-  envioColones: 10000,
+  envioColones: 20000,
   // precioMinimo: ningun tenis se vende por debajo de este precio en colones,
   // sin importar que tan barato salga el calculo (piso de precio).
   precioMinimo: 60000,
