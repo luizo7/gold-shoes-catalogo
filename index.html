@@ -733,8 +733,8 @@
                         <div class="grid ${venta.fotos.length > 1 ? 'grid-cols-2' : 'grid-cols-1'} gap-1.5">
                           ${venta.fotos.map(f => `<img src="${f}" alt="${modelo}" class="w-full h-44 sm:h-52 object-cover rounded" />`).join('')}
                         </div>
-                        <p class="text-[11px] text-gray-500 mt-2">${venta.comentario || ''}</p>
-                        <p class="text-[10px] text-gray-600">${venta.fecha || ''}</p>
+                        <p class="text-amber-400 text-xs mt-2" aria-label="${venta.resena ? venta.resena.estrellas : 5} de 5 estrellas">${'&#9733;'.repeat(venta.resena ? venta.resena.estrellas : 5)}${'&#9734;'.repeat(5 - (venta.resena ? venta.resena.estrellas : 5))}</p>
+                        <p class="text-[11px] text-gray-400 italic">${venta.resena ? `"${venta.resena.texto}"` : ''}</p>
                       </div>
                     `).join('')}
                   </div>

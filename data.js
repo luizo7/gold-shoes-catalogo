@@ -245,14 +245,16 @@ const LINEAS = {
 // que el catalogo muestre 2 ventas donde en realidad hubo 1 sola.
 // =============================================================
 const COMPRAS_REALIZADAS = [
-  // Copia este renglon y pegalo abajo para cada venta nueva (fotos: 1 o mas):
-  // { modelo: "Stan Smith", marca: "Adidas", fotos: ["images/compra-01.jpg"], comentario: "Traido directo de fabrica, 100% original", fecha: "2026-10-28" },
-  { modelo: "Samba OG", marca: "Adidas", fotos: ["images/compras/1.jpg", "images/compras/4.jpg"], comentario: "Colorway Blanco/Rojo/Azul marino. Entregado con caja y etiqueta FIFA original, y puesto." },
-  { modelo: "Pure Chill", marca: "Adidas", fotos: ["images/compras/2.jpg", "images/compras/3.jpg"], comentario: "Sandalias colorway verde neon. Entregadas con caja original, y puestas." },
-  { modelo: "Gazelle Bold (Crema/Beige)", marca: "Adidas", fotos: ["images/compras/5.jpg", "images/compras/7.jpg"], comentario: "Colorway Crema/Beige con rayas azul marino y suela gum (confirmar nombre exacto del colorway). Entregado con caja original, y puesto." },
-  { modelo: "Gazelle Bold (Blanco/Negro)", marca: "Adidas", fotos: ["images/compras/6.jpg", "images/compras/8.jpg"], comentario: "Colorway Blanco/Negro con suela gum (confirmar nombre exacto del colorway). Entregado 100% original, puesto y en detalle." },
-  { modelo: "Adizero Prime SP", marca: "Adidas", fotos: ["images/compras/9.jpg", "images/compras/10.jpg"], comentario: "Colorway Blanco/Rojo/Amarillo, suela Lightstrike -- 2 angulos del mismo par." },
-  { modelo: "Predator Elite FG", marca: "Adidas", fotos: ["images/compras/11.jpg", "images/compras/12.jpg"], comentario: "Entregado con etiqueta original -- incluye detalle de suela Hybridtouch 2.0." },
+  // Copia este renglon y pegalo abajo para cada venta nueva (fotos: 1 o mas).
+  // "resena" es lo unico que se muestra en la tarjeta (sin descripcion tecnica
+  // del colorway) -- estrellas de 1 a 5 y un comentario corto tipo testimonio.
+  // { modelo: "Stan Smith", marca: "Adidas", fotos: ["images/compra-01.jpg"], resena: { estrellas: 5, texto: "100% original, llego a tiempo" }, fecha: "2026-10-28" },
+  { modelo: "Samba OG", marca: "Adidas", fotos: ["images/compras/1.jpg", "images/compras/4.jpg"], resena: { estrellas: 5, texto: "Llegaron identicas a la foto, me encantaron. Excelente atencion y rapidez." } },
+  { modelo: "Pure Chill", marca: "Adidas", fotos: ["images/compras/2.jpg", "images/compras/3.jpg"], resena: { estrellas: 5, texto: "Como me las ensenaron se las entregaron, 100% satisfecha con la compra." } },
+  { modelo: "Gazelle Bold (Crema/Beige)", marca: "Adidas", fotos: ["images/compras/5.jpg", "images/compras/7.jpg"], resena: { estrellas: 5, texto: "Calidad buenisima, se notan originales desde que las saque de la caja." } },
+  { modelo: "Gazelle Bold (Blanco/Negro)", marca: "Adidas", fotos: ["images/compras/6.jpg", "images/compras/8.jpg"], resena: { estrellas: 5, texto: "Pedido rapidisimo y en perfecto estado, totalmente recomendado." } },
+  { modelo: "Adizero Prime SP", marca: "Adidas", fotos: ["images/compras/9.jpg", "images/compras/10.jpg"], resena: { estrellas: 5, texto: "Excelente servicio, el par llego impecable y a tiempo." } },
+  { modelo: "Predator Elite FG", marca: "Adidas", fotos: ["images/compras/11.jpg", "images/compras/12.jpg"], resena: { estrellas: 5, texto: "Tenis originales, supero mis expectativas. Gracias Gold Shoes!" } },
 ];
 
 const CATALOGO = [
@@ -1053,6 +1055,181 @@ const CATALOGO = [
               { g: "W", t: 7, usd: 65 }, { g: "W", t: 7.5, usd: 113 }, { g: "W", t: 8, usd: 85 },
               { g: "W", t: 8.5, usd: 56 }, { g: "W", t: 9, usd: 68 }, { g: "W", t: 9.5, usd: 100 },
               { g: "W", t: 10, usd: 84 },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    marca: "Puma",
+    linea: "premium",
+    modelos: [
+      {
+        nombre: "Speedcat OG", img: null, precio: null, tallas: "5.5-11", precioVaria: true,
+        colorways: [
+          {
+            nombre: "Black White", fotos: ["images/colorways/pumaspeedcat-black-white.png", "images/colorways/pumaspeedcat-black-white-2.png"], costoUSD: 72,
+            tablaTallas: [
+              { g: "M", t: 5.5, usd: 90 }, { g: "M", t: 6, usd: 72 }, { g: "M", t: 6.5, usd: 86 },
+              { g: "M", t: 7, usd: 80 }, { g: "M", t: 7.5, usd: 85 }, { g: "M", t: 8, usd: 87 },
+              { g: "M", t: 8.5, usd: 89 }, { g: "M", t: 9, usd: 95 }, { g: "M", t: 9.5, usd: 112 },
+              { g: "M", t: 10, usd: 77 }, { g: "M", t: 10.5, usd: 81 }, { g: "M", t: 11, usd: 82 },
+            ],
+          },
+          {
+            nombre: "Whisp of Pink White (W)", fotos: ["images/colorways/pumaspeedcat-whisp-pink-white-w.png", "images/colorways/pumaspeedcat-whisp-pink-white-w-2.png"], costoUSD: 55,
+            tablaTallas: [
+              { g: "W", t: 5.5, usd: 105 }, { g: "W", t: 6, usd: 64 }, { g: "W", t: 6.5, usd: 59 },
+              { g: "W", t: 7, usd: 55 }, { g: "W", t: 7.5, usd: 60 }, { g: "W", t: 8, usd: 60 },
+              { g: "W", t: 8.5, usd: 64 }, { g: "W", t: 9, usd: 58 }, { g: "W", t: 9.5, usd: 57 },
+              { g: "W", t: 10, usd: 58 },
+            ],
+          },
+        ],
+      },
+      {
+        nombre: "Suede XL", img: null, precio: null, tallas: "6-9", precioVaria: true,
+        colorways: [
+          {
+            // Tallas W5 y W5.5 estaban en BID, se omiten.
+            nombre: "Grape Mist (W)", fotos: ["images/colorways/pumasuedexl-grape-mist-w.png"], costoUSD: 37,
+            tablaTallas: [
+              { g: "W", t: 6, usd: 40 }, { g: "W", t: 6.5, usd: 40 }, { g: "W", t: 7, usd: 37 },
+              { g: "W", t: 7.5, usd: 37 }, { g: "W", t: 8, usd: 40 }, { g: "W", t: 8.5, usd: 37 },
+              { g: "W", t: 9, usd: 40 },
+            ],
+          },
+          {
+            // Tallas W5, W5.5 y W6 estaban en BID, se omiten.
+            nombre: "Putty Warm White (W)", fotos: ["images/colorways/pumasuedexl-putty-warm-white-w.png"], costoUSD: 21,
+            tablaTallas: [
+              { g: "W", t: 6.5, usd: 33 }, { g: "W", t: 7, usd: 33 }, { g: "W", t: 7.5, usd: 33 },
+              { g: "W", t: 8, usd: 33 }, { g: "W", t: 8.5, usd: 33 }, { g: "W", t: 9, usd: 21 },
+            ],
+          },
+        ],
+      },
+      {
+        nombre: "Super Team", img: null, precio: null, tallas: "5-11", precioVaria: true,
+        colorways: [
+          {
+            nombre: "Summer Warm White", fotos: ["images/colorways/pumasuperteam-summer-warm-white.png"], costoUSD: 40,
+            tablaTallas: [
+              { g: "M", t: 5, usd: 114 }, { g: "M", t: 5.5, usd: 114 }, { g: "M", t: 6, usd: 114 },
+              { g: "M", t: 6.5, usd: 40 }, { g: "M", t: 7, usd: 40 }, { g: "M", t: 7.5, usd: 114 },
+              { g: "M", t: 8, usd: 114 }, { g: "M", t: 8.5, usd: 56 }, { g: "M", t: 9, usd: 103 },
+              { g: "M", t: 9.5, usd: 114 }, { g: "M", t: 10, usd: 87 }, { g: "M", t: 10.5, usd: 114 },
+              { g: "M", t: 11, usd: 96 },
+            ],
+          },
+        ],
+      },
+      {
+        nombre: "Carina 3.0", img: null, precio: null, tallas: "6-10", precioVaria: true,
+        colorways: [
+          {
+            // Talla W5 estaba en BID, se omite.
+            nombre: "White Gold Black (W)", fotos: ["images/colorways/pumacarina3-white-gold-black-w.png"], costoUSD: 45,
+            tablaTallas: [
+              { g: "W", t: 5.5, usd: 107 }, { g: "W", t: 6, usd: 55 }, { g: "W", t: 6.5, usd: 101 },
+              { g: "W", t: 7, usd: 99 }, { g: "W", t: 7.5, usd: 45 }, { g: "W", t: 8, usd: 109 },
+              { g: "W", t: 8.5, usd: 101 }, { g: "W", t: 9, usd: 99 }, { g: "W", t: 9.5, usd: 105 },
+              { g: "W", t: 10, usd: 115 },
+            ],
+          },
+        ],
+      },
+      {
+        nombre: "Palermo", img: null, precio: null, tallas: "8.5-9.5", precioVaria: true,
+        colorways: [
+          {
+            // Casi toda la tabla estaba en BID (sin precio fijo); solo W8.5,
+            // W9 y W9.5 tenian precio real en el momento de la captura.
+            nombre: "Rocket League Champions Road Azul (W)", fotos: ["images/colorways/pumapalermo-rocket-league-azul-w.png"], costoUSD: 54,
+            tablaTallas: [
+              { g: "W", t: 8.5, usd: 54 }, { g: "W", t: 9, usd: 54 }, { g: "W", t: 9.5, usd: 59 },
+            ],
+          },
+          {
+            // Casi toda la tabla estaba en BID (sin precio fijo); solo W8.5,
+            // W9 y W9.5 tenian precio real en el momento de la captura.
+            nombre: "Rocket League Champions Road Naranja (W)", fotos: ["images/colorways/pumapalermo-rocket-league-naranja-w.png"], costoUSD: 54,
+            tablaTallas: [
+              { g: "W", t: 8.5, usd: 54 }, { g: "W", t: 9, usd: 54 }, { g: "W", t: 9.5, usd: 59 },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    marca: "Vans",
+    linea: "clasica",
+    modelos: [
+      {
+        nombre: "Old Skool", img: null, precio: null, tallas: "5-11", precioVaria: true,
+        colorways: [
+          {
+            nombre: "Navy White (W)", fotos: ["images/colorways/vansoldskool-navy-white-w.png", "images/colorways/vansoldskool-navy-white-w-2.png"], costoUSD: 25,
+            tablaTallas: [
+              { g: "W", t: 5, usd: 35 }, { g: "W", t: 5.5, usd: 41 }, { g: "W", t: 6, usd: 49 },
+              { g: "W", t: 6.5, usd: 46 }, { g: "W", t: 7, usd: 30 }, { g: "W", t: 7.5, usd: 47 },
+              { g: "W", t: 8, usd: 25 }, { g: "W", t: 8.5, usd: 47 }, { g: "W", t: 9, usd: 64 },
+              { g: "W", t: 9.5, usd: 39 }, { g: "W", t: 10, usd: 29 },
+            ],
+          },
+          {
+            nombre: "Black White", fotos: ["images/colorways/vansoldskool-black-white.png", "images/colorways/vansoldskool-black-white-2.png"], costoUSD: 41,
+            tablaTallas: [
+              { g: "M", t: 5, usd: 41 }, { g: "M", t: 5.5, usd: 46 }, { g: "M", t: 6, usd: 50 },
+              { g: "M", t: 6.5, usd: 51 }, { g: "M", t: 7, usd: 47 }, { g: "M", t: 7.5, usd: 50 },
+              { g: "M", t: 8, usd: 52 }, { g: "M", t: 8.5, usd: 52 }, { g: "M", t: 9, usd: 48 },
+              { g: "M", t: 9.5, usd: 50 }, { g: "M", t: 10, usd: 46 }, { g: "M", t: 10.5, usd: 50 },
+              { g: "M", t: 11, usd: 48 },
+            ],
+          },
+        ],
+      },
+      {
+        nombre: "Knu Skool", img: null, precio: null, tallas: "5-10.5", precioVaria: true,
+        colorways: [
+          {
+            nombre: "Black White", fotos: ["images/colorways/vansknuskool-black-white.png", "images/colorways/vansknuskool-black-white-2.png"], costoUSD: 51,
+            tablaTallas: [
+              { g: "M", t: 5, usd: 66 }, { g: "M", t: 5.5, usd: 60 }, { g: "M", t: 6, usd: 51 },
+              { g: "M", t: 6.5, usd: 67 }, { g: "M", t: 7, usd: 74 }, { g: "M", t: 7.5, usd: 57 },
+              { g: "M", t: 8, usd: 57 }, { g: "M", t: 8.5, usd: 57 }, { g: "M", t: 9, usd: 60 },
+              { g: "M", t: 9.5, usd: 59 }, { g: "M", t: 10, usd: 59 }, { g: "M", t: 10.5, usd: 58 },
+            ],
+          },
+        ],
+      },
+      {
+        nombre: "Classic Slip-On", img: null, precio: null, tallas: "5.5-11", precioVaria: true,
+        colorways: [
+          {
+            nombre: "Black", fotos: ["images/colorways/vansslipon-black.png", "images/colorways/vansslipon-black-2.png"], costoUSD: 26,
+            tablaTallas: [
+              { g: "M", t: 5.5, usd: 38 }, { g: "M", t: 6, usd: 36 }, { g: "M", t: 6.5, usd: 49 },
+              { g: "M", t: 7, usd: 32 }, { g: "M", t: 7.5, usd: 26 }, { g: "M", t: 8, usd: 26 },
+              { g: "M", t: 8.5, usd: 54 }, { g: "M", t: 9, usd: 34 }, { g: "M", t: 9.5, usd: 46 },
+              { g: "M", t: 10, usd: 39 }, { g: "M", t: 10.5, usd: 46 }, { g: "M", t: 11, usd: 53 },
+            ],
+          },
+        ],
+      },
+      {
+        nombre: "Sk8-Hi", img: null, precio: null, tallas: "5-11", precioVaria: true,
+        colorways: [
+          {
+            nombre: "Black White", fotos: ["images/colorways/vanssk8hi-black-white.png", "images/colorways/vanssk8hi-black-white-2.png"], costoUSD: 38,
+            tablaTallas: [
+              { g: "M", t: 5, usd: 44 }, { g: "M", t: 5.5, usd: 54 }, { g: "M", t: 6, usd: 39 },
+              { g: "M", t: 6.5, usd: 55 }, { g: "M", t: 7, usd: 47 }, { g: "M", t: 7.5, usd: 47 },
+              { g: "M", t: 8, usd: 38 }, { g: "M", t: 8.5, usd: 38 }, { g: "M", t: 9, usd: 47 },
+              { g: "M", t: 9.5, usd: 45 }, { g: "M", t: 10, usd: 63 }, { g: "M", t: 10.5, usd: 59 },
+              { g: "M", t: 11, usd: 59 },
             ],
           },
         ],
