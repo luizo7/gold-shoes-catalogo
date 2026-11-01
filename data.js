@@ -831,12 +831,6 @@ const CATALOGO = [
         ],
       },
       {
-        nombre: "1000", img: null, precio: null, tallas: "",
-        costoUSD: 53, precioVaria: true,
-        colorways: [
-        ],
-      },
-      {
         nombre: "2002R", img: null, precio: null, tallas: "4-12",
         costoUSD: 69, precioVaria: true,
         colorways: [
@@ -879,12 +873,6 @@ const CATALOGO = [
           ],
         },
       ] },
-      {
-        nombre: "990", img: null, precio: null, tallas: "",
-        costoUSD: 105, precioVaria: true,
-        colorways: [
-        ],
-      },
       { nombre: "327", img: null, precio: null, tallas: "3.5-12.5", precioVaria: true, colorways: [
         {
           nombre: "Moonbeam Classic Burgundy (W)", fotos: ["images/colorways/nb327-moonbeam-classic-burgundy-w.png", "images/colorways/nb327-moonbeam-classic-burgundy-w-2.png"], costoUSD: 66,
@@ -946,108 +934,6 @@ const CATALOGO = [
           },
         ],
       },
-      {
-        nombre: "204L", img: null, precio: null, tallas: "",
-        costoUSD: 53, precioVaria: true, sugerido: true,
-        colorways: [
-        ],
-      },
-      { nombre: "237", img: null, precio: null, tallas: "", costoUSD: 54, sugerido: true },
-      { nombre: "57/40", img: null, precio: null, tallas: "", costoUSD: 59, sugerido: true },
-      { nombre: "1906A", img: null, precio: null, tallas: "", costoUSD: 119, sugerido: true },
-      { nombre: "1906R", img: null, precio: null, tallas: "", costoUSD: 92, sugerido: true },
-      { nombre: "993", img: null, precio: null, tallas: "", costoUSD: 117, sugerido: true },
-    ],
-  },
-  {
-    marca: "Nike",
-    linea: "premium",
-    modelos: [
-      { nombre: "Air Force", img: null, precio: null, tallas: "", precioVaria: true, colorways: [
-      ] },
-      { nombre: "Air Max", img: null, precio: null, tallas: "", precioVaria: true, colorways: [
-      ] },
-      { nombre: "Blazer", img: null, precio: null, tallas: "", precioVaria: true, colorways: [
-      ] },
-      { nombre: "Dunk", img: null, precio: null, tallas: "", precioVaria: true, colorways: [
-      ] },
-      { nombre: "Cortez", img: null, precio: null, tallas: "", precioVaria: true, colorways: [
-      ] },
-    ],
-  },
-  {
-    marca: "Hoka",
-    linea: "premium",
-    modelos: [
-      { nombre: "Bondi", img: null, precio: null, tallas: "" },
-      { nombre: "Clifton", img: null, precio: null, tallas: "" },
-      { nombre: "Primo", img: null, precio: null, tallas: "" },
-      { nombre: "Tor Ultra", img: null, precio: null, tallas: "" },
-    ],
-  },
-  {
-    marca: "On",
-    linea: "premium",
-    modelos: [
-      { nombre: "Cloud X3", img: null, precio: null, tallas: "" },
-      { nombre: "Cloud 5", img: null, precio: null, tallas: "" },
-      { nombre: "Cloudmonster", img: null, precio: null, tallas: "" },
-      { nombre: "Cloudnova", img: null, precio: null, tallas: "" },
-      { nombre: "Cloudtilt", img: null, precio: null, tallas: "" },
-    ],
-  },
-  {
-    marca: "Puma",
-    linea: "premium",
-    modelos: [
-      { nombre: "Forum", img: null, precio: null, tallas: "" },
-      { nombre: "Future", img: null, precio: null, tallas: "" },
-      { nombre: "King", img: null, precio: null, tallas: "" },
-      { nombre: "LaMelo Ball", img: null, precio: null, tallas: "" },
-      { nombre: "Speedcat", img: null, precio: null, tallas: "" },
-      { nombre: "Ultra", img: null, precio: null, tallas: "" },
-      { nombre: "Suede", img: null, precio: null, tallas: "" },
-    ],
-  },
-
-  // -------- SUGERENCIAS DE ZIGGY (marcas nuevas, no estaban en tu lista) --------
-  {
-    marca: "Asics",
-    sugerido: true,
-    linea: "premium",
-    modelos: [
-      { nombre: "Gel-1130", img: null, precio: null, tallas: "", sugerido: true },
-      { nombre: "Gel-Kayano 14", img: null, precio: null, tallas: "", sugerido: true },
-      { nombre: "Gel-NYC", img: null, precio: null, tallas: "", sugerido: true },
-    ],
-  },
-  {
-    marca: "Vans",
-    sugerido: true,
-    linea: "clasica",
-    modelos: [
-      { nombre: "Old Skool", img: null, precio: null, tallas: "", sugerido: true },
-      { nombre: "Sk8-Hi", img: null, precio: null, tallas: "", sugerido: true },
-      { nombre: "Authentic", img: null, precio: null, tallas: "", sugerido: true },
-    ],
-  },
-  {
-    marca: "Converse",
-    sugerido: true,
-    linea: "clasica",
-    modelos: [
-      { nombre: "Chuck Taylor All Star", img: null, precio: null, tallas: "", sugerido: true },
-      { nombre: "Chuck 70", img: null, precio: null, tallas: "", sugerido: true },
-    ],
-  },
-  {
-    marca: "Skechers",
-    sugerido: true,
-    linea: "clasica",
-    modelos: [
-      { nombre: "Max Cushioning", img: null, precio: null, tallas: "", sugerido: true },
-      { nombre: "D'Lites", img: null, precio: null, tallas: "", sugerido: true },
-      { nombre: "Go Walk", img: null, precio: null, tallas: "", sugerido: true },
     ],
   },
 ];
