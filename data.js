@@ -936,4 +936,196 @@ const CATALOGO = [
       },
     ],
   },
+  {
+    marca: "Nike",
+    linea: "premium",
+    modelos: [
+      {
+        nombre: "Air Force 1", img: null, precio: null, tallas: "5-13.5", precioVaria: true,
+        colorways: [
+          {
+            // OJO: M5 y M5.5 tienen saltos de precio muy raros ($304 y $306)
+            // comparado con el resto de la tabla -- posible error de StockX o
+            // talla rarisima, revisar antes de confiar en esos dos precios.
+            nombre: "White", fotos: ["images/colorways/nikeaf1-white.png", "images/colorways/nikeaf1-white-2.png"], costoUSD: 67,
+            tablaTallas: [
+              { g: "M", t: 5, usd: 304 }, { g: "M", t: 5.5, usd: 306 }, { g: "M", t: 6, usd: 91 },
+              { g: "M", t: 6.5, usd: 106 }, { g: "M", t: 7, usd: 74 }, { g: "M", t: 7.5, usd: 67 },
+              { g: "M", t: 8, usd: 75 }, { g: "M", t: 8.5, usd: 76 }, { g: "M", t: 9, usd: 72 },
+              { g: "M", t: 9.5, usd: 78 }, { g: "M", t: 10, usd: 76 }, { g: "M", t: 10.5, usd: 84 },
+              { g: "M", t: 11, usd: 74 }, { g: "M", t: 11.5, usd: 80 }, { g: "M", t: 12, usd: 75 },
+              { g: "M", t: 12.5, usd: 88 }, { g: "M", t: 13, usd: 84 },
+            ],
+          },
+          {
+            nombre: "White Black Pebbled Leather", fotos: ["images/colorways/nikeaf1-white-black-pebbled-leather.png", "images/colorways/nikeaf1-white-black-pebbled-leather-2.png"], costoUSD: 73,
+            tablaTallas: [
+              { g: "M", t: 6, usd: 105 }, { g: "M", t: 6.5, usd: 97 }, { g: "M", t: 7, usd: 87 },
+              { g: "M", t: 7.5, usd: 74 }, { g: "M", t: 8, usd: 88 }, { g: "M", t: 8.5, usd: 73 },
+              { g: "M", t: 9, usd: 93 }, { g: "M", t: 9.5, usd: 100 }, { g: "M", t: 10, usd: 88 },
+              { g: "M", t: 10.5, usd: 92 }, { g: "M", t: 11, usd: 93 }, { g: "M", t: 11.5, usd: 88 },
+            ],
+          },
+          {
+            nombre: "White Swoosh Panda", fotos: ["images/colorways/nikeaf1-white-swoosh-panda.png", "images/colorways/nikeaf1-white-swoosh-panda-2.png"], costoUSD: 78,
+            tablaTallas: [
+              { g: "M", t: 6, usd: 125 }, { g: "M", t: 6.5, usd: 138 }, { g: "M", t: 7, usd: 98 },
+              { g: "M", t: 7.5, usd: 78 }, { g: "M", t: 8, usd: 98 }, { g: "M", t: 8.5, usd: 101 },
+              { g: "M", t: 9, usd: 101 }, { g: "M", t: 9.5, usd: 90 }, { g: "M", t: 10, usd: 79 },
+              { g: "M", t: 10.5, usd: 83 }, { g: "M", t: 11, usd: 79 }, { g: "M", t: 11.5, usd: 91 },
+            ],
+          },
+          {
+            nombre: "LV8 White Black", fotos: ["images/colorways/nikeaf1-lv8-white-black.png", "images/colorways/nikeaf1-lv8-white-black-2.png"], costoUSD: 81,
+            tablaTallas: [
+              { g: "M", t: 6, usd: 172 }, { g: "M", t: 6.5, usd: 232 }, { g: "M", t: 7, usd: 145 },
+              { g: "M", t: 7.5, usd: 111 }, { g: "M", t: 8, usd: 86 }, { g: "M", t: 8.5, usd: 84 },
+              { g: "M", t: 9, usd: 85 }, { g: "M", t: 9.5, usd: 81 }, { g: "M", t: 10, usd: 90 },
+              { g: "M", t: 10.5, usd: 91 }, { g: "M", t: 11, usd: 120 }, { g: "M", t: 11.5, usd: 140 },
+            ],
+          },
+        ],
+      },
+      {
+        nombre: "Air Max", img: null, precio: null, tallas: "3.5-10.5", precioVaria: true,
+        colorways: [
+          {
+            nombre: "90 Iron Grey", fotos: ["images/colorways/nikeairmax90-iron-grey.png", "images/colorways/nikeairmax90-iron-grey-2.png"], costoUSD: 65,
+            tablaTallas: [
+              { g: "M", t: 6, usd: 109 }, { g: "M", t: 6.5, usd: 142 }, { g: "M", t: 7, usd: 65 },
+              { g: "M", t: 7.5, usd: 66 }, { g: "M", t: 8, usd: 65 }, { g: "M", t: 8.5, usd: 69 },
+              { g: "M", t: 9, usd: 68 }, { g: "M", t: 9.5, usd: 79 }, { g: "M", t: 10, usd: 66 },
+              { g: "M", t: 10.5, usd: 79 }, { g: "M", t: 11, usd: 66 }, { g: "M", t: 11.5, usd: 97 },
+            ],
+          },
+          {
+            nombre: "1 White Black Neutral Grey (W)", fotos: ["images/colorways/nikeairmax1-white-black-neutral-grey-w.png", "images/colorways/nikeairmax1-white-black-neutral-grey-w-2.png"], costoUSD: 65,
+            tablaTallas: [
+              { g: "W", t: 3.5, usd: 150 }, { g: "W", t: 4, usd: 186 }, { g: "W", t: 4.5, usd: 146 },
+              { g: "W", t: 5, usd: 110 }, { g: "W", t: 5.5, usd: 81 }, { g: "W", t: 6, usd: 147 },
+              { g: "W", t: 6.5, usd: 69 }, { g: "W", t: 7, usd: 102 }, { g: "W", t: 7.5, usd: 65 },
+              { g: "W", t: 8, usd: 107 }, { g: "W", t: 8.5, usd: 96 }, { g: "W", t: 9, usd: 160 },
+              { g: "W", t: 9.5, usd: 146 }, { g: "W", t: 10, usd: 140 }, { g: "W", t: 10.5, usd: 165 },
+            ],
+          },
+        ],
+      },
+      {
+        nombre: "Blazer", img: null, precio: null, tallas: "3.5-12.5", precioVaria: true,
+        colorways: [
+          {
+            // OJO: M5.5 y M6.5 estaban en BID, se omiten.
+            nombre: "Low 77 Black White", fotos: ["images/colorways/nikeblazer-low77-black-white.png", "images/colorways/nikeblazer-low77-black-white-2.png"], costoUSD: 59,
+            tablaTallas: [
+              { g: "M", t: 6, usd: 94 }, { g: "M", t: 7, usd: 88 }, { g: "M", t: 7.5, usd: 67 },
+              { g: "M", t: 8, usd: 59 }, { g: "M", t: 8.5, usd: 75 }, { g: "M", t: 9, usd: 71 },
+              { g: "M", t: 9.5, usd: 65 }, { g: "M", t: 10, usd: 72 }, { g: "M", t: 10.5, usd: 80 },
+              { g: "M", t: 11, usd: 84 }, { g: "M", t: 11.5, usd: 82 }, { g: "M", t: 12, usd: 84 },
+            ],
+          },
+          {
+            nombre: "Low sacai Iron Grey", fotos: ["images/colorways/nikeblazer-low-sacai-iron-grey.png", "images/colorways/nikeblazer-low-sacai-iron-grey-2.png"], costoUSD: 46,
+            tablaTallas: [
+              { g: "M", t: 5, usd: 99 }, { g: "M", t: 5.5, usd: 89 }, { g: "M", t: 6, usd: 46 },
+              { g: "M", t: 6.5, usd: 110 }, { g: "M", t: 7, usd: 76 }, { g: "M", t: 7.5, usd: 80 },
+              { g: "M", t: 8, usd: 76 }, { g: "M", t: 8.5, usd: 131 }, { g: "M", t: 9, usd: 75 },
+              { g: "M", t: 9.5, usd: 76 }, { g: "M", t: 10, usd: 90 }, { g: "M", t: 10.5, usd: 88 },
+              { g: "M", t: 11, usd: 149 }, { g: "M", t: 11.5, usd: 106 }, { g: "M", t: 12, usd: 79 },
+            ],
+          },
+          {
+            // OJO: W5=$239 es un salto raro vs el resto de la tabla, revisar.
+            nombre: "Mid 77 White Black (W)", fotos: ["images/colorways/nikeblazer-mid77-white-black-w.png", "images/colorways/nikeblazer-mid77-white-black-w-2.png"], costoUSD: 68,
+            tablaTallas: [
+              { g: "W", t: 3.5, usd: 88 }, { g: "W", t: 4, usd: 68 }, { g: "W", t: 4.5, usd: 73 },
+              { g: "W", t: 5, usd: 239 }, { g: "W", t: 5.5, usd: 115 }, { g: "W", t: 6, usd: 102 },
+              { g: "W", t: 6.5, usd: 92 }, { g: "W", t: 7, usd: 94 }, { g: "W", t: 7.5, usd: 89 },
+              { g: "W", t: 8, usd: 81 }, { g: "W", t: 8.5, usd: 82 }, { g: "W", t: 9, usd: 89 },
+              { g: "W", t: 9.5, usd: 98 }, { g: "W", t: 10, usd: 92 }, { g: "W", t: 10.5, usd: 99 },
+            ],
+          },
+          {
+            // Varias tallas chicas (M4 a M5.5) estaban en BID, se omiten.
+            nombre: "SB Mid QS Supreme Denim", fotos: ["images/colorways/nikeblazer-sb-mid-supreme-denim.png", "images/colorways/nikeblazer-sb-mid-supreme-denim-2.png"], costoUSD: 55,
+            tablaTallas: [
+              { g: "M", t: 6, usd: 129 }, { g: "M", t: 6.5, usd: 200 }, { g: "M", t: 7, usd: 151 },
+              { g: "M", t: 7.5, usd: 98 }, { g: "M", t: 8, usd: 55 }, { g: "M", t: 8.5, usd: 55 },
+              { g: "M", t: 9, usd: 64 }, { g: "M", t: 9.5, usd: 82 }, { g: "M", t: 10, usd: 70 },
+              { g: "M", t: 10.5, usd: 79 }, { g: "M", t: 11, usd: 97 }, { g: "M", t: 11.5, usd: 125 },
+              { g: "M", t: 12, usd: 65 },
+            ],
+          },
+        ],
+      },
+      {
+        nombre: "Dunk", img: null, precio: null, tallas: "3.5-10.5", precioVaria: true,
+        colorways: [
+          {
+            // OJO: W3.5=$192 es un salto raro vs el resto de la tabla, revisar.
+            nombre: "Low Celtics (W)", fotos: ["images/colorways/nikedunk-low-celtics-w.png", "images/colorways/nikedunk-low-celtics-w-2.png"], costoUSD: 34,
+            tablaTallas: [
+              { g: "W", t: 3.5, usd: 192 }, { g: "W", t: 4, usd: 80 }, { g: "W", t: 4.5, usd: 80 },
+              { g: "W", t: 5, usd: 34 }, { g: "W", t: 5.5, usd: 80 }, { g: "W", t: 6, usd: 80 },
+              { g: "W", t: 6.5, usd: 70 }, { g: "W", t: 7, usd: 79 }, { g: "W", t: 7.5, usd: 125 },
+              { g: "W", t: 8, usd: 79 }, { g: "W", t: 8.5, usd: 60 }, { g: "W", t: 9, usd: 141 },
+              { g: "W", t: 9.5, usd: 59 }, { g: "W", t: 10, usd: 110 }, { g: "W", t: 10.5, usd: 80 },
+            ],
+          },
+          {
+            nombre: "Low Retro White Black Panda (W)", fotos: ["images/colorways/nikedunk-low-white-black-panda-w.png", "images/colorways/nikedunk-low-white-black-panda-w-2.png"], costoUSD: 36,
+            tablaTallas: [
+              { g: "W", t: 3.5, usd: 57 }, { g: "W", t: 4, usd: 61 }, { g: "W", t: 4.5, usd: 37 },
+              { g: "W", t: 5, usd: 36 }, { g: "W", t: 5.5, usd: 37 }, { g: "W", t: 6, usd: 39 },
+              { g: "W", t: 6.5, usd: 50 }, { g: "W", t: 7, usd: 49 }, { g: "W", t: 7.5, usd: 126 },
+              { g: "W", t: 8, usd: 95 }, { g: "W", t: 8.5, usd: 73 }, { g: "W", t: 9, usd: 73 },
+              { g: "W", t: 9.5, usd: 72 }, { g: "W", t: 10, usd: 54 }, { g: "W", t: 10.5, usd: 46 },
+            ],
+          },
+          {
+            // OJO: M7=$247 es un salto raro vs el resto de la tabla, revisar.
+            nombre: "Low Vast Grey Varsity Red", fotos: ["images/colorways/nikedunk-low-vast-grey-varsity-red.png", "images/colorways/nikedunk-low-vast-grey-varsity-red-2.png"], costoUSD: 50,
+            tablaTallas: [
+              { g: "M", t: 7, usd: 247 }, { g: "M", t: 7.5, usd: 126 }, { g: "M", t: 8, usd: 92 },
+              { g: "M", t: 8.5, usd: 88 }, { g: "M", t: 9, usd: 78 }, { g: "M", t: 9.5, usd: 100 },
+              { g: "M", t: 10, usd: 52 }, { g: "M", t: 10.5, usd: 80 }, { g: "M", t: 11, usd: 84 },
+              { g: "M", t: 11.5, usd: 65 }, { g: "M", t: 12, usd: 83 },
+            ],
+          },
+        ],
+      },
+      {
+        nombre: "Cortez", img: null, precio: null, tallas: "3.5-11.5", precioVaria: true,
+        colorways: [
+          {
+            nombre: "Forrest Gump (2024)", fotos: ["images/colorways/nikecortez-forrest-gump-2024.png", "images/colorways/nikecortez-forrest-gump-2024-2.png"], costoUSD: 57,
+            tablaTallas: [
+              { g: "M", t: 6, usd: 69 }, { g: "M", t: 6.5, usd: 139 }, { g: "M", t: 7, usd: 133 },
+              { g: "M", t: 7.5, usd: 60 }, { g: "M", t: 8, usd: 57 }, { g: "M", t: 8.5, usd: 82 },
+              { g: "M", t: 9, usd: 70 }, { g: "M", t: 9.5, usd: 84 }, { g: "M", t: 10, usd: 95 },
+              { g: "M", t: 10.5, usd: 88 }, { g: "M", t: 11, usd: 72 }, { g: "M", t: 11.5, usd: 67 },
+            ],
+          },
+          {
+            nombre: "White Black", fotos: ["images/colorways/nikecortez-white-black-2026.png", "images/colorways/nikecortez-white-black-2026-2.png"], costoUSD: 65,
+            tablaTallas: [
+              { g: "M", t: 6, usd: 159 }, { g: "M", t: 6.5, usd: 83 }, { g: "M", t: 7, usd: 94 },
+              { g: "M", t: 7.5, usd: 103 }, { g: "M", t: 8, usd: 65 }, { g: "M", t: 8.5, usd: 80 },
+              { g: "M", t: 9, usd: 76 }, { g: "M", t: 9.5, usd: 72 }, { g: "M", t: 10, usd: 74 },
+              { g: "M", t: 10.5, usd: 78 }, { g: "M", t: 11, usd: 79 }, { g: "M", t: 11.5, usd: 119 },
+            ],
+          },
+          {
+            nombre: "Nylon Black White (W)", fotos: ["images/colorways/nikecortez-nylon-black-white-w.png", "images/colorways/nikecortez-nylon-black-white-w-2.png"], costoUSD: 45,
+            tablaTallas: [
+              { g: "W", t: 3.5, usd: 115 }, { g: "W", t: 4, usd: 50 }, { g: "W", t: 4.5, usd: 59 },
+              { g: "W", t: 5, usd: 65 }, { g: "W", t: 5.5, usd: 45 }, { g: "W", t: 6, usd: 45 },
+              { g: "W", t: 6.5, usd: 63 }, { g: "W", t: 7, usd: 65 }, { g: "W", t: 7.5, usd: 113 },
+              { g: "W", t: 8, usd: 85 }, { g: "W", t: 8.5, usd: 56 }, { g: "W", t: 9, usd: 68 },
+              { g: "W", t: 9.5, usd: 100 }, { g: "W", t: 10, usd: 84 }, { g: "W", t: 10.5, usd: 79 },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 ];
