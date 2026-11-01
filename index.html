@@ -85,9 +85,13 @@
     <p class="text-center text-gray-500 text-sm mb-8">3 formas de pedir tu tenis -- elegí la que más te acomode</p>
     <div id="formasCotizar" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14"></div>
 
-    <h3 class="text-center text-xl font-serif gold-text font-bold mb-2">Del pedido a tu casa, en 4 pasos</h3>
-    <p class="text-center text-gray-500 text-sm mb-8">Así de simple funciona el proceso una vez que ya sabés qué querés</p>
-    <div id="pasosCompra" class="flex flex-col md:flex-row items-stretch gap-3 md:gap-0"></div>
+    <button id="togglePasosCompra" type="button" aria-expanded="false" aria-controls="pasosCompra"
+      class="w-full flex items-center justify-center gap-2 text-xl font-serif gold-text font-bold mb-2 py-1 hover:opacity-80 transition">
+      Del pedido a tu casa, en 4 pasos
+      <svg id="togglePasosIcono" class="w-5 h-5 transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6" /></svg>
+    </button>
+    <p class="text-center text-gray-500 text-sm mb-4">Tocá el título para ver el paso a paso</p>
+    <div id="pasosCompra" class="hidden flex-col md:flex-row items-stretch gap-3 md:gap-0 mb-8"></div>
   </section>
 
   <!-- SELECTOR DE LINEA -->
@@ -547,7 +551,7 @@
         <button data-volver-grid class="text-[#d4af37] text-sm font-semibold mb-4 hover:underline">&larr; Volver a colores</button>
         <h4 class="font-serif gold-text font-bold text-lg mb-3">${c.nombre}</h4>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
-          ${fotos.map(f => `<img src="${f}" alt="${c.nombre}" class="w-full rounded-lg bg-white/5 object-contain max-h-80" />`).join('')}
+          ${fotos.map(f => `<img src="${f}" alt="${c.nombre}" class="w-full aspect-square rounded-lg bg-white/5 object-contain" />`).join('')}
         </div>
         <div class="flex items-center justify-center gap-2 mb-4">
           <button data-genero-matriz="M" class="genero-btn ${generoMatrizActivo === 'M' ? 'active' : ''} px-4 py-1.5 rounded-full border gold-border text-xs font-semibold text-[#d4af37] hover:bg-[#d4af37] hover:text-black transition">Talla Caballero</button>
@@ -749,6 +753,21 @@
 
   renderFormasCotizar();
   renderPasosCompra();
+
+  // El bloque "Del pedido a tu casa" arranca cerrado (sobre todo pesa en
+  // celular, donde 4 tarjetas apiladas son una pared enorme antes de llegar
+  // al catalogo). Un toque en el titulo lo despliega/colapsa.
+  document.getElementById('togglePasosCompra').addEventListener('click', () => {
+    const panel = document.getElementById('pasosCompra');
+    const icono = document.getElementById('togglePasosIcono');
+    const boton = document.getElementById('togglePasosCompra');
+    const estaAbierto = panel.classList.contains('flex');
+    panel.classList.toggle('hidden', estaAbierto);
+    panel.classList.toggle('flex', !estaAbierto);
+    icono.style.transform = estaAbierto ? '' : 'rotate(180deg)';
+    boton.setAttribute('aria-expanded', String(!estaAbierto));
+  });
+
   renderLineas();
   renderFiltros();
   renderFiltroPrecio();
