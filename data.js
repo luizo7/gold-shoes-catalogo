@@ -95,7 +95,11 @@ const CONFIG = {
   // vienen de StockX en US). Rango 4-13 en medias tallas, que es el rango
   // adulto tipico. A cada modelo, en el campo "tallas", ponele el rango
   // que ofreces en US, ej: "tallas: \"7-11\"".
-  tallasDisponibles: [4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11, 11.5, 12, 12.5, 13],
+  // tallasDisponibles: chips del filtro global de arriba del catalogo.
+  // Se actualizo a las tallas que de verdad existen hoy en el catalogo
+  // (6-11), despues del recorte de tallas extremas sin stock real.
+  // Si agregas tallas nuevas al catalogo, actualiza este arreglo tambien.
+  tallasDisponibles: [6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11],
 
   // --- CALCULADORA DE PRECIOS ---
   // tipoCambio: cuantos colones vale 1 dolar. Cambialo cuando quieras.
