@@ -193,7 +193,23 @@
     return { min, max };
   }
 
+  // Antes esto solo miraba el rango declarado en modelo.tallas (ej "6-11"),
+  // que puede tener huecos (un modelo puede abarcar 6 a 11 pero no vender
+  // la 6.5 en ningun colorway) -- por eso el filtro "no restringia nada",
+  // casi todo caia dentro de rangos tan anchos. Ahora, si el modelo tiene
+  // tablaTallas real, se chequea que la talla EXISTA de verdad en algun
+  // colorway (sin importar genero, el chip de arriba es un numero unico).
   function modeloTieneTalla(modelo, talla) {
+    if (Array.isArray(modelo.colorways) && modelo.colorways.length) {
+      const tieneTablaTallas = modelo.colorways.some(c => Array.isArray(c.tablaTallas) && c.tablaTallas.length);
+      if (tieneTablaTallas) {
+        return modelo.colorways.some(c =>
+          Array.isArray(c.tablaTallas) && c.tablaTallas.some(f => f.t === talla)
+        );
+      }
+    }
+    // Fallback: modelos sin tablaTallas (costoUSD plano) -- usamos el
+    // rango declarado en "tallas", como antes.
     const rango = parseRangoTallas(modelo.tallas);
     if (!rango) return false;
     return talla >= rango.min && talla <= rango.max;
