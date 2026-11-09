@@ -101,29 +101,32 @@ const CONFIG = {
   // Si agregas tallas nuevas al catalogo, actualiza este arreglo tambien.
   tallasDisponibles: [6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11],
 
-  // --- CALCULADORA DE PRECIOS ---
+  // --- CALCULADORA DE PRECIOS (metodologia 2026-11-09) ---
   // tipoCambio: cuantos colones vale 1 dolar. Cambialo cuando quieras.
   tipoCambio: 500,
-  // margenPorcentaje: cuanto queres ganar sobre (costo + envio). 30 = 30%.
+  // margenPorcentaje: SOLO se usa para costos grandes (ver umbralMargenPorcentual
+  // abajo) -- 30 = 30% sobre el costo total.
   margenPorcentaje: 30,
-  // envioColones: costo fijo de envio en colones, SE SUMA POR CADA PAR.
-  // Si tu envio es por pedido completo y no por par, avisale a Ziggy para
-  // cambiar la formula.
-  envioColones: 20000,
+  // envioUsaUSD: envio dentro de USA, EN DOLARES (se suma al costo antes de
+  // convertir a colones -- asi escala solo si cambia el tipo de cambio).
+  envioUsaUSD: 22,
+  // envioCRColones: envio de USA a Costa Rica, en colones fijos.
+  envioCRColones: 9000,
+  // umbralGananciaFija / umbralMargenPorcentual: escalones de ganancia.
+  //   costo total < umbralGananciaFija          -> ganancia fija = gananciaFijaBaja
+  //   umbralGananciaFija <= costo < umbralMargenPorcentual -> ganancia fija = gananciaFijaAlta
+  //   costo >= umbralMargenPorcentual            -> margenPorcentaje (%)
+  // Pedido de Luis: en tenis baratos un % da muy poca plata (por eso el
+  // piso fijo), pero en tenis carísimos un % sigue siendo mejor negocio
+  // que un monto fijo (por eso el ultimo escalon es porcentual, no fijo).
+  umbralGananciaFija: 60000,
+  umbralMargenPorcentual: 120000,
+  gananciaFijaBaja: 15000,
+  gananciaFijaAlta: 20000,
   // precioMinimo: piso de seguridad SOLO para evitar precios absurdos si
   // algun dato de costo viene mal capturado (ej. un USD tipeado como 1 por
-  // error). Luis confirmo que NO quiere que esto actue como limitante real
-  // sobre el calculo normal -- por eso se dejo bien por debajo de cualquier
-  // precio natural que de verdad sale hoy en el catalogo (el mas bajo real
-  // ronda los CRC 39,600).
+  // error). No deberia activarse nunca con datos normales.
   precioMinimo: 35000,
-  // ajusteTallaEstandar: muchos precios de referencia que conseguimos son de
-  // tallas sueltas/raras (que salen mas baratas en reventa). Las tallas que
-  // de verdad se piden mas -- 8.5 y 9 US hombre -- cuestan mas. No pudimos
-  // verificar precios en vivo por talla (StockX/GOAT bloquean el acceso
-  // automatizado), asi que aplicamos este colchon razonable. Ajustalo si
-  // conseguis datos reales de tu proveedor.
-  ajusteTallaEstandar: 1.15,
   // topeSobreElMasBarato: cuando un modelo tiene colores/colorways con
   // costos muy distintos entre si, en vez de mostrar el promedio "pelado"
   // (que puede salir carisimo si hay una edicion de lujo rara) se usa el
@@ -133,13 +136,15 @@ const CONFIG = {
 };
 
 // =============================================================
-//  CALCULADORA DE PRECIO FINAL
+//  CALCULADORA DE PRECIO FINAL (3 escalones, sin colchon de talla)
 // =============================================================
 // Como usarla: a cada modelo en CATALOGO agregale el campo "costoUSD"
-// con lo que te cuesta el par en dolares, ej:
-//   { nombre: "Stan Smith", costoUSD: 45, img: null, precio: null, tallas: "" }
-// El precio final en colones se calcula solo con esta formula:
-//   (costoUSD * tipoCambio + envioColones) * (1 + margenPorcentaje / 100)
+// con lo que te cuesta el par en dolares.
+//
+// El precio final en colones se calcula en 3 pasos:
+//   1. costoTotal = (costoUSD + envioUsaUSD) * tipoCambio + envioCRColones
+//   2. Ganancia segun el escalon de costoTotal (ver CONFIG arriba)
+//   3. Redondeo a la centena + piso de seguridad
 //
 // Si en vez de costoUSD preferis fijar el precio final a mano, llena el
 // campo "precio" directamente y ese valor manda (ignora el calculo).
@@ -150,11 +155,18 @@ function calcularPrecioFinal(modelo) {
   const costoUSD = obtenerCostoBaseUSD(modelo);
   if (!costoUSD) return null; // no hay info suficiente todavia
 
-  const costoAjustado = costoUSD * CONFIG.ajusteTallaEstandar;
-  const costoColones = costoAjustado * CONFIG.tipoCambio;
-  const conEnvio = costoColones + CONFIG.envioColones;
-  const conMargen = conEnvio * (1 + CONFIG.margenPorcentaje / 100);
-  const redondeado = Math.round(conMargen / 100) * 100; // a la centena mas cercana
+  const costoTotal = (costoUSD + CONFIG.envioUsaUSD) * CONFIG.tipoCambio + CONFIG.envioCRColones;
+
+  let precioConGanancia;
+  if (costoTotal < CONFIG.umbralGananciaFija) {
+    precioConGanancia = costoTotal + CONFIG.gananciaFijaBaja;
+  } else if (costoTotal < CONFIG.umbralMargenPorcentual) {
+    precioConGanancia = costoTotal + CONFIG.gananciaFijaAlta;
+  } else {
+    precioConGanancia = costoTotal * (1 + CONFIG.margenPorcentaje / 100);
+  }
+
+  const redondeado = Math.round(precioConGanancia / 100) * 100; // a la centena mas cercana
   return Math.max(redondeado, CONFIG.precioMinimo); // nunca por debajo del piso
 }
 
@@ -257,8 +269,8 @@ const COMPRAS_REALIZADAS = [
   // "resena" es lo unico que se muestra en la tarjeta (sin descripcion tecnica
   // del colorway) -- estrellas de 1 a 5 y un comentario corto tipo testimonio.
   // { modelo: "Stan Smith", marca: "Adidas", fotos: ["images/compra-01.jpg"], resena: { estrellas: 5, texto: "100% original, llego a tiempo" }, fecha: "2026-10-28" },
-  { modelo: "Samba OG", marca: "Adidas", fotos: ["images/compras/1.jpg", "images/compras/4.jpg"], resena: { estrellas: 5, texto: "Llegaron identicas a la foto, me encantaron. Excelente atencion y rapidez." } },
-  { modelo: "Pure Chill", marca: "Adidas", fotos: ["images/compras/2.jpg", "images/compras/3.jpg"], resena: { estrellas: 5, texto: "Como me las ensenaron se las entregaron, 100% satisfecha con la compra." } },
+  { modelo: "Samba OG", marca: "Adidas", fotos: ["images/compras/1.jpg", "images/compras/4.jpg"], resena: { estrellas: 5, texto: "Llegaron identicas a la foto, me encantaron. Excelente atencion y rapidez. Son como las de Bryan Ruiz." } },
+  { modelo: "Pure Chill", marca: "Adidas", fotos: ["images/compras/2.jpg", "images/compras/3.jpg"], resena: { estrellas: 5, texto: "Super comodas, perfectas para descanso." } },
   { modelo: "Gazelle Bold (Crema/Beige)", marca: "Adidas", fotos: ["images/compras/5.jpg", "images/compras/7.jpg"], resena: { estrellas: 5, texto: "Calidad buenisima, se notan originales desde que las saque de la caja." } },
   { modelo: "Gazelle Bold (Blanco/Negro)", marca: "Adidas", fotos: ["images/compras/6.jpg", "images/compras/8.jpg"], resena: { estrellas: 5, texto: "Pedido rapidisimo y en perfecto estado, totalmente recomendado." } },
   { modelo: "Adizero Prime SP", marca: "Adidas", fotos: ["images/compras/9.jpg", "images/compras/10.jpg"], resena: { estrellas: 5, texto: "Excelente servicio, el par llego impecable y a tiempo." } },
