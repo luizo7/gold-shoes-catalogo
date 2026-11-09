@@ -120,7 +120,7 @@ const CONFIG = {
   // piso fijo), pero en tenis carísimos un % sigue siendo mejor negocio
   // que un monto fijo (por eso el ultimo escalon es porcentual, no fijo).
   umbralGananciaFija: 60000,
-  umbralMargenPorcentual: 120000,
+  umbralMargenPorcentual: 100000,
   gananciaFijaBaja: 15000,
   gananciaFijaAlta: 20000,
   // precioMinimo: piso de seguridad SOLO para evitar precios absurdos si
