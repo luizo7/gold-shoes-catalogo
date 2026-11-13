@@ -130,12 +130,17 @@
   <!-- COMO COMPRAR -->
   <section id="comoComprarSection" class="max-w-5xl mx-auto px-4 pt-12 pb-10">
     <h2 class="text-center text-2xl md:text-3xl font-serif gold-text font-bold mb-2">¿Cómo comprar?</h2>
-    <p class="text-center text-gray-500 text-sm mb-8">3 formas de pedir tu tenis -- elegí la que más te acomode</p>
+    <p class="text-center text-gray-500 text-sm mb-4">3 formas de pedir tu tenis -- elegí la que más te acomode</p>
+    <p class="text-center mb-8">
+      <span class="inline-flex items-center gap-1.5 bg-[#2e1a0e] border-2 gold-border text-[#f7e08c] text-xs md:text-sm font-extrabold tracking-wide px-4 py-2 rounded-full shadow-[0_0_18px_rgba(212,175,55,0.3)]">
+        &#10003; Hasta 3 opciones por consulta, para que elijas
+      </span>
+    </p>
     <div id="formasCotizar" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14"></div>
 
     <button id="togglePasosCompra" type="button" aria-expanded="false" aria-controls="pasosCompra"
       class="w-full flex items-center justify-center gap-2 text-xl font-serif gold-text font-bold mb-2 py-1 hover:opacity-80 transition">
-      Del pedido a tu casa, en 4 pasos
+      Del pedido a tu casa, 3 pasos más
       <svg id="togglePasosIcono" class="w-5 h-5 transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6" /></svg>
     </button>
     <p class="text-center text-gray-500 text-sm mb-4">Tocá el título para ver el paso a paso</p>
@@ -418,43 +423,41 @@
   // sin nada que confirmar). Las tarjetas que abren WhatsApp ahora son de
   // 2 pasos: 1er click en el icono revela el texto explicativo EN BLANCO +
   // un boton real de WhatsApp; 2do click (en ese boton) recien abre el chat.
-  // Pedido explicito de Luis: evitar que WhatsApp se abra "de sorpresa"
-  // sin que el cliente sepa que mensaje se va a mandar.
-  let formaExpandidaIdx = null;
+  // El 2do-click-para-enviar de antes (formaExpandidaIdx) se reemplazo:
+  // ahora el texto completo siempre se ve, y el boton "Enviar mensaje"
+  // (visible, sin esconder nada) sigue siendo el UNICO disparador de
+  // WhatsApp -- se mantiene el pedido original de Luis sin la friccion
+  // extra del click-para-revelar.
 
   function renderFormasCotizar() {
     const el = document.getElementById('formasCotizar');
     el.innerHTML = FORMAS_DE_COTIZAR.map((f, i) => {
-      const expandido = formaExpandidaIdx === i;
-      const panelWhatsapp = f.accion === 'whatsapp' ? `
-        <p class="text-gray-500 text-[11px] mt-1">${expandido ? '' : 'Toca el icono para ver como'}</p>
-        <div class="w-full overflow-hidden transition-all ${expandido ? 'max-h-40 mt-3' : 'max-h-0'}">
-          <p class="text-white text-sm mb-3">${f.descripcion}</p>
-          <button data-forma-enviar="${i}" class="inline-flex items-center justify-center gap-1.5 bg-[#25D366] text-black text-xs font-bold px-4 py-2 rounded-full hover:scale-105 transition">
-            ${ICONOS.whatsapp.replace('w-7 h-7', 'w-4 h-4')} Enviar mensaje
-          </button>
-        </div>` : `<p class="text-gray-400 text-sm">${f.descripcion}</p>`;
+      const botonWhatsappDirecto = f.accion === 'whatsapp' ? `
+        <button data-forma-enviar="${i}" class="mt-3 inline-flex items-center justify-center gap-1.5 bg-[#25D366] text-black text-xs font-bold px-4 py-2 rounded-full hover:scale-105 transition">
+          ${ICONOS.whatsapp.replace('w-7 h-7', 'w-4 h-4')} Enviar mensaje
+        </button>` : '';
       return `
-      <div class="card-shoe rounded-xl p-6 text-center flex flex-col items-center cursor-pointer" data-forma-idx="${i}">
+      <div class="card-shoe rounded-xl p-6 text-center flex flex-col items-center cursor-pointer relative" data-forma-idx="${i}">
+        <span class="absolute top-3 left-3 w-6 h-6 rounded-full bg-[#d4af37] text-black text-xs font-bold flex items-center justify-center">${i + 1}</span>
         <div class="w-14 h-14 rounded-full border-2 gold-border flex items-center justify-center text-[#d4af37] mb-4">${ICONOS[f.icono] || ''}</div>
         <h4 class="text-lg font-serif gold-text font-bold mb-2">${f.titulo}</h4>
-        ${panelWhatsapp}
+        <p class="text-gray-400 text-sm">${f.descripcion}</p>
+        ${botonWhatsappDirecto}
       </div>
     `;
     }).join('');
 
     el.querySelectorAll('[data-forma-idx]').forEach(card => {
       card.addEventListener('click', (ev) => {
-        // Si el click fue en el boton de "Enviar mensaje", eso lo maneja su
-        // propio listener de abajo -- no lo vuelve a procesar aca.
         if (ev.target.closest('[data-forma-enviar]')) return;
         const idx = Number(card.dataset.formaIdx);
         const f = FORMAS_DE_COTIZAR[idx];
+        // OJO: las tarjetas de WhatsApp NO abren nada con un click en
+        // cualquier parte -- pedido explicito de Luis de evitar que
+        // WhatsApp se abra "de sorpresa". Solo el boton "Enviar mensaje"
+        // (visible, con su propio listener abajo) dispara el envio.
         if (f.accion === 'scroll') {
-          document.getElementById(f.destino).scrollIntoView({ behavior: 'smooth' });
-        } else if (f.accion === 'whatsapp') {
-          formaExpandidaIdx = formaExpandidaIdx === idx ? null : idx;
-          renderFormasCotizar();
+          mostrarVista('catalogo');
         }
       });
     });
@@ -470,13 +473,17 @@
   function renderPasosCompra() {
     const el = document.getElementById('pasosCompra');
     el.innerHTML = PASOS_DE_COMPRA.map((paso, i) => `
-      <div class="flex items-center ${i < PASOS_DE_COMPRA.length - 1 ? 'flex-1' : ''}">
-        <div class="card-shoe rounded-xl p-5 text-center flex-1 flex flex-col items-center">
+      <div class="flex flex-col md:flex-row items-center ${i < PASOS_DE_COMPRA.length - 1 ? 'flex-1' : ''}">
+        <div class="card-shoe rounded-xl p-5 text-center flex-1 w-full flex flex-col items-center relative">
+          <span class="absolute top-3 left-3 w-6 h-6 rounded-full bg-[#d4af37] text-black text-xs font-bold flex items-center justify-center">${i + 4}</span>
           <div class="w-12 h-12 rounded-full border-2 gold-border flex items-center justify-center text-[#d4af37] mb-3">${ICONOS[paso.icono] || ''}</div>
           <h4 class="text-gray-100 font-semibold text-sm mb-1">${paso.titulo}</h4>
           <p class="text-gray-500 text-xs">${paso.descripcion}</p>
         </div>
-        ${i < PASOS_DE_COMPRA.length - 1 ? '<div class="hidden md:flex items-center text-[#d4af37] text-2xl px-2">&rarr;</div>' : ''}
+        ${i < PASOS_DE_COMPRA.length - 1 ? `
+          <div class="hidden md:flex items-center text-[#d4af37] text-2xl px-2">&rarr;</div>
+          <div class="flex md:hidden items-center justify-center text-[#d4af37] text-2xl py-1 w-full">&darr;</div>
+        ` : ''}
       </div>
     `).join('');
   }

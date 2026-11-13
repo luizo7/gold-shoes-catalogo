@@ -39,11 +39,6 @@ const FORMAS_DE_COTIZAR = [
 
 const PASOS_DE_COMPRA = [
   {
-    icono: "elegir",
-    titulo: "C\u00f3mo ped\u00eds tus tenis",
-    descripcion: "Por cat\u00e1logo, foto o descripci\u00f3n -- eleg\u00ed la forma que prefieras arriba.",
-  },
-  {
     icono: "cotizar",
     titulo: "Te armamos la cotizaci\u00f3n",
     descripcion: "Te mandamos hasta 3 opciones para que elijas la que m\u00e1s te guste -- precio final en colones, tallas disponibles y tiempo estimado de entrega.",
@@ -1152,6 +1147,82 @@ const CATALOGO = [
               { g: "M", t: 7, usd: 47 }, { g: "M", t: 7.5, usd: 47 }, { g: "M", t: 8, usd: 38 },
               { g: "M", t: 8.5, usd: 38 }, { g: "M", t: 9, usd: 47 }, { g: "M", t: 9.5, usd: 45 },
               { g: "M", t: 10, usd: 63 }, { g: "M", t: 10.5, usd: 59 }, { g: "M", t: 11, usd: 59 },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    marca: "Asics",
+    linea: "premium",
+    modelos: [
+      {
+        nombre: "GT-2160", img: null, precio: null, tallas: "6-10", categoria: "training", precioVaria: true,
+        colorways: [
+          {
+            // W5 estaba en BID, se omite. Solo se cargaron tallas dentro
+            // del rango real de venta (W6-W10).
+            nombre: "White Sun Coral (W)", fotos: ["images/colorways/asics-gt2160-white-sun-coral-w.png"], costoUSD: 44,
+            tablaTallas: [
+              { g: "W", t: 6, usd: 96 }, { g: "W", t: 6.5, usd: 50 }, { g: "W", t: 7, usd: 48 },
+              { g: "W", t: 7.5, usd: 44 }, { g: "W", t: 8, usd: 77 }, { g: "W", t: 8.5, usd: 68 },
+              { g: "W", t: 9, usd: 60 }, { g: "W", t: 9.5, usd: 97 }, { g: "W", t: 10, usd: 90 },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    marca: "Hoka",
+    linea: "premium",
+    modelos: [
+      {
+        nombre: "Rincon 4", img: null, precio: null, tallas: "6-10", categoria: "training", precioVaria: true,
+        colorways: [
+          {
+            // W5 y W5.5 salian mucho mas caros (169/180) y quedan fuera
+            // del rango real de venta (W6-W10), se omiten.
+            nombre: "Triple Black (W)", fotos: ["images/colorways/hoka-rincon4-triple-black-w.png"], costoUSD: 93,
+            tablaTallas: [
+              { g: "W", t: 6, usd: 94 }, { g: "W", t: 6.5, usd: 93 }, { g: "W", t: 7, usd: 93 },
+              { g: "W", t: 7.5, usd: 93 }, { g: "W", t: 8, usd: 93 }, { g: "W", t: 8.5, usd: 93 },
+              { g: "W", t: 9, usd: 93 }, { g: "W", t: 9.5, usd: 93 }, { g: "W", t: 10, usd: 93 },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    marca: "On",
+    linea: "premium",
+    modelos: [
+      {
+        nombre: "Cloudsurfer Trail 2", img: null, precio: null, tallas: "7-11", categoria: "training", precioVaria: true,
+        colorways: [
+          {
+            nombre: "Safari Glacier", fotos: ["images/colorways/on-cloudsurfer-trail2-safari-glacier.png"], costoUSD: 69,
+            tablaTallas: [
+              { g: "M", t: 7, usd: 229 }, { g: "M", t: 7.5, usd: 210 }, { g: "M", t: 8, usd: 222 },
+              { g: "M", t: 8.5, usd: 87 }, { g: "M", t: 9, usd: 345 }, { g: "M", t: 9.5, usd: 71 },
+              { g: "M", t: 10, usd: 85 }, { g: "M", t: 10.5, usd: 89 }, { g: "M", t: 11, usd: 69 },
+            ],
+          },
+        ],
+      },
+      {
+        // La captura se corto antes de mostrar W9.5 y W10 -- se cargo
+        // solo lo que de verdad se alcanzaba a ver.
+        nombre: "Cloud 6", img: null, precio: null, tallas: "6-9", categoria: "training", precioVaria: true,
+        colorways: [
+          {
+            nombre: "Black White (W)", fotos: ["images/colorways/on-cloud6-black-white-w.png"], costoUSD: 75,
+            tablaTallas: [
+              { g: "W", t: 6, usd: 121 }, { g: "W", t: 6.5, usd: 115 }, { g: "W", t: 7, usd: 114 },
+              { g: "W", t: 7.5, usd: 101 }, { g: "W", t: 8, usd: 115 }, { g: "W", t: 8.5, usd: 112 },
+              { g: "W", t: 9, usd: 75 },
             ],
           },
         ],
