@@ -345,16 +345,16 @@ const CATALOGO = [
           {
             nombre: "Superstar II White Black", fotos: ["images/colorways/superstar2-white-black.png", "images/colorways/superstar2-white-black-2.png"], costoUSD: 60,
             tablaTallas: [
-              { g: "M", t: 7, usd: 178 }, { g: "M", t: 7.5, usd: 109 }, { g: "M", t: 8, usd: 60 },
-              { g: "M", t: 8.5, usd: 68 }, { g: "M", t: 9, usd: 154 }, { g: "M", t: 9.5, usd: 67 },
-              { g: "M", t: 10, usd: 68 }, { g: "M", t: 10.5, usd: 68 }, { g: "M", t: 11, usd: 98 },
+              { g: "M", t: 7, usd: 109 }, { g: "M", t: 7.5, usd: 109 }, { g: "M", t: 8, usd: 72 },
+              { g: "M", t: 8.5, usd: 71 }, { g: "M", t: 9, usd: 109 }, { g: "M", t: 9.5, usd: 71 },
+              { g: "M", t: 10, usd: 71 }, { g: "M", t: 10.5, usd: 71 }, { g: "M", t: 11, usd: 98 },
             ],
           },
           {
-            nombre: "Superstar II Triple Black", fotos: ["images/colorways/superstar2-triple-black.png", "images/colorways/superstar2-triple-black-2.png"], costoUSD: 79,
+            nombre: "Superstar II Triple Black", fotos: ["images/colorways/superstar2-triple-black.png", "images/colorways/superstar2-triple-black-2.png"], costoUSD: 75,
             tablaTallas: [
               { g: "M", t: 7, usd: 105 }, { g: "M", t: 7.5, usd: 80 }, { g: "M", t: 8, usd: 111 },
-              { g: "M", t: 8.5, usd: 104 }, { g: "M", t: 9, usd: 79 }, { g: "M", t: 9.5, usd: 96 },
+              { g: "M", t: 8.5, usd: 104 }, { g: "M", t: 9, usd: 80 }, { g: "M", t: 9.5, usd: 96 },
               { g: "M", t: 10, usd: 94 }, { g: "M", t: 10.5, usd: 97 }, { g: "M", t: 11, usd: 80 },
             ],
           },
@@ -362,15 +362,15 @@ const CATALOGO = [
             nombre: "Superstar ADV White Black (W)", fotos: ["images/colorways/superstar-adv-white-black-w.png"], costoUSD: 43,
             tablaTallas: [
               { g: "W", t: 6.5, usd: 114 }, { g: "W", t: 7, usd: 89 }, { g: "W", t: 7.5, usd: 83 },
-              { g: "W", t: 8, usd: 82 }, { g: "W", t: 8.5, usd: 94 }, { g: "W", t: 9, usd: 43 },
-              { g: "W", t: 9.5, usd: 43 }, { g: "W", t: 10, usd: 70 },
+              { g: "W", t: 8, usd: 82 }, { g: "W", t: 8.5, usd: 94 }, { g: "W", t: 9, usd: 68 },
+              { g: "W", t: 9.5, usd: 68 }, { g: "W", t: 10, usd: 70 },
             ],
           },
           {
-            nombre: "Superstar 82 White Core Black", fotos: ["images/colorways/superstar82-white-core-black.png", "images/colorways/superstar82-white-core-black-2.png"], costoUSD: 78,
+            nombre: "Superstar 82 White Core Black", fotos: ["images/colorways/superstar82-white-core-black.png", "images/colorways/superstar82-white-core-black-2.png"], costoUSD: 45,
             tablaTallas: [
               { g: "M", t: 7, usd: 97 }, { g: "M", t: 7.5, usd: 84 }, { g: "M", t: 8, usd: 100 },
-              { g: "M", t: 8.5, usd: 78 }, { g: "M", t: 9, usd: 84 }, { g: "M", t: 9.5, usd: 120 },
+              { g: "M", t: 8.5, usd: 83 }, { g: "M", t: 9, usd: 84 }, { g: "M", t: 9.5, usd: 120 },
               { g: "M", t: 10, usd: 100 }, { g: "M", t: 10.5, usd: 109 }, { g: "M", t: 11, usd: 95 },
             ],
           },
@@ -378,7 +378,7 @@ const CATALOGO = [
             nombre: "Superstar Cloud White Vivid Red", fotos: ["images/colorways/superstar-cloud-white-vivid-red.png", "images/colorways/superstar-cloud-white-vivid-red-2.png"], costoUSD: 76,
             tablaTallas: [
               { g: "M", t: 7.5, usd: 105 }, { g: "M", t: 8, usd: 135 }, { g: "M", t: 8.5, usd: 80 },
-              { g: "M", t: 9, usd: 79 }, { g: "M", t: 9.5, usd: 76 }, { g: "M", t: 10, usd: 79 },
+              { g: "M", t: 9, usd: 79 }, { g: "M", t: 9.5, usd: 80 }, { g: "M", t: 10, usd: 79 },
               { g: "M", t: 10.5, usd: 108 }, { g: "M", t: 11, usd: 79 },
             ],
           },
@@ -1074,7 +1074,7 @@ const CATALOGO = [
             // Tallas W5 y W5.5 estaban en BID, se omiten.
             nombre: "Grape Mist (W)", fotos: ["images/colorways/pumasuedexl-grape-mist-w.png"], costoUSD: 37,
             tablaTallas: [
-              { g: "W", t: 6, usd: 159 }, { g: "W", t: 6.5, usd: 40 }, { g: "W", t: 7, usd: 37 },
+              { g: "W", t: 6, usd: 40 }, { g: "W", t: 6.5, usd: 40 }, { g: "W", t: 7, usd: 37 },
               { g: "W", t: 7.5, usd: 37 }, { g: "W", t: 8, usd: 40 }, { g: "W", t: 8.5, usd: 37 },
               { g: "W", t: 9, usd: 40 },
             ],
@@ -1096,7 +1096,7 @@ const CATALOGO = [
             nombre: "Summer Warm White", fotos: ["images/colorways/pumasuperteam-summer-warm-white.png"], costoUSD: 40,
             tablaTallas: [
               { g: "M", t: 7, usd: 40 }, { g: "M", t: 7.5, usd: 114 }, { g: "M", t: 8, usd: 114 },
-              { g: "M", t: 8.5, usd: 56 }, { g: "M", t: 9, usd: 103 }, { g: "M", t: 9.5, usd: 114 },
+              { g: "M", t: 8.5, usd: 84 }, { g: "M", t: 9, usd: 103 }, { g: "M", t: 9.5, usd: 114 },
               { g: "M", t: 10, usd: 87 }, { g: "M", t: 10.5, usd: 114 }, { g: "M", t: 11, usd: 96 },
             ],
           },
@@ -1109,8 +1109,8 @@ const CATALOGO = [
             // Talla W5 estaba en BID, se omite.
             nombre: "White Gold Black (W)", fotos: ["images/colorways/pumacarina3-white-gold-black-w.png"], costoUSD: 45,
             tablaTallas: [
-              { g: "W", t: 6, usd: 55 }, { g: "W", t: 6.5, usd: 101 }, { g: "W", t: 7, usd: 99 },
-              { g: "W", t: 7.5, usd: 45 }, { g: "W", t: 8, usd: 109 }, { g: "W", t: 8.5, usd: 101 },
+              { g: "W", t: 6, usd: 82 }, { g: "W", t: 6.5, usd: 101 }, { g: "W", t: 7, usd: 99 },
+              { g: "W", t: 7.5, usd: 83 }, { g: "W", t: 8, usd: 109 }, { g: "W", t: 8.5, usd: 101 },
               { g: "W", t: 9, usd: 99 }, { g: "W", t: 9.5, usd: 105 }, { g: "W", t: 10, usd: 115 },
             ],
           },
