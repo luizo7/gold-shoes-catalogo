@@ -98,6 +98,13 @@
   <nav id="lineas" class="max-w-4xl mx-auto px-4 flex flex-wrap gap-3 justify-center mb-6"></nav>
   <p id="lineaDesc" class="text-center text-gray-500 text-xs max-w-xl mx-auto mb-6"></p>
 
+  <!-- EXPLORAR POR CATEGORIA (ademas de por marca, mas abajo) -->
+  <section class="max-w-4xl mx-auto px-4 mb-10">
+    <h2 class="text-center text-xl md:text-2xl font-serif gold-text font-bold mb-1">Explorá por categoría</h2>
+    <p class="text-center text-gray-500 text-xs mb-5">Tocá una para ver solo esos modelos, o "Todas" para el catálogo completo</p>
+    <div id="categorias" class="grid grid-cols-2 sm:grid-cols-4 gap-3"></div>
+  </section>
+
   <!-- FILTRO DE PRECIO Y TALLA -->
   <div class="max-w-2xl mx-auto px-4 mb-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
     <div>
@@ -153,6 +160,7 @@
   const lineaDescEl = document.getElementById('lineaDesc');
   let marcaActiva = 'Todas';
   let lineaActiva = 'todas';
+  let categoriaActiva = null; // null = todas las categorias
   let MODELOS_PLANOS = []; // registro plano para abrir el modal de colorways por indice
 
   // --- Filtro de precio y talla ---
@@ -351,6 +359,41 @@
         marcaActiva = 'Todas';
         renderLineas();
         renderFiltros();
+        renderCatalogo();
+      });
+    });
+  }
+
+  // Explorar por categoria: 3 grupos armados con Luis (2026-11-13) para
+  // reflejar como de verdad se usan sus modelos (no "lifestyle vs ejercicio"
+  // generico, que no calzaba con un catalogo de reventa/coleccion).
+  // La foto de cada categoria es una foto YA EXISTENTE de un colorway real
+  // (no hace falta subir fotos nuevas solo para esto).
+  const CATEGORIAS = {
+    classics: { nombre: 'Classics', foto: 'images/colorways/stan-smith-core-white-new-navy.png' },
+    urbano: { nombre: 'Urbano', foto: 'images/colorways/jordan1-midnight-navy.png' },
+    training: { nombre: 'Training', foto: 'images/colorways/nb9060-black-castlerock.png' },
+  };
+
+  function renderCategorias() {
+    const categoriasEl = document.getElementById('categorias');
+    const tarjetaTodas = `
+      <button data-categoria="" class="categoria-card ${categoriaActiva === null ? 'active' : ''} rounded-lg overflow-hidden border gold-border bg-black/30 hover:bg-[#d4af37]/10 transition flex flex-col items-center justify-center p-4">
+        <span class="text-sm font-semibold text-[#d4af37]">Todas</span>
+      </button>`;
+
+    const tarjetas = Object.entries(CATEGORIAS).map(([key, cat]) => `
+      <button data-categoria="${key}" class="categoria-card ${categoriaActiva === key ? 'active' : ''} rounded-lg overflow-hidden border gold-border bg-black/30 hover:bg-[#d4af37]/10 transition flex flex-col items-center">
+        <img src="${cat.foto}" alt="${cat.nombre}" class="w-full h-20 object-contain pt-2" />
+        <span class="text-sm font-semibold text-[#d4af37] pb-2">${cat.nombre}</span>
+      </button>`).join('');
+
+    categoriasEl.innerHTML = tarjetaTodas + tarjetas;
+
+    categoriasEl.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        categoriaActiva = btn.dataset.categoria || null;
+        renderCategorias();
         renderCatalogo();
       });
     });
@@ -641,6 +684,7 @@
     const filtroTallaActivo = tallaActiva !== null;
 
     function modeloPasaFiltros(mod) {
+      if (categoriaActiva && mod.categoria !== categoriaActiva) return false;
       if (filtroPrecioActivo) {
         const p = calcularPrecioFinal(mod);
         if (!p || p < precioMinActivo || p > precioMaxActivo) return false;
@@ -792,6 +836,7 @@
   });
 
   renderLineas();
+  renderCategorias();
   renderFiltros();
   renderFiltroPrecio();
   renderFiltroTallas();

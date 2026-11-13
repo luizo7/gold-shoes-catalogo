@@ -275,6 +275,7 @@ const COMPRAS_REALIZADAS = [
   { modelo: "Gazelle Bold (Blanco/Negro)", marca: "Adidas", fotos: ["images/compras/6.jpg", "images/compras/8.jpg"], resena: { estrellas: 5, texto: "Pedido rapidisimo y en perfecto estado, totalmente recomendado." } },
   { modelo: "Adizero Prime SP", marca: "Adidas", fotos: ["images/compras/9.jpg", "images/compras/10.jpg"], resena: { estrellas: 5, texto: "Excelente servicio, el par llego impecable y a tiempo." } },
   { modelo: "Predator Elite FG", marca: "Adidas", fotos: ["images/compras/11.jpg", "images/compras/12.jpg"], resena: { estrellas: 5, texto: "Tenis originales, supero mis expectativas. Gracias Gold Shoes!" } },
+  { modelo: "Arizona", marca: "Birkenstock", fotos: ["images/compras/13.jpg", "images/compras/14.jpg"], resena: { estrellas: 5, texto: "Que lindas mis Birkenstock, y mas baratas que en cualquier otra tienda!" } },
 ];
 
 const CATALOGO = [
@@ -283,7 +284,7 @@ const CATALOGO = [
     linea: "premium",
     modelos: [
       {
-        nombre: "Stan Smith", img: null, precio: null, tallas: "6-11",
+        nombre: "Stan Smith", img: null, precio: null, tallas: "6-11", categoria: "classics",
         costoUSD: 50, precioVaria: true,
         colorways: [
           // --- De aqui para abajo: precio REAL por talla exacta, sacado de
@@ -342,7 +343,7 @@ const CATALOGO = [
         ],
       },
       {
-        nombre: "Superstar", img: null, precio: null, tallas: "6.5-11",
+        nombre: "Superstar", img: null, precio: null, tallas: "6.5-11", categoria: "classics",
         costoUSD: 50, precioVaria: true,
         colorways: [
           // --- Precio REAL por talla exacta (capturas StockX, carpeta "fotos Talla").
@@ -389,7 +390,7 @@ const CATALOGO = [
         ],
       },
       {
-        nombre: "Gazelle", img: null, precio: null, tallas: "7-11",
+        nombre: "Gazelle", img: null, precio: null, tallas: "7-11", categoria: "classics",
         costoUSD: 110, precioVaria: true,
         colorways: [
           {
@@ -403,7 +404,7 @@ const CATALOGO = [
         ],
       },
       {
-        nombre: "Gazelle Bold", img: null, precio: null, tallas: "6-10",
+        nombre: "Gazelle Bold", img: null, precio: null, tallas: "6-10", categoria: "classics",
         costoUSD: 37, precioVaria: true,
         colorways: [
           {
@@ -435,7 +436,7 @@ const CATALOGO = [
         // Modelo nuevo -- las capturas de StockX traian un sub-linea "Gazelle
         // Indoor" que no tenia modelo propio todavia (es distinto de Gazelle
         // y Gazelle Bold: plantilla mas baja y forro de pana en el talon).
-        nombre: "Gazelle Indoor", img: null, precio: null, tallas: "6-11",
+        nombre: "Gazelle Indoor", img: null, precio: null, tallas: "6-11", categoria: "classics",
         costoUSD: 39, precioVaria: true,
         colorways: [
           {
@@ -457,7 +458,7 @@ const CATALOGO = [
         ],
       },
       {
-        nombre: "Spezial", img: null, precio: null, tallas: "6-11",
+        nombre: "Spezial", img: null, precio: null, tallas: "6-11", categoria: "classics",
         costoUSD: 35, precioVaria: true,
         colorways: [
           {
@@ -543,7 +544,7 @@ const CATALOGO = [
         ],
       },
       {
-        nombre: "Samba", img: null, precio: null, tallas: "6-10",
+        nombre: "Samba", img: null, precio: null, tallas: "6-10", categoria: "classics",
         costoUSD: 37, precioVaria: true,
         colorways: [
           {
@@ -611,7 +612,7 @@ const CATALOGO = [
     linea: "premium",
     modelos: [
       {
-        nombre: "Jordan 1", img: null, precio: null, tallas: "7-11",
+        nombre: "Jordan 1", img: null, precio: null, tallas: "7-11", categoria: "urbano",
         costoUSD: 30, precioVaria: true,
         colorways: [
           {
@@ -632,7 +633,7 @@ const CATALOGO = [
           },
         ],
       },
-      { nombre: "Jordan 2", img: null, precio: null, tallas: "7-11", precioVaria: true, colorways: [
+      { nombre: "Jordan 2", img: null, precio: null, tallas: "7-11", categoria: "urbano", precioVaria: true, colorways: [
         {
           nombre: "Retro A Ma Maniere Airness", fotos: ["images/colorways/jordan2-a-ma-maniere-airness.png", "images/colorways/jordan2-a-ma-maniere-airness-2.png"], costoUSD: 67,
           tablaTallas: [
@@ -642,7 +643,7 @@ const CATALOGO = [
           ],
         },
       ] },
-      { nombre: "Jordan 4", img: null, precio: null, tallas: "7-11", precioVaria: true, colorways: [
+      { nombre: "Jordan 4", img: null, precio: null, tallas: "7-11", categoria: "urbano", precioVaria: true, colorways: [
         {
           nombre: "Retro SB Navy", fotos: ["images/colorways/jordan4-navy.png", "images/colorways/jordan4-navy-2.png"], costoUSD: 140,
           tablaTallas: [
@@ -652,7 +653,7 @@ const CATALOGO = [
           ],
         },
       ] },
-      { nombre: "Jordan 7", img: null, precio: null, tallas: "7.5-11", precioVaria: true, colorways: [
+      { nombre: "Jordan 7", img: null, precio: null, tallas: "7.5-11", categoria: "urbano", precioVaria: true, colorways: [
         {
           nombre: "Retro Miro (2026)", fotos: ["images/colorways/jordan7-miro-2026.png", "images/colorways/jordan7-miro-2026-2.png"], costoUSD: 147,
           tablaTallas: [
@@ -662,7 +663,7 @@ const CATALOGO = [
           ],
         },
       ] },
-      { nombre: "Jordan 9", img: null, precio: null, tallas: "7-11", precioVaria: true, colorways: [
+      { nombre: "Jordan 9", img: null, precio: null, tallas: "7-11", categoria: "urbano", precioVaria: true, colorways: [
         {
           nombre: "Retro Flint Grey French Blue (2026)", fotos: ["images/colorways/jordan9-flint-grey-french-blue-2026.png", "images/colorways/jordan9-flint-grey-french-blue-2026-2.png"], costoUSD: 102,
           tablaTallas: [
@@ -673,7 +674,7 @@ const CATALOGO = [
         },
       ] },
       {
-        nombre: "Jordan 12", img: null, precio: null, tallas: "7-11", costoUSD: 152, precioVaria: true,
+        nombre: "Jordan 12", img: null, precio: null, tallas: "7-11", categoria: "urbano", costoUSD: 152, precioVaria: true,
         colorways: [
           {
             nombre: "Retro SP A Ma Maniere White (W)", fotos: ["images/colorways/jordan12-a-ma-maniere-white-w.png", "images/colorways/jordan12-a-ma-maniere-white-w-2.png"], costoUSD: 116,
@@ -686,7 +687,7 @@ const CATALOGO = [
         ],
       },
       {
-        nombre: "Jordan 13", img: null, precio: null, tallas: "7-11", costoUSD: 133, precioVaria: true,
+        nombre: "Jordan 13", img: null, precio: null, tallas: "7-11", categoria: "urbano", costoUSD: 133, precioVaria: true,
         colorways: [
           {
             nombre: "Retro OG Chicago (2026)", fotos: ["images/colorways/jordan13-og-chicago-2026.png"], costoUSD: 133,
@@ -713,7 +714,7 @@ const CATALOGO = [
     linea: "premium",
     modelos: [
       {
-        nombre: "9060", img: null, precio: null, tallas: "6-11",
+        nombre: "9060", img: null, precio: null, tallas: "6-11", categoria: "training",
         costoUSD: 84, precioVaria: true,
         colorways: [
           // --- Precio REAL por talla exacta (capturas StockX, carpeta "fotos Talla").
@@ -744,7 +745,7 @@ const CATALOGO = [
         ],
       },
       {
-        nombre: "2002R", img: null, precio: null, tallas: "7-11",
+        nombre: "2002R", img: null, precio: null, tallas: "7-11", categoria: "training",
         costoUSD: 69, precioVaria: true,
         colorways: [
           {
@@ -767,7 +768,7 @@ const CATALOGO = [
           },
         ],
       },
-      { nombre: "574", img: null, precio: null, tallas: "7-11", precioVaria: true, colorways: [
+      { nombre: "574", img: null, precio: null, tallas: "7-11", categoria: "training", precioVaria: true, colorways: [
         {
           // OJO: M12.5 estaba en BID, se omite.
           nombre: "Navy White", fotos: ["images/colorways/nb574-navy-white.png", "images/colorways/nb574-navy-white-2.png"], costoUSD: 69,
@@ -778,7 +779,7 @@ const CATALOGO = [
           ],
         },
       ] },
-      { nombre: "327", img: null, precio: null, tallas: "6-10", precioVaria: true, colorways: [
+      { nombre: "327", img: null, precio: null, tallas: "6-10", categoria: "training", precioVaria: true, colorways: [
         {
           nombre: "Moonbeam Classic Burgundy (W)", fotos: ["images/colorways/nb327-moonbeam-classic-burgundy-w.png", "images/colorways/nb327-moonbeam-classic-burgundy-w-2.png"], costoUSD: 66,
           tablaTallas: [
@@ -789,7 +790,7 @@ const CATALOGO = [
         },
       ] },
       {
-        nombre: "530", img: null, precio: null, tallas: "6-10", sugerido: true, precioVaria: true,
+        nombre: "530", img: null, precio: null, tallas: "6-10", categoria: "training", sugerido: true, precioVaria: true,
         colorways: [
           {
             nombre: "White Silver Navy (W)", fotos: ["images/colorways/nb530-white-silver-navy.png", "images/colorways/nb530-white-silver-navy-2.png"], costoUSD: 65,
@@ -810,7 +811,7 @@ const CATALOGO = [
         ],
       },
       {
-        nombre: "550", img: null, precio: null, tallas: "6-10",
+        nombre: "550", img: null, precio: null, tallas: "6-10", categoria: "training",
         costoUSD: 52, precioVaria: true, sugerido: true,
         colorways: [
           {
@@ -838,7 +839,7 @@ const CATALOGO = [
     linea: "premium",
     modelos: [
       {
-        nombre: "Air Force 1", img: null, precio: null, tallas: "7-11", precioVaria: true,
+        nombre: "Air Force 1", img: null, precio: null, tallas: "7-11", categoria: "urbano", precioVaria: true,
         colorways: [
           {
             nombre: "White", fotos: ["images/colorways/nikeaf1-white.png", "images/colorways/nikeaf1-white-2.png"], costoUSD: 67,
@@ -875,7 +876,7 @@ const CATALOGO = [
         ],
       },
       {
-        nombre: "Air Max", img: null, precio: null, tallas: "6-11", precioVaria: true,
+        nombre: "Air Max", img: null, precio: null, tallas: "6-11", categoria: "training", precioVaria: true,
         colorways: [
           {
             nombre: "90 Iron Grey", fotos: ["images/colorways/nikeairmax90-iron-grey.png", "images/colorways/nikeairmax90-iron-grey-2.png"], costoUSD: 65,
@@ -896,7 +897,7 @@ const CATALOGO = [
         ],
       },
       {
-        nombre: "Blazer", img: null, precio: null, tallas: "6-11", precioVaria: true,
+        nombre: "Blazer", img: null, precio: null, tallas: "6-11", categoria: "urbano", precioVaria: true,
         colorways: [
           {
             // OJO: M5.5 y M6.5 estaban en BID, se omiten.
@@ -935,7 +936,7 @@ const CATALOGO = [
         ],
       },
       {
-        nombre: "Dunk", img: null, precio: null, tallas: "6-11", precioVaria: true,
+        nombre: "Dunk", img: null, precio: null, tallas: "6-11", categoria: "urbano", precioVaria: true,
         colorways: [
           {
             nombre: "Low Celtics (W)", fotos: ["images/colorways/nikedunk-low-celtics-w.png", "images/colorways/nikedunk-low-celtics-w-2.png"], costoUSD: 34,
@@ -964,7 +965,7 @@ const CATALOGO = [
         ],
       },
       {
-        nombre: "Cortez", img: null, precio: null, tallas: "6-11", precioVaria: true,
+        nombre: "Cortez", img: null, precio: null, tallas: "6-11", categoria: "classics", precioVaria: true,
         colorways: [
           {
             nombre: "Forrest Gump (2024)", fotos: ["images/colorways/nikecortez-forrest-gump-2024.png", "images/colorways/nikecortez-forrest-gump-2024-2.png"], costoUSD: 57,
@@ -999,7 +1000,7 @@ const CATALOGO = [
     linea: "premium",
     modelos: [
       {
-        nombre: "Speedcat OG", img: null, precio: null, tallas: "6-11", precioVaria: true,
+        nombre: "Speedcat OG", img: null, precio: null, tallas: "6-11", categoria: "urbano", precioVaria: true,
         colorways: [
           {
             nombre: "Black White", fotos: ["images/colorways/pumaspeedcat-black-white.png", "images/colorways/pumaspeedcat-black-white-2.png"], costoUSD: 72,
@@ -1020,7 +1021,7 @@ const CATALOGO = [
         ],
       },
       {
-        nombre: "Suede XL", img: null, precio: null, tallas: "6-9", precioVaria: true,
+        nombre: "Suede XL", img: null, precio: null, tallas: "6-9", categoria: "classics", precioVaria: true,
         colorways: [
           {
             // Tallas W5 y W5.5 estaban en BID, se omiten.
@@ -1042,7 +1043,7 @@ const CATALOGO = [
         ],
       },
       {
-        nombre: "Super Team", img: null, precio: null, tallas: "7-11", precioVaria: true,
+        nombre: "Super Team", img: null, precio: null, tallas: "7-11", categoria: "training", precioVaria: true,
         colorways: [
           {
             nombre: "Summer Warm White", fotos: ["images/colorways/pumasuperteam-summer-warm-white.png"], costoUSD: 40,
@@ -1055,7 +1056,7 @@ const CATALOGO = [
         ],
       },
       {
-        nombre: "Carina 3.0", img: null, precio: null, tallas: "6-10", precioVaria: true,
+        nombre: "Carina 3.0", img: null, precio: null, tallas: "6-10", categoria: "classics", precioVaria: true,
         colorways: [
           {
             // Talla W5 estaba en BID, se omite.
@@ -1069,7 +1070,7 @@ const CATALOGO = [
         ],
       },
       {
-        nombre: "Palermo", img: null, precio: null, tallas: "8.5-9.5", precioVaria: true,
+        nombre: "Palermo", img: null, precio: null, tallas: "8.5-9.5", categoria: "urbano", precioVaria: true,
         colorways: [
           {
             // Casi toda la tabla estaba en BID (sin precio fijo); solo W8.5,
@@ -1096,7 +1097,7 @@ const CATALOGO = [
     linea: "clasica",
     modelos: [
       {
-        nombre: "Old Skool", img: null, precio: null, tallas: "6-11", precioVaria: true,
+        nombre: "Old Skool", img: null, precio: null, tallas: "6-11", categoria: "classics", precioVaria: true,
         colorways: [
           {
             nombre: "Navy White (W)", fotos: ["images/colorways/vansoldskool-navy-white-w.png", "images/colorways/vansoldskool-navy-white-w-2.png"], costoUSD: 25,
@@ -1117,7 +1118,7 @@ const CATALOGO = [
         ],
       },
       {
-        nombre: "Knu Skool", img: null, precio: null, tallas: "7-10.5", precioVaria: true,
+        nombre: "Knu Skool", img: null, precio: null, tallas: "7-10.5", categoria: "urbano", precioVaria: true,
         colorways: [
           {
             nombre: "Black White", fotos: ["images/colorways/vansknuskool-black-white.png", "images/colorways/vansknuskool-black-white-2.png"], costoUSD: 51,
@@ -1130,7 +1131,7 @@ const CATALOGO = [
         ],
       },
       {
-        nombre: "Classic Slip-On", img: null, precio: null, tallas: "7-11", precioVaria: true,
+        nombre: "Classic Slip-On", img: null, precio: null, tallas: "7-11", categoria: "classics", precioVaria: true,
         colorways: [
           {
             nombre: "Black", fotos: ["images/colorways/vansslipon-black.png", "images/colorways/vansslipon-black-2.png"], costoUSD: 26,
@@ -1143,7 +1144,7 @@ const CATALOGO = [
         ],
       },
       {
-        nombre: "Sk8-Hi", img: null, precio: null, tallas: "7-11", precioVaria: true,
+        nombre: "Sk8-Hi", img: null, precio: null, tallas: "7-11", categoria: "urbano", precioVaria: true,
         colorways: [
           {
             nombre: "Black White", fotos: ["images/colorways/vanssk8hi-black-white.png", "images/colorways/vanssk8hi-black-white-2.png"], costoUSD: 38,
