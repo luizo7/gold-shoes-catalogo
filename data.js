@@ -385,7 +385,7 @@ const CATALOGO = [
         ],
       },
       {
-        nombre: "Gazelle", img: null, precio: null, tallas: "7-11", categoria: "classics",
+        nombre: "Gazelle", img: null, precio: null, tallas: "6-11", categoria: "classics",
         costoUSD: 110, precioVaria: true,
         colorways: [
           {
@@ -394,6 +394,14 @@ const CATALOGO = [
               { g: "M", t: 7, usd: 76 }, { g: "M", t: 7.5, usd: 75 }, { g: "M", t: 8, usd: 60 },
               { g: "M", t: 8.5, usd: 69 }, { g: "M", t: 9, usd: 60 }, { g: "M", t: 9.5, usd: 37 },
               { g: "M", t: 10, usd: 73 }, { g: "M", t: 10.5, usd: 59 }, { g: "M", t: 11, usd: 74 },
+            ],
+          },
+          {
+            nombre: "Pink Green (W)", fotos: ["images/colorways/gazelle-pink-green-w.png", "images/colorways/gazelle-pink-green-w-2.png"], costoUSD: 63,
+            tablaTallas: [
+              { g: "W", t: 6, usd: 100 }, { g: "W", t: 6.5, usd: 95 }, { g: "W", t: 7, usd: 66 },
+              { g: "W", t: 7.5, usd: 63 }, { g: "W", t: 8, usd: 77 }, { g: "W", t: 8.5, usd: 105 },
+              { g: "W", t: 9, usd: 90 }, { g: "W", t: 9.5, usd: 205 }, { g: "W", t: 10, usd: 79 },
             ],
           },
         ],
