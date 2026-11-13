@@ -50,7 +50,7 @@
 <body class="text-gray-200">
 
   <!-- HEADER / LOGO -->
-  <header class="relative border-b border-[#3a2f12] py-10 px-4 text-center overflow-hidden">
+  <header id="heroHeader" class="relative border-b border-[#3a2f12] py-10 px-4 text-center overflow-hidden">
     <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
       <div class="w-[420px] h-[420px] rounded-full bg-[#d4af37]/10 blur-3xl"></div>
     </div>
@@ -85,8 +85,8 @@
   <div class="text-center my-10">
     <button id="toggleCatalogo" type="button" aria-expanded="false" aria-controls="catalogoPanel"
       class="inline-flex items-center gap-2 border-2 gold-border text-[#f7e08c] font-serif font-bold text-lg px-7 py-3.5 rounded-full hover:bg-[#d4af37] hover:text-black transition">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-6 h-6"><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" /></svg>
-      Ver catálogo completo
+      <span id="toggleCatalogoIcono" class="w-6 h-6 flex-shrink-0"></span>
+      <span id="toggleCatalogoTexto">Ver catálogo completo</span>
     </button>
   </div>
 
@@ -128,7 +128,7 @@
   </div> <!-- fin catalogoPanel -->
 
   <!-- COMO COMPRAR -->
-  <section class="max-w-5xl mx-auto px-4 pt-12 pb-10">
+  <section id="comoComprarSection" class="max-w-5xl mx-auto px-4 pt-12 pb-10">
     <h2 class="text-center text-2xl md:text-3xl font-serif gold-text font-bold mb-2">¿Cómo comprar?</h2>
     <p class="text-center text-gray-500 text-sm mb-8">3 formas de pedir tu tenis -- elegí la que más te acomode</p>
     <div id="formasCotizar" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14"></div>
@@ -821,17 +821,31 @@
     boton.setAttribute('aria-expanded', String(!estaAbierto));
   });
 
-  // El boton "Ver catalogo completo" muestra/oculta TODO el bloque de
-  // explorar (lineas, categorias, filtros, marcas, catalogo). Arranca
-  // cerrado -- la pagina principal es solo identidad hasta que el
-  // visitante pide ver el catalogo. Pedido de Luis (2026-11).
+  // Vista completa (no acordeon): "inicio" muestra identidad + como
+  // comprar + compras realizadas; "catalogo" esconde TODO eso y muestra
+  // solo el catalogo, como si fuera otra pagina -- mismo patron que
+  // StockX/KicksCrew/Siman (el browse es una vista aparte, con forma de
+  // volver, no un desplegable que convive con el resto). Pedido de Luis.
+  const ICONO_GRID = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-6 h-6"><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" /></svg>';
+  const ICONO_VOLVER = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>';
+  let vistaActual = 'inicio';
+
+  function mostrarVista(vista) {
+    vistaActual = vista;
+    const esCatalogo = vista === 'catalogo';
+    document.getElementById('heroHeader').classList.toggle('hidden', esCatalogo);
+    document.getElementById('comoComprarSection').classList.toggle('hidden', esCatalogo);
+    document.getElementById('comprasWrap').classList.toggle('hidden', esCatalogo);
+    document.getElementById('catalogoPanel').classList.toggle('hidden', !esCatalogo);
+
+    document.getElementById('toggleCatalogoIcono').innerHTML = esCatalogo ? ICONO_VOLVER : ICONO_GRID;
+    document.getElementById('toggleCatalogoTexto').textContent = esCatalogo ? 'Volver al inicio' : 'Ver catálogo completo';
+    document.getElementById('toggleCatalogo').setAttribute('aria-expanded', String(esCatalogo));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
   document.getElementById('toggleCatalogo').addEventListener('click', () => {
-    const panel = document.getElementById('catalogoPanel');
-    const boton = document.getElementById('toggleCatalogo');
-    const estabaOculto = panel.classList.contains('hidden');
-    panel.classList.toggle('hidden', !estabaOculto);
-    boton.setAttribute('aria-expanded', String(estabaOculto));
-    if (estabaOculto) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    mostrarVista(vistaActual === 'catalogo' ? 'inicio' : 'catalogo');
   });
 
   renderLineas();
@@ -841,6 +855,7 @@
   renderFiltroTallas();
   renderCatalogo();
   renderCompras();
+  mostrarVista('inicio');
 </script>
 </body>
 </html>
