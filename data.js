@@ -291,7 +291,7 @@ const CATALOGO = [
           {
             nombre: "Core White New Navy", fotos: ["images/colorways/stan-smith-core-white-new-navy.png", "images/colorways/stan-smith-core-white-new-navy-2.png"], costoUSD: 43,
             tablaTallas: [
-              { g: "M", t: 7, usd: 93 }, { g: "M", t: 7.5, usd: 56 }, { g: "M", t: 8, usd: 56 },
+              { g: "M", t: 7, usd: 93 }, { g: "M", t: 7.5, usd: 50 }, { g: "M", t: 8, usd: 43 },
               { g: "M", t: 8.5, usd: 57 }, { g: "M", t: 9, usd: 68 }, { g: "M", t: 9.5, usd: 60 },
               { g: "M", t: 10, usd: 85 }, { g: "M", t: 10.5, usd: 93 }, { g: "M", t: 11, usd: 64 },
             ],
@@ -307,25 +307,25 @@ const CATALOGO = [
           {
             nombre: "Triple White", fotos: ["images/colorways/stan-smith-triple-white.png", "images/colorways/stan-smith-triple-white-2.png"], costoUSD: 40,
             tablaTallas: [
-              { g: "W", t: 6, usd: 153 }, { g: "W", t: 6.5, usd: 105 }, { g: "W", t: 7, usd: 82 },
-              { g: "W", t: 7.5, usd: 95 }, { g: "W", t: 8, usd: 83 }, { g: "W", t: 8.5, usd: 105 },
+              { g: "W", t: 6, usd: 153 }, { g: "W", t: 6.5, usd: 105 }, { g: "W", t: 7, usd: 57 },
+              { g: "W", t: 7.5, usd: 95 }, { g: "W", t: 8, usd: 40 }, { g: "W", t: 8.5, usd: 105 },
               { g: "W", t: 9, usd: 93 }, { g: "W", t: 9.5, usd: 84 }, { g: "W", t: 10, usd: 95 },
             ],
           },
           {
             nombre: "Primegreen White Collegiate Navy", fotos: ["images/colorways/stan-smith-primegreen-white-collegiate-navy.png", "images/colorways/stan-smith-primegreen-white-collegiate-navy-2.png"], costoUSD: 57,
             tablaTallas: [
-              { g: "M", t: 7, usd: 180 }, { g: "M", t: 7.5, usd: 118 }, { g: "M", t: 8, usd: 57 },
-              { g: "M", t: 8.5, usd: 118 }, { g: "M", t: 9, usd: 149 }, { g: "M", t: 9.5, usd: 168 },
-              { g: "M", t: 10, usd: 121 }, { g: "M", t: 10.5, usd: 115 }, { g: "M", t: 11, usd: 184 },
+              { g: "M", t: 7, usd: 180 }, { g: "M", t: 7.5, usd: 93 }, { g: "M", t: 8, usd: 57 },
+              { g: "M", t: 8.5, usd: 93 }, { g: "M", t: 9, usd: 149 }, { g: "M", t: 9.5, usd: 168 },
+              { g: "M", t: 10, usd: 121 }, { g: "M", t: 10.5, usd: 113 }, { g: "M", t: 11, usd: 184 },
             ],
           },
           {
             nombre: "Cloud White Gold Metallic Brown (W)", fotos: ["images/colorways/stan-smith-cloud-white-gold-metallic-brown-w.png", "images/colorways/stan-smith-cloud-white-gold-metallic-brown-w-2.png"], costoUSD: 39,
             tablaTallas: [
-              { g: "W", t: 6, usd: 82 }, { g: "W", t: 6.5, usd: 82 }, { g: "W", t: 7, usd: 59 },
+              { g: "W", t: 6, usd: 172 }, { g: "W", t: 6.5, usd: 82 }, { g: "W", t: 7, usd: 59 },
               { g: "W", t: 7.5, usd: 55 }, { g: "W", t: 8, usd: 82 }, { g: "W", t: 8.5, usd: 80 },
-              { g: "W", t: 9, usd: 68 }, { g: "W", t: 9.5, usd: 55 }, { g: "W", t: 10, usd: 56 },
+              { g: "W", t: 9, usd: 68 }, { g: "W", t: 9.5, usd: 39 }, { g: "W", t: 10, usd: 56 },
             ],
           },
           {
@@ -545,7 +545,7 @@ const CATALOGO = [
           {
             nombre: "Samba LT Semi Blue Burst (W)", fotos: ["images/colorways/samba-lt-semi-blue-burst-w.png", "images/colorways/samba-lt-semi-blue-burst-w-2.png"], costoUSD: 57,
             tablaTallas: [
-              { g: "W", t: 6, usd: 123 }, { g: "W", t: 6.5, usd: 72 }, { g: "W", t: 7, usd: 57 },
+              { g: "W", t: 6, usd: 105 }, { g: "W", t: 6.5, usd: 72 }, { g: "W", t: 7, usd: 57 },
               { g: "W", t: 7.5, usd: 156 }, { g: "W", t: 8, usd: 139 }, { g: "W", t: 8.5, usd: 157 },
               { g: "W", t: 9, usd: 151 }, { g: "W", t: 9.5, usd: 90 }, { g: "W", t: 10, usd: 289 },
             ],
@@ -554,14 +554,14 @@ const CATALOGO = [
             nombre: "Samba OG Off White Core Black (W)", fotos: ["images/colorways/samba-og-off-white-core-black-w.png", "images/colorways/samba-og-off-white-core-black-w-2.png"], costoUSD: 58,
             tablaTallas: [
               { g: "W", t: 6, usd: 119 }, { g: "W", t: 6.5, usd: 150 }, { g: "W", t: 7.5, usd: 129 },
-              { g: "W", t: 8, usd: 150 }, { g: "W", t: 8.5, usd: 60 }, { g: "W", t: 9, usd: 103 },
+              { g: "W", t: 8, usd: 227 }, { g: "W", t: 8.5, usd: 60 }, { g: "W", t: 9, usd: 103 },
               { g: "W", t: 9.5, usd: 58 }, { g: "W", t: 10, usd: 60 },
             ],
           },
           {
             nombre: "Samba ADV Cloud White Core Black (W)", fotos: ["images/colorways/samba-adv-cloud-white-core-black-w.png", "images/colorways/samba-adv-cloud-white-core-black-w-2.png"], costoUSD: 50,
             tablaTallas: [
-              { g: "W", t: 6, usd: 80 }, { g: "W", t: 6.5, usd: 70 }, { g: "W", t: 7, usd: 63 },
+              { g: "W", t: 6, usd: 80 }, { g: "W", t: 6.5, usd: 70 }, { g: "W", t: 7, usd: 50 },
               { g: "W", t: 7.5, usd: 83 }, { g: "W", t: 8, usd: 135 }, { g: "W", t: 8.5, usd: 62 },
               { g: "W", t: 9, usd: 63 }, { g: "W", t: 9.5, usd: 62 }, { g: "W", t: 10, usd: 89 },
             ],
@@ -578,14 +578,14 @@ const CATALOGO = [
             nombre: "Samba OG White Better Scarlet (W)", fotos: ["images/colorways/samba-og-white-better-scarlet-w.png", "images/colorways/samba-og-white-better-scarlet-w-2.png"], costoUSD: 59,
             tablaTallas: [
               { g: "W", t: 6, usd: 115 }, { g: "W", t: 6.5, usd: 140 }, { g: "W", t: 7, usd: 131 },
-              { g: "W", t: 7.5, usd: 107 }, { g: "W", t: 8, usd: 106 }, { g: "W", t: 8.5, usd: 99 },
+              { g: "W", t: 7.5, usd: 107 }, { g: "W", t: 8, usd: 106 }, { g: "W", t: 8.5, usd: 98 },
               { g: "W", t: 9, usd: 99 }, { g: "W", t: 9.5, usd: 109 }, { g: "W", t: 10, usd: 105 },
             ],
           },
           {
             nombre: "Samba OG Cream White Cardboard (W)", fotos: ["images/colorways/samba-og-cream-white-cardboard-w.png", "images/colorways/samba-og-cream-white-cardboard-w-2.png"], costoUSD: 70,
             tablaTallas: [
-              { g: "W", t: 6, usd: 74 }, { g: "W", t: 6.5, usd: 82 }, { g: "W", t: 7, usd: 83 },
+              { g: "W", t: 6, usd: 71 }, { g: "W", t: 6.5, usd: 82 }, { g: "W", t: 7, usd: 83 },
               { g: "W", t: 7.5, usd: 109 }, { g: "W", t: 8, usd: 93 }, { g: "W", t: 8.5, usd: 76 },
               { g: "W", t: 9, usd: 84 }, { g: "W", t: 9.5, usd: 93 }, { g: "W", t: 10, usd: 96 },
             ],
@@ -593,9 +593,9 @@ const CATALOGO = [
           {
             nombre: "Samba OG Basketweave Tongue Off White Green (W)", fotos: ["images/colorways/samba-og-basketweave-tongue-off-white-green-w.png", "images/colorways/samba-og-basketweave-tongue-off-white-green-w-2.png"], costoUSD: 60,
             tablaTallas: [
-              { g: "W", t: 6, usd: 72 }, { g: "W", t: 6.5, usd: 84 }, { g: "W", t: 7, usd: 72 },
+              { g: "W", t: 6, usd: 62 }, { g: "W", t: 6.5, usd: 84 }, { g: "W", t: 7, usd: 60 },
               { g: "W", t: 7.5, usd: 118 }, { g: "W", t: 8, usd: 100 }, { g: "W", t: 8.5, usd: 89 },
-              { g: "W", t: 9, usd: 72 }, { g: "W", t: 9.5, usd: 84 }, { g: "W", t: 10, usd: 100 },
+              { g: "W", t: 9, usd: 62 }, { g: "W", t: 9.5, usd: 84 }, { g: "W", t: 10, usd: 100 },
             ],
           },
         ],
