@@ -1043,7 +1043,7 @@ const CATALOGO = [
         ],
       },
       {
-        nombre: "Super Team", img: null, precio: null, tallas: "7-11", categoria: "training", precioVaria: true,
+        nombre: "Super Team", img: null, precio: null, tallas: "7-11", categoria: "sportPerformance", precioVaria: true,
         colorways: [
           {
             nombre: "Summer Warm White", fotos: ["images/colorways/pumasuperteam-summer-warm-white.png"], costoUSD: 40,
