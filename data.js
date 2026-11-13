@@ -24,14 +24,14 @@ const FORMAS_DE_COTIZAR = [
   {
     icono: "foto",
     titulo: "Foto por WhatsApp",
-    descripcion: "Mandanos una foto del tenis que quer\u00e9s (de internet, de un amigo, de donde sea) y te decimos si lo conseguimos y a cu\u00e1nto sale.",
+    descripcion: "Mandanos una foto del tenis que quer\u00e9s (de internet, de un amigo, de donde sea) y te mandamos hasta 3 opciones si hay variantes disponibles.",
     accion: "whatsapp",
     mensaje: "Hola! Te quiero mandar una foto de un tenis que busco \ud83d\udc5f",
   },
   {
     icono: "descripcion",
     titulo: "Describilo vos",
-    descripcion: "Contanos la marca, el estilo y el color que busc\u00e1s por WhatsApp, y te armamos opciones a tu medida.",
+    descripcion: "Contanos la marca, el estilo y el color que busc\u00e1s por WhatsApp, y te armamos hasta 3 opciones a tu medida para que elijas.",
     accion: "whatsapp",
     mensaje: "Hola! Quiero cotizar un tenis:\nMarca: \nEstilo/Modelo: \nColor: \nTalla: \n",
   },
@@ -46,7 +46,7 @@ const PASOS_DE_COMPRA = [
   {
     icono: "cotizar",
     titulo: "Te armamos la cotizaci\u00f3n",
-    descripcion: "Precio final en colones, tallas disponibles y tiempo estimado de entrega.",
+    descripcion: "Te mandamos hasta 3 opciones para que elijas la que m\u00e1s te guste -- precio final en colones, tallas disponibles y tiempo estimado de entrega.",
   },
   {
     icono: "pagar",
@@ -876,7 +876,7 @@ const CATALOGO = [
         ],
       },
       {
-        nombre: "Air Max", img: null, precio: null, tallas: "6-11", categoria: "training", precioVaria: true,
+        nombre: "Air Max", img: null, precio: null, tallas: "6-11", categoria: "urbano", precioVaria: true,
         colorways: [
           {
             nombre: "90 Iron Grey", fotos: ["images/colorways/nikeairmax90-iron-grey.png", "images/colorways/nikeairmax90-iron-grey-2.png"], costoUSD: 65,
@@ -1097,7 +1097,7 @@ const CATALOGO = [
     linea: "clasica",
     modelos: [
       {
-        nombre: "Old Skool", img: null, precio: null, tallas: "6-11", categoria: "classics", precioVaria: true,
+        nombre: "Old Skool", img: null, precio: null, tallas: "6-11", categoria: "urbano", precioVaria: true,
         colorways: [
           {
             nombre: "Navy White (W)", fotos: ["images/colorways/vansoldskool-navy-white-w.png", "images/colorways/vansoldskool-navy-white-w-2.png"], costoUSD: 25,
@@ -1131,7 +1131,7 @@ const CATALOGO = [
         ],
       },
       {
-        nombre: "Classic Slip-On", img: null, precio: null, tallas: "7-11", categoria: "classics", precioVaria: true,
+        nombre: "Classic Slip-On", img: null, precio: null, tallas: "7-11", categoria: "urbano", precioVaria: true,
         colorways: [
           {
             nombre: "Black", fotos: ["images/colorways/vansslipon-black.png", "images/colorways/vansslipon-black-2.png"], costoUSD: 26,
