@@ -392,7 +392,7 @@ const CATALOGO = [
             nombre: "Core Black Cloud White Gold", fotos: ["images/colorways/gazelle-core-black-cloud-white-gold.png", "images/colorways/gazelle-core-black-cloud-white-gold-2.png"], costoUSD: 37,
             tablaTallas: [
               { g: "M", t: 7, usd: 76 }, { g: "M", t: 7.5, usd: 75 }, { g: "M", t: 8, usd: 60 },
-              { g: "M", t: 8.5, usd: 69 }, { g: "M", t: 9, usd: 60 }, { g: "M", t: 9.5, usd: 53 },
+              { g: "M", t: 8.5, usd: 69 }, { g: "M", t: 9, usd: 60 }, { g: "M", t: 9.5, usd: 37 },
               { g: "M", t: 10, usd: 73 }, { g: "M", t: 10.5, usd: 59 }, { g: "M", t: 11, usd: 74 },
             ],
           },
@@ -420,9 +420,9 @@ const CATALOGO = [
           {
             nombre: "Earth Strata Powder Yellow (W)", fotos: ["images/colorways/gazelle-bold-earth-strata-powder-yellow-w.png", "images/colorways/gazelle-bold-earth-strata-powder-yellow-w-2.png"], costoUSD: 65,
             tablaTallas: [
-              { g: "W", t: 6, usd: 78 }, { g: "W", t: 6.5, usd: 78 }, { g: "W", t: 7, usd: 79 },
-              { g: "W", t: 7.5, usd: 78 }, { g: "W", t: 8, usd: 81 }, { g: "W", t: 8.5, usd: 79 },
-              { g: "W", t: 9, usd: 81 }, { g: "W", t: 9.5, usd: 159 }, { g: "W", t: 10, usd: 125 },
+              { g: "W", t: 6, usd: 77 }, { g: "W", t: 6.5, usd: 78 }, { g: "W", t: 7, usd: 65 },
+              { g: "W", t: 7.5, usd: 77 }, { g: "W", t: 8, usd: 81 }, { g: "W", t: 8.5, usd: 79 },
+              { g: "W", t: 9, usd: 81 }, { g: "W", t: 9.5, usd: 223 }, { g: "W", t: 10, usd: 125 },
             ],
           },
         ],
@@ -437,9 +437,9 @@ const CATALOGO = [
           {
             nombre: "Sandy Pink (W)", fotos: ["images/colorways/gazelle-indoor-sandy-pink-w.png", "images/colorways/gazelle-indoor-sandy-pink-w-2.png"], costoUSD: 52,
             tablaTallas: [
-              { g: "W", t: 6, usd: 138 }, { g: "W", t: 6.5, usd: 69 }, { g: "W", t: 7, usd: 68 },
-              { g: "W", t: 7.5, usd: 71 }, { g: "W", t: 8, usd: 92 }, { g: "W", t: 8.5, usd: 68 },
-              { g: "W", t: 9, usd: 104 }, { g: "W", t: 9.5, usd: 86 }, { g: "W", t: 10, usd: 69 },
+              { g: "W", t: 6, usd: 138 }, { g: "W", t: 6.5, usd: 56 }, { g: "W", t: 7, usd: 64 },
+              { g: "W", t: 7.5, usd: 71 }, { g: "W", t: 8, usd: 92 }, { g: "W", t: 8.5, usd: 67 },
+              { g: "W", t: 9, usd: 104 }, { g: "W", t: 9.5, usd: 86 }, { g: "W", t: 10, usd: 52 },
             ],
           },
           {
@@ -468,7 +468,7 @@ const CATALOGO = [
             nombre: "Handball Spezial Sporty & Rich Pink (W)", fotos: ["images/colorways/handball-spezial-sporty-rich-pink-w.png", "images/colorways/handball-spezial-sporty-rich-pink-w-2.png"], costoUSD: 30,
             tablaTallas: [
               { g: "W", t: 6, usd: 140 }, { g: "W", t: 6.5, usd: 96 }, { g: "W", t: 7, usd: 90 },
-              { g: "W", t: 7.5, usd: 81 }, { g: "W", t: 8, usd: 84 }, { g: "W", t: 8.5, usd: 81 },
+              { g: "W", t: 7.5, usd: 77 }, { g: "W", t: 8, usd: 84 }, { g: "W", t: 8.5, usd: 81 },
               { g: "W", t: 9, usd: 84 }, { g: "W", t: 9.5, usd: 89 }, { g: "W", t: 10, usd: 104 },
             ],
           },
@@ -499,8 +499,8 @@ const CATALOGO = [
           {
             nombre: "Handball Spezial FIFA World Cup 2026 Germany (2)", fotos: ["images/colorways/handball-spezial-fifa-world-cup-2026-germany.png", "images/colorways/handball-spezial-fifa-world-cup-2026-germany-2.png"], costoUSD: 35,
             tablaTallas: [
-              { g: "M", t: 7, usd: 95 }, { g: "M", t: 7.5, usd: 66 }, { g: "M", t: 8, usd: 66 },
-              { g: "M", t: 8.5, usd: 66 }, { g: "M", t: 9, usd: 79 }, { g: "M", t: 9.5, usd: 124 },
+              { g: "M", t: 7, usd: 95 }, { g: "M", t: 7.5, usd: 35 }, { g: "M", t: 8, usd: 35 },
+              { g: "M", t: 8.5, usd: 35 }, { g: "M", t: 9, usd: 79 }, { g: "M", t: 9.5, usd: 124 },
               { g: "M", t: 10, usd: 107 }, { g: "M", t: 10.5, usd: 79 }, { g: "M", t: 11, usd: 66 },
             ],
           },
@@ -515,8 +515,8 @@ const CATALOGO = [
           {
             nombre: "Handball Spezial Aluminum Core Black", fotos: ["images/colorways/handball-spezial-aluminum-core-black.png", "images/colorways/handball-spezial-aluminum-core-black-2.png"], costoUSD: 83,
             tablaTallas: [
-              { g: "M", t: 7, usd: 97 }, { g: "M", t: 7.5, usd: 104 }, { g: "M", t: 8, usd: 96 },
-              { g: "M", t: 8.5, usd: 96 }, { g: "M", t: 9, usd: 96 }, { g: "M", t: 9.5, usd: 97 },
+              { g: "M", t: 7, usd: 97 }, { g: "M", t: 7.5, usd: 104 }, { g: "M", t: 8, usd: 92 },
+              { g: "M", t: 8.5, usd: 90 }, { g: "M", t: 9, usd: 92 }, { g: "M", t: 9.5, usd: 97 },
               { g: "M", t: 10, usd: 99 }, { g: "M", t: 10.5, usd: 116 }, { g: "M", t: 11, usd: 196 },
             ],
           },
@@ -533,7 +533,23 @@ const CATALOGO = [
             tablaTallas: [
               { g: "W", t: 6, usd: 119 }, { g: "W", t: 6.5, usd: 119 }, { g: "W", t: 7, usd: 119 },
               { g: "W", t: 7.5, usd: 98 }, { g: "W", t: 8, usd: 119 }, { g: "W", t: 8.5, usd: 109 },
-              { g: "W", t: 9, usd: 94 }, { g: "W", t: 9.5, usd: 119 }, { g: "W", t: 10, usd: 94 },
+              { g: "W", t: 9, usd: 75 }, { g: "W", t: 9.5, usd: 119 }, { g: "W", t: 10, usd: 70 },
+            ],
+          },
+          {
+            nombre: "Handball Spezial Clear Pink Solar Orange (W)", fotos: ["images/colorways/handball-spezial-clear-pink-solar-orange-w.png", "images/colorways/handball-spezial-clear-pink-solar-orange-w-2.png"], costoUSD: 23,
+            tablaTallas: [
+              { g: "W", t: 6, usd: 50 }, { g: "W", t: 6.5, usd: 50 }, { g: "W", t: 7, usd: 50 },
+              { g: "W", t: 7.5, usd: 48 }, { g: "W", t: 8, usd: 40 }, { g: "W", t: 8.5, usd: 33 },
+              { g: "W", t: 9, usd: 59 }, { g: "W", t: 9.5, usd: 47 }, { g: "W", t: 10, usd: 23 },
+            ],
+          },
+          {
+            nombre: "Handball Spezial Cream White Beige (W)", fotos: ["images/colorways/handball-spezial-cream-white-beige-w.png", "images/colorways/handball-spezial-cream-white-beige-w-2.png"], costoUSD: 64,
+            tablaTallas: [
+              { g: "W", t: 6, usd: 70 }, { g: "W", t: 6.5, usd: 72 }, { g: "W", t: 7, usd: 72 },
+              { g: "W", t: 7.5, usd: 75 }, { g: "W", t: 8, usd: 87 }, { g: "W", t: 8.5, usd: 73 },
+              { g: "W", t: 9, usd: 77 }, { g: "W", t: 9.5, usd: 85 },
             ],
           },
         ],
