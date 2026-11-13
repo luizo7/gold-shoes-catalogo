@@ -274,7 +274,7 @@ const COMPRAS_REALIZADAS = [
   { modelo: "Gazelle Bold (Crema/Beige)", marca: "Adidas", fotos: ["images/compras/5.jpg", "images/compras/7.jpg"], resena: { estrellas: 5, texto: "Calidad buenisima, se notan originales desde que las saque de la caja." } },
   { modelo: "Gazelle Bold (Blanco/Negro)", marca: "Adidas", fotos: ["images/compras/6.jpg", "images/compras/8.jpg"], resena: { estrellas: 5, texto: "Pedido rapidisimo y en perfecto estado, totalmente recomendado." } },
   { modelo: "Adizero Prime SP", marca: "Adidas", fotos: ["images/compras/9.jpg", "images/compras/10.jpg"], resena: { estrellas: 5, texto: "Excelente servicio, el par llego impecable y a tiempo." } },
-  { modelo: "Predator Elite FG", marca: "Adidas", fotos: ["images/compras/11.jpg", "images/compras/12.jpg"], resena: { estrellas: 5, texto: "Tenis originales, supero mis expectativas. Gracias Gold Shoes!" } },
+  { modelo: "Predator Elite FG", marca: "Adidas", fotos: ["images/compras/11.jpg", "images/compras/12.jpg"], resena: { estrellas: 5, texto: "Tacos originales a un super precio!" } },
   { modelo: "Arizona", marca: "Birkenstock", fotos: ["images/compras/13.jpg", "images/compras/14.jpg"], resena: { estrellas: 5, texto: "Que lindas mis Birkenstock, y mas baratas que en cualquier otra tienda!" } },
 ];
 
@@ -1043,7 +1043,7 @@ const CATALOGO = [
         ],
       },
       {
-        nombre: "Super Team", img: null, precio: null, tallas: "7-11", categoria: "sportPerformance", precioVaria: true,
+        nombre: "Super Team", img: null, precio: null, tallas: "7-11", categoria: "training", precioVaria: true,
         colorways: [
           {
             nombre: "Summer Warm White", fotos: ["images/colorways/pumasuperteam-summer-warm-white.png"], costoUSD: 40,
