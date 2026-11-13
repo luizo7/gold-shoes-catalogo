@@ -600,6 +600,58 @@ const CATALOGO = [
           },
         ],
       },
+      {
+        nombre: "Adizero Evo SL", img: null, precio: null, tallas: "7-11", categoria: "training", precioVaria: true,
+        colorways: [
+          {
+            nombre: "Black White", fotos: ["images/colorways/adizero-evo-sl-black-white.png"], costoUSD: 79,
+            tablaTallas: [
+              { g: "M", t: 7, usd: 113 }, { g: "M", t: 7.5, usd: 79 }, { g: "M", t: 8, usd: 102 },
+              { g: "M", t: 8.5, usd: 98 }, { g: "M", t: 9, usd: 95 }, { g: "M", t: 9.5, usd: 95 },
+              { g: "M", t: 10, usd: 95 }, { g: "M", t: 10.5, usd: 96 }, { g: "M", t: 11, usd: 96 },
+            ],
+          },
+          {
+            nombre: "White Black", fotos: ["images/colorways/adizero-evo-sl-white-black.png"], costoUSD: 70,
+            tablaTallas: [
+              { g: "M", t: 7, usd: 88 }, { g: "M", t: 7.5, usd: 72 }, { g: "M", t: 8, usd: 70 },
+              { g: "M", t: 8.5, usd: 83 }, { g: "M", t: 9, usd: 79 }, { g: "M", t: 9.5, usd: 84 },
+              { g: "M", t: 10, usd: 81 }, { g: "M", t: 10.5, usd: 91 }, { g: "M", t: 11, usd: 94 },
+            ],
+          },
+        ],
+      },
+      {
+        // La captura original estaba en talla de caballero (fit conversion
+        // US Women's 9 / Fit Men's 8) -- se convirtio a dama real (W = M+1)
+        // para que coincida con el resto del catalogo.
+        nombre: "Duramo SL Wide", img: null, precio: null, tallas: "6-10", categoria: "training", precioVaria: true,
+        colorways: [
+          {
+            nombre: "Core Black Cloud White Carbon (W)", fotos: ["images/colorways/duramo-sl-wide-core-black-carbon-w.png"], costoUSD: 57,
+            tablaTallas: [
+              { g: "W", t: 6, usd: 77 }, { g: "W", t: 6.5, usd: 78 }, { g: "W", t: 7, usd: 78 },
+              { g: "W", t: 7.5, usd: 77 }, { g: "W", t: 8, usd: 66 }, { g: "W", t: 8.5, usd: 78 },
+              { g: "W", t: 9, usd: 57 }, { g: "W", t: 9.5, usd: 66 }, { g: "W", t: 10, usd: 66 },
+            ],
+          },
+        ],
+      },
+      {
+        // Misma conversion de talla que Duramo SL Wide (US Women's 6.5 /
+        // Fit Men's 5.5 -- confirma W = M+1).
+        nombre: "Runfalcon 5", img: null, precio: null, tallas: "6-10", categoria: "training", precioVaria: true,
+        colorways: [
+          {
+            nombre: "Core Black (W)", fotos: ["images/colorways/runfalcon5-core-black-w.png"], costoUSD: 55,
+            tablaTallas: [
+              { g: "W", t: 6, usd: 55 }, { g: "W", t: 6.5, usd: 57 }, { g: "W", t: 7, usd: 74 },
+              { g: "W", t: 7.5, usd: 74 }, { g: "W", t: 8, usd: 74 }, { g: "W", t: 8.5, usd: 74 },
+              { g: "W", t: 9, usd: 74 }, { g: "W", t: 9.5, usd: 74 }, { g: "W", t: 10, usd: 57 },
+            ],
+          },
+        ],
+      },
     ],
   },
   {
