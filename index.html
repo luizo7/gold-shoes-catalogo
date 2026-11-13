@@ -79,20 +79,18 @@
     </div>
   </header>
 
-  <!-- COMO COMPRAR -->
-  <section class="max-w-5xl mx-auto px-4 pt-12 pb-10">
-    <h2 class="text-center text-2xl md:text-3xl font-serif gold-text font-bold mb-2">¿Cómo comprar?</h2>
-    <p class="text-center text-gray-500 text-sm mb-8">3 formas de pedir tu tenis -- elegí la que más te acomode</p>
-    <div id="formasCotizar" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14"></div>
-
-    <button id="togglePasosCompra" type="button" aria-expanded="false" aria-controls="pasosCompra"
-      class="w-full flex items-center justify-center gap-2 text-xl font-serif gold-text font-bold mb-2 py-1 hover:opacity-80 transition">
-      Del pedido a tu casa, en 4 pasos
-      <svg id="togglePasosIcono" class="w-5 h-5 transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6" /></svg>
+  <!-- ABRIR CATALOGO: todo lo de explorar (lineas, categorias, filtros,
+       marcas, el catalogo en si) vive escondido aca adentro -- la pagina
+       principal solo muestra identidad hasta que el visitante lo pide. -->
+  <div class="text-center my-10">
+    <button id="toggleCatalogo" type="button" aria-expanded="false" aria-controls="catalogoPanel"
+      class="inline-flex items-center gap-2 border-2 gold-border text-[#f7e08c] font-serif font-bold text-lg px-7 py-3.5 rounded-full hover:bg-[#d4af37] hover:text-black transition">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-6 h-6"><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" /></svg>
+      Ver catálogo completo
     </button>
-    <p class="text-center text-gray-500 text-sm mb-4">Tocá el título para ver el paso a paso</p>
-    <div id="pasosCompra" class="hidden flex-col md:flex-row items-stretch gap-3 md:gap-0 mb-8"></div>
-  </section>
+  </div>
+
+  <div id="catalogoPanel" class="hidden">
 
   <!-- SELECTOR DE LINEA -->
   <nav id="lineas" class="max-w-4xl mx-auto px-4 flex flex-wrap gap-3 justify-center mb-6"></nav>
@@ -126,6 +124,23 @@
 
   <!-- CATALOGO -->
   <main id="catalogo" class="max-w-6xl mx-auto px-4 pb-20 space-y-14"></main>
+
+  </div> <!-- fin catalogoPanel -->
+
+  <!-- COMO COMPRAR -->
+  <section class="max-w-5xl mx-auto px-4 pt-12 pb-10">
+    <h2 class="text-center text-2xl md:text-3xl font-serif gold-text font-bold mb-2">¿Cómo comprar?</h2>
+    <p class="text-center text-gray-500 text-sm mb-8">3 formas de pedir tu tenis -- elegí la que más te acomode</p>
+    <div id="formasCotizar" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14"></div>
+
+    <button id="togglePasosCompra" type="button" aria-expanded="false" aria-controls="pasosCompra"
+      class="w-full flex items-center justify-center gap-2 text-xl font-serif gold-text font-bold mb-2 py-1 hover:opacity-80 transition">
+      Del pedido a tu casa, en 4 pasos
+      <svg id="togglePasosIcono" class="w-5 h-5 transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6" /></svg>
+    </button>
+    <p class="text-center text-gray-500 text-sm mb-4">Tocá el título para ver el paso a paso</p>
+    <div id="pasosCompra" class="hidden flex-col md:flex-row items-stretch gap-3 md:gap-0 mb-8"></div>
+  </section>
 
   <!-- COMPRAS REALIZADAS (prueba de productos reales) -->
   <section id="comprasWrap" class="max-w-6xl mx-auto px-4 pb-14"></section>
@@ -756,18 +771,9 @@
       return;
     }
 
-    // Agrupamos marca -> modelo -> ventas (cada venta ya trae su propio
-    // array de fotos), asi el visitante entra por marca y va desplegando
-    // cada modelo (menos scroll de entrada, mas ganas de explorar en vez
-    // de ver 12 fotos sueltas de una).
-    const porMarca = {};
-    COMPRAS_REALIZADAS.forEach(v => {
-      porMarca[v.marca] = porMarca[v.marca] || {};
-      porMarca[v.marca][v.modelo] = porMarca[v.marca][v.modelo] || [];
-      porMarca[v.marca][v.modelo].push(v);
-    });
-    const marcas = Object.keys(porMarca);
-
+    // Pedido de Luis (2026-11): sin acordeon por marca -- todas las
+    // compras juntas en una sola grilla, mas facil de recorrer de un
+    // vistazo (antes se agrupaba Adidas/Birkenstock/etc por separado).
     wrap.innerHTML = `
       <div class="flex items-center gap-3 mb-5">
         <h2 class="text-2xl font-serif gold-text font-bold">Compras realizadas</h2>
@@ -775,41 +781,21 @@
         <span class="text-xs text-gray-500">productos reales que ya trajimos</span>
         <div class="flex-1 h-px bg-[#3a2f12]"></div>
       </div>
-      <div class="space-y-3">
-        ${marcas.map((marca, i) => {
-          const modelos = porMarca[marca];
-          const nombresModelos = Object.keys(modelos);
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        ${COMPRAS_REALIZADAS.map(venta => {
+          const estrellas = venta.resena ? venta.resena.estrellas : 5;
           return `
-          <details class="card-shoe rounded-xl px-4 py-3" open>
-            <summary class="cursor-pointer select-none font-serif gold-text font-bold text-lg flex items-center justify-between">
-              <span>${marca}</span>
-              ${pildoraDesplegar(nombresModelos.length, 'modelo')}
-            </summary>
-            <div class="mt-4 space-y-6">
-              ${nombresModelos.map(modelo => {
-                const ventas = modelos[modelo];
-                return `
-                <div>
-                  <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-                    <h4 class="text-sm font-semibold text-gray-200">${modelo}</h4>
-                    ${botonWhatsapp(modelo, marca, true)}
-                  </div>
-                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    ${ventas.map(venta => `
-                      <div class="bg-black/30 border border-[#3a2f12] rounded-lg p-2">
-                        <div class="grid ${venta.fotos.length > 1 ? 'grid-cols-2' : 'grid-cols-1'} gap-1.5">
-                          ${venta.fotos.map(f => `<img src="${f}" alt="${modelo}" class="w-full h-44 sm:h-52 object-cover rounded" />`).join('')}
-                        </div>
-                        <p class="text-amber-400 text-xs mt-2" aria-label="${venta.resena ? venta.resena.estrellas : 5} de 5 estrellas">${'&#9733;'.repeat(venta.resena ? venta.resena.estrellas : 5)}${'&#9734;'.repeat(5 - (venta.resena ? venta.resena.estrellas : 5))}</p>
-                        <p class="text-[11px] text-gray-400 italic">${venta.resena ? `"${venta.resena.texto}"` : ''}</p>
-                      </div>
-                    `).join('')}
-                  </div>
-                </div>
-              `;
-              }).join('')}
+          <div class="bg-black/30 border border-[#3a2f12] rounded-lg p-3">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <h4 class="text-sm font-semibold text-gray-200">${venta.modelo} <span class="text-gray-500 font-normal">&middot; ${venta.marca}</span></h4>
+              ${botonWhatsapp(venta.modelo, venta.marca, true)}
             </div>
-          </details>
+            <div class="grid ${venta.fotos.length > 1 ? 'grid-cols-2' : 'grid-cols-1'} gap-1.5 mb-2">
+              ${venta.fotos.map(f => `<img src="${f}" alt="${venta.modelo}" class="w-full h-44 sm:h-52 object-cover rounded" />`).join('')}
+            </div>
+            <p class="text-amber-400 text-xs" aria-label="${estrellas} de 5 estrellas">${'&#9733;'.repeat(estrellas)}${'&#9734;'.repeat(5 - estrellas)}</p>
+            <p class="text-[11px] text-gray-400 italic">${venta.resena ? `"${venta.resena.texto}"` : ''}</p>
+          </div>
         `;
         }).join('')}
       </div>
@@ -833,6 +819,19 @@
     panel.classList.toggle('flex', !estaAbierto);
     icono.style.transform = estaAbierto ? '' : 'rotate(180deg)';
     boton.setAttribute('aria-expanded', String(!estaAbierto));
+  });
+
+  // El boton "Ver catalogo completo" muestra/oculta TODO el bloque de
+  // explorar (lineas, categorias, filtros, marcas, catalogo). Arranca
+  // cerrado -- la pagina principal es solo identidad hasta que el
+  // visitante pide ver el catalogo. Pedido de Luis (2026-11).
+  document.getElementById('toggleCatalogo').addEventListener('click', () => {
+    const panel = document.getElementById('catalogoPanel');
+    const boton = document.getElementById('toggleCatalogo');
+    const estabaOculto = panel.classList.contains('hidden');
+    panel.classList.toggle('hidden', !estabaOculto);
+    boton.setAttribute('aria-expanded', String(estabaOculto));
+    if (estabaOculto) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 
   renderLineas();
