@@ -689,7 +689,7 @@ const CATALOGO = [
           {
             nombre: "Retro High OG Black Toe Reimagined", fotos: ["images/colorways/jordan1-black-toe-reimagined.png", "images/colorways/jordan1-black-toe-reimagined-2.png"], costoUSD: 48,
             tablaTallas: [
-              { g: "M", t: 8, usd: 94 }, { g: "M", t: 8.5, usd: 98 }, { g: "M", t: 9, usd: 111 },
+              { g: "M", t: 8, usd: 92 }, { g: "M", t: 8.5, usd: 98 }, { g: "M", t: 9, usd: 111 },
               { g: "M", t: 9.5, usd: 116 }, { g: "M", t: 10, usd: 94 }, { g: "M", t: 10.5, usd: 123 },
               { g: "M", t: 11, usd: 119 },
             ],
@@ -697,8 +697,8 @@ const CATALOGO = [
           {
             nombre: "Retro High OG Midnight Navy", fotos: ["images/colorways/jordan1-midnight-navy.png", "images/colorways/jordan1-midnight-navy-2.png"], costoUSD: 47,
             tablaTallas: [
-              { g: "M", t: 7, usd: 154 }, { g: "M", t: 7.5, usd: 65 }, { g: "M", t: 8, usd: 95 },
-              { g: "M", t: 8.5, usd: 95 }, { g: "M", t: 9, usd: 154 }, { g: "M", t: 9.5, usd: 97 },
+              { g: "M", t: 7, usd: 154 }, { g: "M", t: 7.5, usd: 65 }, { g: "M", t: 8, usd: 84 },
+              { g: "M", t: 8.5, usd: 85 }, { g: "M", t: 9, usd: 296 }, { g: "M", t: 9.5, usd: 97 },
               { g: "M", t: 10, usd: 113 }, { g: "M", t: 10.5, usd: 97 }, { g: "M", t: 11, usd: 118 },
             ],
           },
@@ -709,8 +709,8 @@ const CATALOGO = [
           nombre: "Retro A Ma Maniere Airness", fotos: ["images/colorways/jordan2-a-ma-maniere-airness.png", "images/colorways/jordan2-a-ma-maniere-airness-2.png"], costoUSD: 67,
           tablaTallas: [
             { g: "M", t: 7, usd: 106 }, { g: "M", t: 7.5, usd: 120 }, { g: "M", t: 8, usd: 127 },
-            { g: "M", t: 8.5, usd: 102 }, { g: "M", t: 9, usd: 104 }, { g: "M", t: 9.5, usd: 117 },
-            { g: "M", t: 10, usd: 131 }, { g: "M", t: 10.5, usd: 102 }, { g: "M", t: 11, usd: 154 },
+            { g: "M", t: 8.5, usd: 100 }, { g: "M", t: 9, usd: 88 }, { g: "M", t: 9.5, usd: 117 },
+            { g: "M", t: 10, usd: 131 }, { g: "M", t: 10.5, usd: 99 }, { g: "M", t: 11, usd: 154 },
           ],
         },
       ] },
@@ -718,8 +718,8 @@ const CATALOGO = [
         {
           nombre: "Retro SB Navy", fotos: ["images/colorways/jordan4-navy.png", "images/colorways/jordan4-navy-2.png"], costoUSD: 140,
           tablaTallas: [
-            { g: "M", t: 7, usd: 199 }, { g: "M", t: 7.5, usd: 207 }, { g: "M", t: 8, usd: 195 },
-            { g: "M", t: 8.5, usd: 195 }, { g: "M", t: 9, usd: 194 }, { g: "M", t: 9.5, usd: 202 },
+            { g: "M", t: 7, usd: 199 }, { g: "M", t: 7.5, usd: 207 }, { g: "M", t: 8, usd: 180 },
+            { g: "M", t: 8.5, usd: 176 }, { g: "M", t: 9, usd: 185 }, { g: "M", t: 9.5, usd: 202 },
             { g: "M", t: 10, usd: 219 }, { g: "M", t: 10.5, usd: 239 }, { g: "M", t: 11, usd: 252 },
           ],
         },
@@ -728,8 +728,8 @@ const CATALOGO = [
         {
           nombre: "Retro Miro (2026)", fotos: ["images/colorways/jordan7-miro-2026.png", "images/colorways/jordan7-miro-2026-2.png"], costoUSD: 147,
           tablaTallas: [
-            { g: "M", t: 7.5, usd: 188 }, { g: "M", t: 8, usd: 158 }, { g: "M", t: 8.5, usd: 153 },
-            { g: "M", t: 9, usd: 167 }, { g: "M", t: 9.5, usd: 153 }, { g: "M", t: 10, usd: 160 },
+            { g: "M", t: 7.5, usd: 188 }, { g: "M", t: 8, usd: 158 }, { g: "M", t: 8.5, usd: 150 },
+            { g: "M", t: 9, usd: 167 }, { g: "M", t: 9.5, usd: 147 }, { g: "M", t: 10, usd: 160 },
             { g: "M", t: 10.5, usd: 171 }, { g: "M", t: 11, usd: 187 },
           ],
         },
@@ -750,8 +750,8 @@ const CATALOGO = [
           {
             nombre: "Retro SP A Ma Maniere White (W)", fotos: ["images/colorways/jordan12-a-ma-maniere-white-w.png", "images/colorways/jordan12-a-ma-maniere-white-w-2.png"], costoUSD: 116,
             tablaTallas: [
-              { g: "M", t: 7, usd: 136 }, { g: "M", t: 7.5, usd: 138 }, { g: "M", t: 8, usd: 123 },
-              { g: "M", t: 8.5, usd: 122 }, { g: "M", t: 9, usd: 123 }, { g: "M", t: 9.5, usd: 123 },
+              { g: "M", t: 7, usd: 136 }, { g: "M", t: 7.5, usd: 138 }, { g: "M", t: 8, usd: 117 },
+              { g: "M", t: 8.5, usd: 119 }, { g: "M", t: 9, usd: 118 }, { g: "M", t: 9.5, usd: 116 },
               { g: "M", t: 10, usd: 180 }, { g: "M", t: 10.5, usd: 137 }, { g: "M", t: 11, usd: 161 },
             ],
           },
@@ -771,8 +771,8 @@ const CATALOGO = [
           {
             nombre: "Retro Gym Red Flint Grey", fotos: ["images/colorways/jordan13-gym-red-flint-grey.png", "images/colorways/jordan13-gym-red-flint-grey-2.png"], costoUSD: 130,
             tablaTallas: [
-              { g: "M", t: 7, usd: 200 }, { g: "M", t: 7.5, usd: 187 }, { g: "M", t: 8, usd: 159 },
-              { g: "M", t: 8.5, usd: 157 }, { g: "M", t: 9, usd: 190 }, { g: "M", t: 9.5, usd: 163 },
+              { g: "M", t: 7, usd: 200 }, { g: "M", t: 7.5, usd: 187 }, { g: "M", t: 8, usd: 130 },
+              { g: "M", t: 8.5, usd: 150 }, { g: "M", t: 9, usd: 190 }, { g: "M", t: 9.5, usd: 163 },
               { g: "M", t: 10, usd: 162 }, { g: "M", t: 10.5, usd: 175 }, { g: "M", t: 11, usd: 169 },
             ],
           },
