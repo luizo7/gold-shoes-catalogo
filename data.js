@@ -801,16 +801,23 @@ const CATALOGO = [
             nombre: "Black Castlerock", fotos: ["images/colorways/nb9060-black-castlerock.png", "images/colorways/nb9060-black-castlerock-2.png"], costoUSD: 92,
             tablaTallas: [
               { g: "M", t: 7, usd: 120 }, { g: "M", t: 7.5, usd: 124 }, { g: "M", t: 8, usd: 101 },
-              { g: "M", t: 8.5, usd: 113 }, { g: "M", t: 9, usd: 96 }, { g: "M", t: 9.5, usd: 106 },
+              { g: "M", t: 8.5, usd: 113 }, { g: "M", t: 9, usd: 92 }, { g: "M", t: 9.5, usd: 106 },
               { g: "M", t: 10, usd: 109 }, { g: "M", t: 10.5, usd: 113 }, { g: "M", t: 11, usd: 102 },
             ],
           },
           {
             nombre: "Magnet (W)", fotos: ["images/colorways/nb9060-magnet.png", "images/colorways/nb9060-magnet-2.png"], costoUSD: 100,
             tablaTallas: [
-              { g: "W", t: 6, usd: 117 }, { g: "W", t: 6.5, usd: 132 }, { g: "W", t: 7, usd: 118 },
+              { g: "W", t: 6, usd: 111 }, { g: "W", t: 6.5, usd: 132 }, { g: "W", t: 7, usd: 100 },
               { g: "W", t: 7.5, usd: 130 }, { g: "W", t: 8, usd: 129 }, { g: "W", t: 8.5, usd: 156 },
               { g: "W", t: 9, usd: 133 }, { g: "W", t: 9.5, usd: 159 }, { g: "W", t: 10, usd: 118 },
+            ],
+          },
+          {
+            nombre: "Rose Sugar Angora", fotos: ["images/colorways/nb9060-rose-sugar-angora.png", "images/colorways/nb9060-rose-sugar-angora-2.png"], costoUSD: 84,
+            tablaTallas: [
+              { g: "M", t: 7, usd: 88 }, { g: "M", t: 7.5, usd: 109 }, { g: "M", t: 8, usd: 102 },
+              { g: "M", t: 8.5, usd: 104 }, { g: "M", t: 9, usd: 110 }, { g: "M", t: 9.5, usd: 84 },
             ],
           },
         ],
@@ -823,17 +830,17 @@ const CATALOGO = [
             // OJO: M12.5 estaba en BID, se omite.
             nombre: "Black Dark Grey", fotos: ["images/colorways/nb2002r-black-dark-grey.png", "images/colorways/nb2002r-black-dark-grey-2.png"], costoUSD: 69,
             tablaTallas: [
-              { g: "M", t: 7, usd: 125 }, { g: "M", t: 7.5, usd: 81 }, { g: "M", t: 8, usd: 96 },
+              { g: "M", t: 7, usd: 125 }, { g: "M", t: 7.5, usd: 69 }, { g: "M", t: 8, usd: 96 },
               { g: "M", t: 8.5, usd: 103 }, { g: "M", t: 9, usd: 89 }, { g: "M", t: 9.5, usd: 97 },
-              { g: "M", t: 10, usd: 103 }, { g: "M", t: 10.5, usd: 82 }, { g: "M", t: 11, usd: 80 },
+              { g: "M", t: 10, usd: 103 }, { g: "M", t: 10.5, usd: 82 }, { g: "M", t: 11, usd: 73 },
             ],
           },
           {
             // OJO: M3.5 estaba en BID, se omite.
             nombre: "Protection Pack Rain Cloud", fotos: ["images/colorways/nb2002r-protection-pack-rain-cloud.png", "images/colorways/nb2002r-protection-pack-rain-cloud-2.png"], costoUSD: 84,
             tablaTallas: [
-              { g: "M", t: 7, usd: 102 }, { g: "M", t: 7.5, usd: 100 }, { g: "M", t: 8, usd: 100 },
-              { g: "M", t: 8.5, usd: 101 }, { g: "M", t: 9, usd: 110 }, { g: "M", t: 9.5, usd: 107 },
+              { g: "M", t: 7, usd: 102 }, { g: "M", t: 7.5, usd: 98 }, { g: "M", t: 8, usd: 99 },
+              { g: "M", t: 8.5, usd: 94 }, { g: "M", t: 9, usd: 110 }, { g: "M", t: 9.5, usd: 107 },
               { g: "M", t: 10, usd: 119 }, { g: "M", t: 10.5, usd: 174 }, { g: "M", t: 11, usd: 121 },
             ],
           },
@@ -849,6 +856,22 @@ const CATALOGO = [
             { g: "M", t: 10, usd: 82 }, { g: "M", t: 10.5, usd: 89 }, { g: "M", t: 11, usd: 89 },
           ],
         },
+        {
+          nombre: "Black White", fotos: ["images/colorways/nb574-black-white.png", "images/colorways/nb574-black-white-2.png"], costoUSD: 69,
+          tablaTallas: [
+            { g: "M", t: 7, usd: 80 }, { g: "M", t: 7.5, usd: 87 }, { g: "M", t: 8, usd: 69 },
+            { g: "M", t: 8.5, usd: 81 }, { g: "M", t: 9, usd: 79 }, { g: "M", t: 9.5, usd: 80 },
+            { g: "M", t: 10, usd: 83 }, { g: "M", t: 10.5, usd: 77 }, { g: "M", t: 11, usd: 76 },
+          ],
+        },
+        {
+          nombre: "Grey White", fotos: ["images/colorways/nb574-grey-white.png", "images/colorways/nb574-grey-white-2.png"], costoUSD: 46,
+          tablaTallas: [
+            { g: "M", t: 7, usd: 61 }, { g: "M", t: 7.5, usd: 59 }, { g: "M", t: 8, usd: 74 },
+            { g: "M", t: 8.5, usd: 46 }, { g: "M", t: 9, usd: 72 }, { g: "M", t: 9.5, usd: 85 },
+            { g: "M", t: 10, usd: 68 }, { g: "M", t: 10.5, usd: 72 }, { g: "M", t: 11, usd: 93 },
+          ],
+        },
       ] },
       { nombre: "327", img: null, precio: null, tallas: "6-10", categoria: "training", precioVaria: true, colorways: [
         {
@@ -856,7 +879,7 @@ const CATALOGO = [
           tablaTallas: [
             { g: "W", t: 6, usd: 104 }, { g: "W", t: 6.5, usd: 99 }, { g: "W", t: 7, usd: 103 },
             { g: "W", t: 7.5, usd: 99 }, { g: "W", t: 8, usd: 185 }, { g: "W", t: 8.5, usd: 206 },
-            { g: "W", t: 9, usd: 206 }, { g: "W", t: 9.5, usd: 154 }, { g: "W", t: 10, usd: 206 },
+            { g: "W", t: 9, usd: 263 }, { g: "W", t: 9.5, usd: 154 }, { g: "W", t: 10, usd: 279 },
           ],
         },
       ] },
@@ -888,7 +911,7 @@ const CATALOGO = [
           {
             nombre: "White Green", fotos: ["images/colorways/nb550-white-green-2026.png", "images/colorways/nb550-white-green-2026-2.png"], costoUSD: 61,
             tablaTallas: [
-              { g: "W", t: 6, usd: 68 }, { g: "W", t: 6.5, usd: 68 }, { g: "W", t: 7, usd: 68 },
+              { g: "W", t: 6, usd: 62 }, { g: "W", t: 6.5, usd: 61 }, { g: "W", t: 7, usd: 63 },
               { g: "W", t: 7.5, usd: 71 }, { g: "W", t: 8, usd: 88 }, { g: "W", t: 8.5, usd: 95 },
               { g: "W", t: 9, usd: 117 }, { g: "W", t: 9.5, usd: 87 },
             ],
@@ -896,9 +919,9 @@ const CATALOGO = [
           {
             nombre: "White Red", fotos: ["images/colorways/nb550-white-red.png", "images/colorways/nb550-white-red-2.png"], costoUSD: 91,
             tablaTallas: [
-              { g: "W", t: 6, usd: 102 }, { g: "W", t: 6.5, usd: 104 }, { g: "W", t: 7, usd: 124 },
+              { g: "W", t: 6, usd: 101 }, { g: "W", t: 6.5, usd: 91 }, { g: "W", t: 7, usd: 124 },
               { g: "W", t: 7.5, usd: 167 }, { g: "W", t: 8, usd: 117 }, { g: "W", t: 8.5, usd: 105 },
-              { g: "W", t: 9, usd: 103 }, { g: "W", t: 9.5, usd: 138 }, { g: "W", t: 10, usd: 104 },
+              { g: "W", t: 9, usd: 96 }, { g: "W", t: 9.5, usd: 138 }, { g: "W", t: 10, usd: 104 },
             ],
           },
         ],
