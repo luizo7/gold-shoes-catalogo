@@ -464,6 +464,30 @@
     return (elegido.fotos && elegido.fotos[0]) || elegido.img || null;
   }
 
+  // --- Link directo a un colorway ---
+  // "slug": texto legible -> texto apto para URL (sin acentos, minusculas,
+  // solo letras/numeros separados por guiones). Se usa tanto para ARMAR el
+  // link (marca+modelo+color) como para LEERLO de vuelta al cargar la
+  // pagina, asi que tiene que ser estable en ambas direcciones.
+  function slug(texto) {
+    return (texto || '')
+      .toString()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-+|-+$)/g, '');
+  }
+
+  function linkColorway(marca, modeloNombre, colorNombre) {
+    const url = new URL(window.location.href);
+    url.search = '';
+    url.hash = '';
+    url.searchParams.set('marca', slug(marca));
+    url.searchParams.set('modelo', slug(modeloNombre));
+    url.searchParams.set('color', slug(colorNombre));
+    return url.toString();
+  }
+
   function shoeCard(modelo, marca) {
     const tieneColorways = Array.isArray(modelo.colorways) && modelo.colorways.length > 0;
     const idx = MODELOS_PLANOS.push({ modelo, marca }) - 1;
@@ -603,8 +627,12 @@
           Los precios son por talla exacta y pueden variar -- antes de comprar,
           <strong class="text-gray-300">confirmá disponibilidad de tu talla</strong>.
         </p>
-        <div class="flex justify-center">
+        <div class="flex flex-wrap items-center justify-center gap-2">
           ${botonWhatsapp(`${modelo.nombre} ${c.nombre}`, marca, true)}
+          <button data-copiar-link class="inline-flex items-center gap-1.5 border gold-border text-[#d4af37] text-[11px] font-bold px-3 py-1.5 rounded-full hover:bg-[#d4af37] hover:text-black transition">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 13a5 5 0 007.07 0l2.83-2.83a5 5 0 00-7.07-7.07l-1.42 1.42M14 11a5 5 0 00-7.07 0l-2.83 2.83a5 5 0 007.07 7.07l1.41-1.41" /></svg>
+            Copiar link de este color
+          </button>
         </div>
       </div>
     `;
@@ -615,6 +643,20 @@
         generoMatrizActivo = btn.dataset.generoMatriz;
         renderDetalleColorway(modelo, marca, i);
       });
+    });
+    document.querySelector('[data-copiar-link]').addEventListener('click', (ev) => {
+      const boton = ev.currentTarget;
+      const link = linkColorway(marca, modelo.nombre, c.nombre);
+      const marcarCopiado = () => {
+        const textoOriginal = boton.innerHTML;
+        boton.textContent = '¡Link copiado!';
+        setTimeout(() => { boton.innerHTML = textoOriginal; }, 1800);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(link).then(marcarCopiado).catch(() => window.prompt('Copiá este link:', link));
+      } else {
+        window.prompt('Copiá este link:', link);
+      }
     });
   }
 
@@ -846,12 +888,50 @@
     mostrarVista(vistaActual === 'catalogo' ? 'inicio' : 'catalogo');
   });
 
+  // Link directo a un colorway: si la URL trae ?marca=...&modelo=...&color=...
+  // (generado por el boton "Copiar link de este color"), se abre el catalogo
+  // directo en ese modelo/color, sin que el visitante tenga que buscarlo.
+  // Corre DESPUES de renderCatalogo() porque necesita que MODELOS_PLANOS ya
+  // este poblado para encontrar el indice correcto.
+  function intentarAbrirLinkDirecto() {
+    const params = new URLSearchParams(window.location.search);
+    const marcaSlug = params.get('marca');
+    const modeloSlug = params.get('modelo');
+    const colorSlug = params.get('color');
+    if (!marcaSlug || !modeloSlug) return;
+
+    const registro = MODELOS_PLANOS.find(r => slug(r.marca) === marcaSlug && slug(r.modelo.nombre) === modeloSlug);
+    if (!registro) return; // link roto o modelo ya no existe -- se queda en inicio, sin romper nada
+
+    // Filtramos a esa marca para que la vista quede coherente con lo que
+    // se esta mostrando (no "Todas" con un modal flotando encima).
+    marcaActiva = registro.marca;
+    renderFiltros();
+    renderCatalogo();
+
+    const idx = MODELOS_PLANOS.findIndex(r => slug(r.marca) === marcaSlug && slug(r.modelo.nombre) === modeloSlug);
+    if (idx === -1) return;
+
+    mostrarVista('catalogo');
+    abrirColores(idx);
+
+    if (colorSlug) {
+      const modelo = MODELOS_PLANOS[idx].modelo;
+      const cIdx = (modelo.colorways || []).findIndex(c => slug(c.nombre) === colorSlug);
+      if (cIdx !== -1) {
+        generoMatrizActivo = 'M';
+        renderDetalleColorway(modelo, MODELOS_PLANOS[idx].marca, cIdx);
+      }
+    }
+  }
+
   renderFiltros();
   renderFiltroPrecio();
   renderFiltroTallas();
   renderCatalogo();
   renderCompras();
   mostrarVista('inicio');
+  intentarAbrirLinkDirecto();
 </script>
 </body>
 </html>
