@@ -88,9 +88,19 @@
       <span id="toggleCatalogoIcono" class="w-6 h-6 flex-shrink-0"></span>
       <span id="toggleCatalogoTexto">Ver catálogo completo</span>
     </button>
+    <div class="mt-3">
+      <button onclick="abrirComoComprar()" type="button"
+        class="inline-flex items-center gap-1.5 text-[#d4af37] text-sm font-semibold px-4 py-1.5 rounded-full border gold-border hover:bg-[#d4af37] hover:text-black transition">
+        ¿Cómo comprar?
+      </button>
+    </div>
   </div>
 
   <div id="catalogoPanel" class="hidden">
+
+  <p class="text-center text-gray-400 text-sm max-w-xl mx-auto mb-6 px-4">
+    Explorá por marca, estilo, color o presupuesto: ajustá el precio y la talla, tocá una marca y encontrá tu próximo par.
+  </p>
 
   <!-- FILTRO DE PRECIO Y TALLA -->
   <div class="max-w-2xl mx-auto px-4 mb-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -160,11 +170,26 @@
     </div>
   </div>
 
+  <!-- MODAL "COMO COMPRAR" completo: 3 formas de cotizar + 3 pasos juntos.
+       Visible desde el pie de pagina Y desde el boton junto a "Ver catalogo
+       completo" (ese boton vive FUERA de catalogoPanel y de comoComprarSection,
+       asi que queda visible tanto en inicio como navegando el catalogo). -->
+  <div id="modalComoComprar" class="hidden fixed inset-0 bg-black/90 backdrop-blur-sm z-[100] items-center justify-center p-4" onclick="cerrarComoComprarSiFondo(event)">
+    <div class="bg-[#0b0b0d] border gold-border rounded-xl max-w-4xl w-full max-h-[85vh] overflow-y-auto p-6 relative">
+      <button onclick="cerrarComoComprar()" class="absolute top-3 right-3 text-gray-400 hover:text-[#d4af37] text-2xl leading-none">&times;</button>
+      <h3 class="text-2xl font-serif gold-text font-bold mb-1">¿Cómo comprar?</h3>
+      <p class="text-gray-500 text-sm mb-6">3 formas de pedir tu tenis -- elegí la que más te acomode</p>
+      <div id="modalComoComprarFormas" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8"></div>
+      <h4 class="text-lg font-serif gold-text font-bold mb-4 text-center">Del pedido a tu casa, 3 pasos más</h4>
+      <div id="modalComoComprarPasos" class="flex flex-col md:flex-row items-stretch gap-3 md:gap-0"></div>
+    </div>
+  </div>
+
   <!-- Nota para quien edite este archivo: la data del catalogo, precios,
        WhatsApp y textos de "como comprar" se editan en data.js, no aca. -->
   <footer class="text-center text-gray-600 text-xs pb-10">
     <p>Gold Shoes &mdash; Pasión en cada paso</p>
-    <button onclick="abrirPasos()" class="mt-2 text-[#d4af37] hover:underline">¿Cómo funciona la compra?</button>
+    <button onclick="abrirComoComprar()" class="mt-2 text-[#d4af37] hover:underline">¿Cómo comprar?</button>
   </footer>
 
 <script src="data.js"></script>
@@ -350,8 +375,8 @@
   // WhatsApp -- se mantiene el pedido original de Luis sin la friccion
   // extra del click-para-revelar.
 
-  function renderFormasCotizar() {
-    const el = document.getElementById('formasCotizar');
+  function renderFormasCotizar(targetId) {
+    const el = document.getElementById(targetId || 'formasCotizar');
     el.innerHTML = FORMAS_DE_COTIZAR.map((f, i) => {
       const botonWhatsappDirecto = f.accion === 'whatsapp' ? `
         <button data-forma-enviar="${i}" class="mt-3 inline-flex items-center justify-center gap-1.5 bg-[#25D366] text-black text-xs font-bold px-4 py-2 rounded-full hover:scale-105 transition">
@@ -391,8 +416,8 @@
     });
   }
 
-  function renderPasosCompra() {
-    const el = document.getElementById('modalPasosContenido');
+  function renderPasosCompra(targetId) {
+    const el = document.getElementById(targetId || 'modalPasosContenido');
     el.innerHTML = PASOS_DE_COMPRA.map((paso, i) => `
       <div class="flex flex-col md:flex-row items-center ${i < PASOS_DE_COMPRA.length - 1 ? 'flex-1' : ''}">
         <div class="card-shoe rounded-xl p-5 text-center flex-1 w-full flex flex-col items-center relative">
@@ -631,6 +656,27 @@
 
   function cerrarPasosSiFondo(event) {
     if (event.target.id === 'modalPasos') cerrarPasos();
+  }
+
+  // Modal "Como comprar" completo (formas de cotizar + pasos juntos) --
+  // se re-renderiza cada vez que se abre para reusar las mismas funciones
+  // que ya pintan esos datos en la pagina de inicio.
+  function abrirComoComprar() {
+    renderFormasCotizar('modalComoComprarFormas');
+    renderPasosCompra('modalComoComprarPasos');
+    const modal = document.getElementById('modalComoComprar');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+  }
+
+  function cerrarComoComprar() {
+    const modal = document.getElementById('modalComoComprar');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+  }
+
+  function cerrarComoComprarSiFondo(event) {
+    if (event.target.id === 'modalComoComprar') cerrarComoComprar();
   }
 
   function pildoraDesplegar(cantidad, palabra) {
