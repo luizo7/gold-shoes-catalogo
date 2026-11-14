@@ -323,7 +323,7 @@ const CATALOGO = [
           {
             nombre: "Cloud White Gold Metallic Brown (W)", fotos: ["images/colorways/stan-smith-cloud-white-gold-metallic-brown-w.png", "images/colorways/stan-smith-cloud-white-gold-metallic-brown-w-2.png"], costoUSD: 39,
             tablaTallas: [
-              { g: "W", t: 6, usd: 172 }, { g: "W", t: 6.5, usd: 82 }, { g: "W", t: 7, usd: 59 },
+              { g: "W", t: 6, usd: 82 }, { g: "W", t: 6.5, usd: 82 }, { g: "W", t: 7, usd: 59 },
               { g: "W", t: 7.5, usd: 55 }, { g: "W", t: 8, usd: 82 }, { g: "W", t: 8.5, usd: 80 },
               { g: "W", t: 9, usd: 68 }, { g: "W", t: 9.5, usd: 39 }, { g: "W", t: 10, usd: 56 },
             ],
@@ -430,7 +430,7 @@ const CATALOGO = [
             tablaTallas: [
               { g: "W", t: 6, usd: 77 }, { g: "W", t: 6.5, usd: 78 }, { g: "W", t: 7, usd: 65 },
               { g: "W", t: 7.5, usd: 77 }, { g: "W", t: 8, usd: 81 }, { g: "W", t: 8.5, usd: 79 },
-              { g: "W", t: 9, usd: 81 }, { g: "W", t: 9.5, usd: 223 }, { g: "W", t: 10, usd: 125 },
+              { g: "W", t: 9, usd: 81 }, { g: "W", t: 9.5, usd: 159 }, { g: "W", t: 10, usd: 125 },
             ],
           },
         ],
@@ -578,7 +578,7 @@ const CATALOGO = [
             nombre: "Samba OG Off White Core Black (W)", fotos: ["images/colorways/samba-og-off-white-core-black-w.png", "images/colorways/samba-og-off-white-core-black-w-2.png"], costoUSD: 58,
             tablaTallas: [
               { g: "W", t: 6, usd: 119 }, { g: "W", t: 6.5, usd: 150 }, { g: "W", t: 7.5, usd: 129 },
-              { g: "W", t: 8, usd: 227 }, { g: "W", t: 8.5, usd: 60 }, { g: "W", t: 9, usd: 103 },
+              { g: "W", t: 8, usd: 150 }, { g: "W", t: 8.5, usd: 60 }, { g: "W", t: 9, usd: 103 },
               { g: "W", t: 9.5, usd: 58 }, { g: "W", t: 10, usd: 60 },
             ],
           },
