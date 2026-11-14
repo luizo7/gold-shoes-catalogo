@@ -92,17 +92,6 @@
 
   <div id="catalogoPanel" class="hidden">
 
-  <!-- SELECTOR DE LINEA -->
-  <nav id="lineas" class="max-w-4xl mx-auto px-4 flex flex-wrap gap-3 justify-center mb-6"></nav>
-  <p id="lineaDesc" class="text-center text-gray-500 text-xs max-w-xl mx-auto mb-6"></p>
-
-  <!-- EXPLORAR POR CATEGORIA (ademas de por marca, mas abajo) -->
-  <section class="max-w-4xl mx-auto px-4 mb-10">
-    <h2 class="text-center text-xl md:text-2xl font-serif gold-text font-bold mb-1">Explorá por categoría</h2>
-    <p class="text-center text-gray-500 text-xs mb-5">Tocá una para ver solo esos modelos, o "Todas" para el catálogo completo</p>
-    <div id="categorias" class="grid grid-cols-2 sm:grid-cols-4 gap-3"></div>
-  </section>
-
   <!-- FILTRO DE PRECIO Y TALLA -->
   <div class="max-w-2xl mx-auto px-4 mb-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
     <div>
@@ -136,15 +125,7 @@
         &#10003; Hasta 3 opciones por consulta, para que elijas
       </span>
     </p>
-    <div id="formasCotizar" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14"></div>
-
-    <button id="togglePasosCompra" type="button" aria-expanded="false" aria-controls="pasosCompra"
-      class="w-full flex items-center justify-center gap-2 text-xl font-serif gold-text font-bold mb-2 py-1 hover:opacity-80 transition">
-      Del pedido a tu casa, 3 pasos más
-      <svg id="togglePasosIcono" class="w-5 h-5 transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6" /></svg>
-    </button>
-    <p class="text-center text-gray-500 text-sm mb-4">Tocá el título para ver el paso a paso</p>
-    <div id="pasosCompra" class="hidden flex-col md:flex-row items-stretch gap-3 md:gap-0 mb-8"></div>
+    <div id="formasCotizar" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4"></div>
   </section>
 
   <!-- COMPRAS REALIZADAS (prueba de productos reales) -->
@@ -166,21 +147,31 @@
     </div>
   </div>
 
+  <!-- MODAL "ASI ES EL PROCESO" (pasos de compra) -- se abre desde el link
+       del pie de pagina (modo solo info) o justo al tocar "Preguntar por
+       este" en un modelo (modo con boton real de WhatsApp al final). -->
+  <div id="modalPasos" class="hidden fixed inset-0 bg-black/90 backdrop-blur-sm z-[100] items-center justify-center p-4" onclick="cerrarPasosSiFondo(event)">
+    <div class="bg-[#0b0b0d] border gold-border rounded-xl max-w-3xl w-full max-h-[85vh] overflow-y-auto p-6 relative">
+      <button onclick="cerrarPasos()" class="absolute top-3 right-3 text-gray-400 hover:text-[#d4af37] text-2xl leading-none">&times;</button>
+      <h3 class="text-2xl font-serif gold-text font-bold mb-1">Así es el proceso</h3>
+      <p class="text-gray-500 text-sm mb-5">Del pedido a tu casa, 3 pasos más</p>
+      <div id="modalPasosContenido" class="flex flex-col md:flex-row items-stretch gap-3 md:gap-0 mb-6"></div>
+      <div id="modalPasosAccion" class="text-center"></div>
+    </div>
+  </div>
+
   <!-- Nota para quien edite este archivo: la data del catalogo, precios,
        WhatsApp y textos de "como comprar" se editan en data.js, no aca. -->
   <footer class="text-center text-gray-600 text-xs pb-10">
     <p>Gold Shoes &mdash; Pasión en cada paso</p>
+    <button onclick="abrirPasos()" class="mt-2 text-[#d4af37] hover:underline">¿Cómo funciona la compra?</button>
   </footer>
 
 <script src="data.js"></script>
 <script>
   const catalogoEl = document.getElementById('catalogo');
   const filtrosEl = document.getElementById('filtros');
-  const lineasEl = document.getElementById('lineas');
-  const lineaDescEl = document.getElementById('lineaDesc');
   let marcaActiva = 'Todas';
-  let lineaActiva = 'todas';
-  let categoriaActiva = null; // null = todas las categorias
   let MODELOS_PLANOS = []; // registro plano para abrir el modal de colorways por indice
 
   // --- Filtro de precio y talla ---
@@ -346,77 +337,7 @@
     const clases = compact
       ? 'inline-flex items-center gap-1.5 bg-[#25D366] text-black text-[11px] font-bold px-3 py-1.5 rounded-full hover:scale-105 transition'
       : 'mt-3 inline-flex items-center justify-center gap-1.5 bg-[#25D366] text-black text-xs font-bold px-3 py-2 rounded-full hover:scale-105 transition';
-    return `<a href="${linkWhatsapp(modelo, marca)}" target="_blank" rel="noopener" class="${clases}">${icono}Preguntar por este</a>`;
-  }
-
-  function marcasDeLinea() {
-    return lineaActiva === 'todas'
-      ? CATALOGO
-      : CATALOGO.filter(m => m.linea === lineaActiva);
-  }
-
-  function renderLineas() {
-    const opciones = [
-      { key: 'todas', nombre: 'Todas las lineas' },
-      { key: 'premium', nombre: LINEAS.premium.nombre },
-      { key: 'clasica', nombre: LINEAS.clasica.nombre },
-    ];
-    lineasEl.innerHTML = opciones.map(op => `
-      <button
-        class="linea-btn ${op.key === lineaActiva ? 'active' : ''} px-5 py-2 rounded-lg border gold-border text-sm font-semibold text-[#d4af37] hover:bg-[#d4af37] hover:text-black transition"
-        data-linea="${op.key}">
-        ${op.nombre}
-      </button>
-    `).join('');
-
-    lineaDescEl.textContent = lineaActiva === 'todas'
-      ? 'Viendo ambas lineas de negocio.'
-      : LINEAS[lineaActiva].descripcion;
-
-    lineasEl.querySelectorAll('button').forEach(btn => {
-      btn.addEventListener('click', () => {
-        lineaActiva = btn.dataset.linea;
-        marcaActiva = 'Todas';
-        renderLineas();
-        renderFiltros();
-        renderCatalogo();
-      });
-    });
-  }
-
-  // Explorar por categoria: 3 grupos armados con Luis (2026-11-13) para
-  // reflejar como de verdad se usan sus modelos (no "lifestyle vs ejercicio"
-  // generico, que no calzaba con un catalogo de reventa/coleccion).
-  // La foto de cada categoria es una foto YA EXISTENTE de un colorway real
-  // (no hace falta subir fotos nuevas solo para esto).
-  const CATEGORIAS = {
-    classics: { nombre: 'Classics', foto: 'images/colorways/stan-smith-core-white-new-navy.png' },
-    urbano: { nombre: 'Urbano', foto: 'images/colorways/jordan1-midnight-navy.png' },
-    training: { nombre: 'Training', foto: 'images/colorways/nb9060-black-castlerock.png' },
-  };
-
-  function renderCategorias() {
-    const categoriasEl = document.getElementById('categorias');
-    const tarjetaTodas = `
-      <button data-categoria="" class="categoria-card ${categoriaActiva === null ? 'active' : ''} rounded-lg overflow-hidden border gold-border bg-black/30 hover:bg-[#d4af37]/10 transition flex flex-col items-center justify-center p-4">
-        <span class="text-sm font-semibold text-[#d4af37]">Todas</span>
-      </button>`;
-
-    const tarjetas = Object.entries(CATEGORIAS).map(([key, cat]) => `
-      <button data-categoria="${key}" class="categoria-card ${categoriaActiva === key ? 'active' : ''} rounded-lg overflow-hidden border gold-border bg-black/30 hover:bg-[#d4af37]/10 transition flex flex-col items-center">
-        <img src="${cat.foto}" alt="${cat.nombre}" class="w-full h-20 object-contain pt-2" />
-        <span class="text-sm font-semibold text-[#d4af37] pb-2">${cat.nombre}</span>
-      </button>`).join('');
-
-    categoriasEl.innerHTML = tarjetaTodas + tarjetas;
-
-    categoriasEl.querySelectorAll('button').forEach(btn => {
-      btn.addEventListener('click', () => {
-        categoriaActiva = btn.dataset.categoria || null;
-        renderCategorias();
-        renderCatalogo();
-      });
-    });
+    return `<button data-whatsapp-link="${linkWhatsapp(modelo, marca)}" class="${clases}">${icono}Preguntar por este</button>`;
   }
 
   // Tarjeta "Por el catalogo" sigue siendo de 1 solo click (scroll directo,
@@ -471,11 +392,11 @@
   }
 
   function renderPasosCompra() {
-    const el = document.getElementById('pasosCompra');
+    const el = document.getElementById('modalPasosContenido');
     el.innerHTML = PASOS_DE_COMPRA.map((paso, i) => `
       <div class="flex flex-col md:flex-row items-center ${i < PASOS_DE_COMPRA.length - 1 ? 'flex-1' : ''}">
         <div class="card-shoe rounded-xl p-5 text-center flex-1 w-full flex flex-col items-center relative">
-          <span class="absolute top-3 left-3 w-6 h-6 rounded-full bg-[#d4af37] text-black text-xs font-bold flex items-center justify-center">${i + 4}</span>
+          <span class="absolute top-3 left-3 w-6 h-6 rounded-full bg-[#d4af37] text-black text-xs font-bold flex items-center justify-center">${i + 1}</span>
           <div class="w-12 h-12 rounded-full border-2 gold-border flex items-center justify-center text-[#d4af37] mb-3">${ICONOS[paso.icono] || ''}</div>
           <h4 class="text-gray-100 font-semibold text-sm mb-1">${paso.titulo}</h4>
           <p class="text-gray-500 text-xs">${paso.descripcion}</p>
@@ -489,7 +410,7 @@
   }
 
   function renderFiltros() {
-    const marcas = ['Todas', ...marcasDeLinea().map(m => m.marca)];
+    const marcas = ['Todas', ...CATALOGO.map(m => m.marca)];
     filtrosEl.innerHTML = marcas.map(marca => `
       <button
         class="brand-btn ${marca === marcaActiva ? 'active' : ''} px-4 py-1.5 rounded-full border gold-border text-sm text-[#d4af37] hover:bg-[#d4af37] hover:text-black transition"
@@ -682,6 +603,36 @@
     if (event.target.id === 'modalColores') cerrarColores();
   }
 
+  // Modal "Asi es el proceso": si viene de "Preguntar por este" trae un
+  // link de WhatsApp real y muestra el boton para continuar el chat; si
+  // viene del link del pie de pagina (whatsappLink null), es solo info.
+  function abrirPasos(whatsappLink) {
+    renderPasosCompra();
+    const accionEl = document.getElementById('modalPasosAccion');
+    accionEl.innerHTML = whatsappLink
+      ? `<button id="modalPasosWhatsapp" class="inline-flex items-center justify-center gap-1.5 bg-[#25D366] text-black text-sm font-bold px-5 py-2.5 rounded-full hover:scale-105 transition">${ICONOS.whatsapp.replace('w-7 h-7', 'w-4 h-4')}Continuar a WhatsApp</button>`
+      : `<button onclick="cerrarPasos()" class="inline-flex items-center justify-center text-[#d4af37] text-sm font-semibold px-5 py-2.5 rounded-full border gold-border hover:bg-[#d4af37] hover:text-black transition">Entendido</button>`;
+    if (whatsappLink) {
+      document.getElementById('modalPasosWhatsapp').addEventListener('click', () => {
+        window.open(whatsappLink, '_blank', 'noopener');
+        cerrarPasos();
+      });
+    }
+    const modal = document.getElementById('modalPasos');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+  }
+
+  function cerrarPasos() {
+    const modal = document.getElementById('modalPasos');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+  }
+
+  function cerrarPasosSiFondo(event) {
+    if (event.target.id === 'modalPasos') cerrarPasos();
+  }
+
   function pildoraDesplegar(cantidad, palabra) {
     return `
       <span class="inline-flex items-center gap-1.5 text-xs text-[#d4af37] font-sans font-semibold border gold-border rounded-full px-3 py-1">
@@ -692,7 +643,7 @@
 
   function renderCatalogo() {
     MODELOS_PLANOS = []; // se reconstruye en cada render para que los indices del modal cuadren
-    const base = marcasDeLinea();
+    const base = CATALOGO;
     const porMarcaDeFiltro = marcaActiva === 'Todas'
       ? base
       : base.filter(m => m.marca === marcaActiva);
@@ -706,7 +657,6 @@
     const filtroTallaActivo = tallaActiva !== null;
 
     function modeloPasaFiltros(mod) {
-      if (categoriaActiva && mod.categoria !== categoriaActiva) return false;
       if (filtroPrecioActivo) {
         const p = calcularPrecioFinal(mod);
         if (!p || p < precioMinActivo || p > precioMaxActivo) return false;
@@ -812,20 +762,15 @@
   document.getElementById('whatsappFlotante').href = `https://wa.me/${CONFIG.whatsappNumero}?text=${encodeURIComponent(CONFIG.mensajeBase)}`;
 
   renderFormasCotizar();
-  renderPasosCompra();
 
-  // El bloque "Del pedido a tu casa" arranca cerrado (sobre todo pesa en
-  // celular, donde 4 tarjetas apiladas son una pared enorme antes de llegar
-  // al catalogo). Un toque en el titulo lo despliega/colapsa.
-  document.getElementById('togglePasosCompra').addEventListener('click', () => {
-    const panel = document.getElementById('pasosCompra');
-    const icono = document.getElementById('togglePasosIcono');
-    const boton = document.getElementById('togglePasosCompra');
-    const estaAbierto = panel.classList.contains('flex');
-    panel.classList.toggle('hidden', estaAbierto);
-    panel.classList.toggle('flex', !estaAbierto);
-    icono.style.transform = estaAbierto ? '' : 'rotate(180deg)';
-    boton.setAttribute('aria-expanded', String(!estaAbierto));
+  // Delegacion de eventos: todos los botones "Preguntar por este" (catalogo,
+  // modal de colorways, compras realizadas) se re-renderizan via innerHTML,
+  // asi que un solo listener en el body cubre todos sin re-atarlos cada vez.
+  // El boton ya no va directo a WhatsApp -- primero muestra el modal con
+  // los pasos de compra, y de ahi el visitante decide si continua al chat.
+  document.body.addEventListener('click', (event) => {
+    const boton = event.target.closest('[data-whatsapp-link]');
+    if (boton) abrirPasos(boton.dataset.whatsappLink);
   });
 
   // Vista completa (no acordeon): "inicio" muestra identidad + como
@@ -855,8 +800,6 @@
     mostrarVista(vistaActual === 'catalogo' ? 'inicio' : 'catalogo');
   });
 
-  renderLineas();
-  renderCategorias();
   renderFiltros();
   renderFiltroPrecio();
   renderFiltroTallas();

@@ -823,6 +823,20 @@ const CATALOGO = [
         ],
       },
       {
+        nombre: "9060 X", img: null, precio: null, tallas: "6.5-12", categoria: "training", precioVaria: true,
+        colorways: [
+          {
+            nombre: "Silver Metallic Black Cement (W)", fotos: ["images/colorways/nb9060x-silver-metallic-black-cement-w.png", "images/colorways/nb9060x-silver-metallic-black-cement-w-2.png"], costoUSD: 62,
+            tablaTallas: [
+              { g: "W", t: 6.5, usd: 72 }, { g: "W", t: 7, usd: 64 }, { g: "W", t: 7.5, usd: 64 },
+              { g: "W", t: 8, usd: 76 }, { g: "W", t: 8.5, usd: 62 }, { g: "W", t: 9, usd: 99 },
+              { g: "W", t: 9.5, usd: 68 }, { g: "W", t: 10, usd: 78 }, { g: "W", t: 10.5, usd: 72 },
+              { g: "W", t: 11, usd: 69 }, { g: "W", t: 11.5, usd: 73 }, { g: "W", t: 12, usd: 64 },
+            ],
+          },
+        ],
+      },
+      {
         nombre: "2002R", img: null, precio: null, tallas: "7-11", categoria: "training",
         costoUSD: 69, precioVaria: true,
         colorways: [
@@ -873,7 +887,7 @@ const CATALOGO = [
           ],
         },
       ] },
-      { nombre: "327", img: null, precio: null, tallas: "6-10", categoria: "training", precioVaria: true, colorways: [
+      { nombre: "327", img: null, precio: null, tallas: "6-11", categoria: "training", precioVaria: true, colorways: [
         {
           nombre: "Moonbeam Classic Burgundy (W)", fotos: ["images/colorways/nb327-moonbeam-classic-burgundy-w.png", "images/colorways/nb327-moonbeam-classic-burgundy-w-2.png"], costoUSD: 66,
           tablaTallas: [
@@ -882,9 +896,28 @@ const CATALOGO = [
             { g: "W", t: 9, usd: 263 }, { g: "W", t: 9.5, usd: 154 }, { g: "W", t: 10, usd: 279 },
           ],
         },
+        {
+          // OJO: M7 estaba en BID, se omite.
+          nombre: "Sea Salt Raincloud", fotos: ["images/colorways/nb327-sea-salt-raincloud.png", "images/colorways/nb327-sea-salt-raincloud-2.png"], costoUSD: 69,
+          tablaTallas: [
+            { g: "M", t: 6, usd: 69 }, { g: "M", t: 6.5, usd: 69 }, { g: "M", t: 7.5, usd: 90 },
+            { g: "M", t: 8, usd: 139 }, { g: "M", t: 8.5, usd: 138 }, { g: "M", t: 9, usd: 152 },
+            { g: "M", t: 9.5, usd: 134 }, { g: "M", t: 10, usd: 125 }, { g: "M", t: 10.5, usd: 166 },
+            { g: "M", t: 11, usd: 125 },
+          ],
+        },
+        {
+          // OJO: M10.5 estaba en BID, se omite.
+          nombre: "Lab Black White", fotos: ["images/colorways/nb327-lab-black-white.png", "images/colorways/nb327-lab-black-white-2.png"], costoUSD: 80,
+          tablaTallas: [
+            { g: "M", t: 7, usd: 104 }, { g: "M", t: 7.5, usd: 107 }, { g: "M", t: 8, usd: 103 },
+            { g: "M", t: 8.5, usd: 104 }, { g: "M", t: 9, usd: 80 }, { g: "M", t: 9.5, usd: 102 },
+            { g: "M", t: 10, usd: 104 }, { g: "M", t: 11, usd: 126 },
+          ],
+        },
       ] },
       {
-        nombre: "530", img: null, precio: null, tallas: "6-10", categoria: "training", sugerido: true, precioVaria: true,
+        nombre: "530", img: null, precio: null, tallas: "6-12", categoria: "training", sugerido: true, precioVaria: true,
         colorways: [
           {
             nombre: "White Silver Navy (W)", fotos: ["images/colorways/nb530-white-silver-navy.png", "images/colorways/nb530-white-silver-navy-2.png"], costoUSD: 65,
@@ -900,6 +933,15 @@ const CATALOGO = [
               { g: "W", t: 6, usd: 73 }, { g: "W", t: 6.5, usd: 77 }, { g: "W", t: 7, usd: 80 },
               { g: "W", t: 7.5, usd: 77 }, { g: "W", t: 8, usd: 73 }, { g: "W", t: 8.5, usd: 75 },
               { g: "W", t: 9, usd: 87 }, { g: "W", t: 9.5, usd: 72 }, { g: "W", t: 10, usd: 77 },
+            ],
+          },
+          {
+            nombre: "Silver Metallic Linen (W)", fotos: ["images/colorways/nb530-silver-metallic-linen-w.png", "images/colorways/nb530-silver-metallic-linen-w-2.png"], costoUSD: 65,
+            tablaTallas: [
+              { g: "W", t: 6.5, usd: 92 }, { g: "W", t: 7, usd: 78 }, { g: "W", t: 7.5, usd: 92 },
+              { g: "W", t: 8, usd: 106 }, { g: "W", t: 8.5, usd: 79 }, { g: "W", t: 9, usd: 89 },
+              { g: "W", t: 9.5, usd: 79 }, { g: "W", t: 10, usd: 65 }, { g: "W", t: 10.5, usd: 85 },
+              { g: "W", t: 11, usd: 88 }, { g: "W", t: 11.5, usd: 74 }, { g: "W", t: 12, usd: 82 },
             ],
           },
         ],
@@ -1068,7 +1110,7 @@ const CATALOGO = [
           {
             nombre: "Low Vast Grey Varsity Red", fotos: ["images/colorways/nikedunk-low-vast-grey-varsity-red.png", "images/colorways/nikedunk-low-vast-grey-varsity-red-2.png"], costoUSD: 50,
             tablaTallas: [
-              { g: "M", t: 7, usd: 247 }, { g: "M", t: 7.5, usd: 126 }, { g: "M", t: 8, usd: 92 },
+              { g: "M", t: 7, usd: 126 }, { g: "M", t: 7.5, usd: 126 }, { g: "M", t: 8, usd: 92 },
               { g: "M", t: 8.5, usd: 88 }, { g: "M", t: 9, usd: 78 }, { g: "M", t: 9.5, usd: 100 },
               { g: "M", t: 10, usd: 52 }, { g: "M", t: 10.5, usd: 80 }, { g: "M", t: 11, usd: 84 },
             ],
